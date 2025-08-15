@@ -1,5 +1,7 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { forwardRef, useMemo, useRef, useState } from "react"
 import { BanIcon } from "@/components/tiptap-icons/ban-icon"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
 import type {
@@ -11,8 +13,6 @@ import {
   pickHighlightColorsByValue,
   useColorHighlight,
 } from "@/components/tiptap-ui/color-highlight-button"
-import type { Editor } from "@tiptap/react"
-import { forwardRef, useMemo, useRef, useState } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"

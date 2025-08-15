@@ -9,8 +9,8 @@ import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
 import {
   canToggleList,
   isListActive,
-  listIcons,
   type ListType,
+  listIcons,
 } from "@/components/tiptap-ui/list-button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isNodeInSchema } from "@/lib/tiptap-utils"

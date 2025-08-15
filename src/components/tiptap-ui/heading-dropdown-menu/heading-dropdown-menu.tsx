@@ -1,7 +1,7 @@
 "use client"
 
-import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 import { forwardRef, useCallback, useState } from "react"
+import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 
 import { HeadingButton } from "@/components/tiptap-ui/heading-button"
 import type { UseHeadingDropdownMenuConfig } from "@/components/tiptap-ui/heading-dropdown-menu"

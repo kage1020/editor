@@ -1,5 +1,9 @@
 "use client"
 
+import { AnimatePresence, motion } from "framer-motion"
+import { Loader2, LogIn, LogOut, User, X } from "lucide-react"
+import { useEffect, useRef, useState } from "react"
+import { FaGithub, FaGoogle } from "react-icons/fa"
 import { authClient } from "@/auth/client"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
@@ -8,10 +12,6 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
-import { AnimatePresence, motion } from "framer-motion"
-import { Loader2, LogIn, LogOut, User, X } from "lucide-react"
-import { useEffect, useRef, useState } from "react"
-import { FaGithub, FaGoogle } from "react-icons/fa"
 
 export function AuthButton() {
   const { data: session, isPending } = authClient.useSession()

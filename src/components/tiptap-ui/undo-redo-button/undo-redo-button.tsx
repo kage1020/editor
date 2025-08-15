@@ -1,6 +1,6 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 import type {
   UndoRedoAction,
   UseUndoRedoConfig,
@@ -9,7 +9,7 @@ import {
   UNDO_REDO_SHORTCUT_KEYS,
   useUndoRedo,
 } from "@/components/tiptap-ui/undo-redo-button"
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"

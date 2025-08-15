@@ -1,12 +1,12 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 import type { UseCodeBlockConfig } from "@/components/tiptap-ui/code-block-button"
 import {
   CODE_BLOCK_SHORTCUT_KEY,
   useCodeBlock,
 } from "@/components/tiptap-ui/code-block-button"
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"

@@ -2,16 +2,16 @@
 
 import {
   autoUpdate,
-  flip,
   FloatingDelayGroup,
   FloatingPortal,
+  flip,
   offset,
   type Placement,
   type ReferenceType,
   shift,
+  type UseFloatingReturn,
   useDismiss,
   useFloating,
-  type UseFloatingReturn,
   useFocus,
   useHover,
   useInteractions,

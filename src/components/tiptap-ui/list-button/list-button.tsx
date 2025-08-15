@@ -1,16 +1,16 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import { forwardRef, useCallback } from "react"
 import type {
   ListType,
   UseListConfig,
 } from "@/components/tiptap-ui/list-button"
 import { LIST_SHORTCUT_KEYS, useList } from "@/components/tiptap-ui/list-button"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
+import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
-import { forwardRef, useCallback } from "react"
 
 export interface ListButtonProps
   extends Omit<ButtonProps, "type">,

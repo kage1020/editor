@@ -1,9 +1,13 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { forwardRef, useCallback, useEffect, useState } from "react"
 import { CornerDownLeftIcon } from "@/components/tiptap-icons/corner-down-left-icon"
 import { ExternalLinkIcon } from "@/components/tiptap-icons/external-link-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 import { TrashIcon } from "@/components/tiptap-icons/trash-icon"
+import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
+import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"
 import {
@@ -18,12 +22,8 @@ import {
   PopoverTrigger,
 } from "@/components/tiptap-ui-primitive/popover"
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
-import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
-import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import type { Editor } from "@tiptap/react"
-import { forwardRef, useCallback, useEffect, useState } from "react"
 
 export interface LinkMainProps {
   /**

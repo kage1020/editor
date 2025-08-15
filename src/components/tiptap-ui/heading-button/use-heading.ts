@@ -1,11 +1,11 @@
 "use client"
 
-import { HeadingFiveIcon } from "@/components/tiptap-icons/heading-five-icon"
-import { HeadingFourIcon } from "@/components/tiptap-icons/heading-four-icon"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback, useEffect, useState } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
+import { HeadingFiveIcon } from "@/components/tiptap-icons/heading-five-icon"
+import { HeadingFourIcon } from "@/components/tiptap-icons/heading-four-icon"
 
 import { HeadingOneIcon } from "@/components/tiptap-icons/heading-one-icon"
 import { HeadingSixIcon } from "@/components/tiptap-icons/heading-six-icon"

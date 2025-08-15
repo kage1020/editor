@@ -4,7 +4,7 @@ import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 
 import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
-
+import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
@@ -14,7 +14,6 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/tiptap-ui-primitive/dropdown-menu"
-import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { useListDropdownMenu } from "./use-list-dropdown-menu"
 

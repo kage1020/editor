@@ -1,12 +1,12 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback, useMemo } from "react"
 import type { UseColorHighlightConfig } from "@/components/tiptap-ui/color-highlight-button"
 import {
   COLOR_HIGHLIGHT_SHORTCUT_KEY,
   useColorHighlight,
 } from "@/components/tiptap-ui/color-highlight-button"
-import { forwardRef, useCallback, useMemo } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"

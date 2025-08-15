@@ -1,8 +1,6 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import { forwardRef, useCallback } from "react"
 import type {
   Level,
   UseHeadingConfig,
@@ -11,9 +9,11 @@ import {
   HEADING_SHORTCUT_KEYS,
   useHeading,
 } from "@/components/tiptap-ui/heading-button"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
+import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
-import { forwardRef, useCallback } from "react"
 
 export interface HeadingButtonProps
   extends Omit<ButtonProps, "type">,

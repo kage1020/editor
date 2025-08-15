@@ -1,12 +1,12 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useCallback, useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
 export const COLOR_HIGHLIGHT_SHORTCUT_KEY = "mod+shift+h"
 export const HIGHLIGHT_COLORS = [

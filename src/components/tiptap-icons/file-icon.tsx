@@ -21,3 +21,5 @@ export const FileIcon = memo(
     </svg>
   ),
 )
+
+FileIcon.displayName = "FileIcon"

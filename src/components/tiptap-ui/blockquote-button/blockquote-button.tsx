@@ -1,12 +1,12 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 import type { UseBlockquoteConfig } from "@/components/tiptap-ui/blockquote-button"
 import {
   BLOCKQUOTE_SHORTCUT_KEY,
   useBlockquote,
 } from "@/components/tiptap-ui/blockquote-button"
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"

@@ -1,12 +1,12 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 import type { UseImageUploadConfig } from "@/components/tiptap-ui/image-upload-button"
 import {
   IMAGE_UPLOAD_SHORTCUT_KEY,
   useImageUpload,
 } from "@/components/tiptap-ui/image-upload-button"
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"

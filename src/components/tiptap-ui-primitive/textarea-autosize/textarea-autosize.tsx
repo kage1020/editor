@@ -1,9 +1,9 @@
 "use client"
 
-import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect"
 import { useState } from "react"
 import type { TextareaAutosizeProps } from "react-textarea-autosize"
 import ReactTextareaAutosize from "react-textarea-autosize"
+import { useIsomorphicLayoutEffect } from "@/hooks/use-isomorphic-layout-effect"
 
 export function TextareaAutosize({ ...props }: TextareaAutosizeProps) {
   const [isRerendered, setIsRerendered] = useState(false)

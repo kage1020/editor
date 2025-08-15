@@ -1,5 +1,5 @@
-import { ClientOnly } from "@/components/client-only"
 import { Loader2 } from "lucide-react"
+import { ClientOnly } from "@/components/client-only"
 import { AuthButton } from "./_components/auth-button"
 import { Editor } from "./_components/editor"
 import { DocumentSidebar } from "./_components/sidebar"

@@ -1,0 +1,88 @@
+// Table popover specific styles
+.table-popover-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+// Grid selector styles
+.table-grid-selector {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+}
+
+.table-grid {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--tiptap-card-border-color);
+  border-radius: var(--tt-radius-md);
+  overflow: hidden;
+}
+
+.table-grid-row {
+  display: flex;
+}
+
+.table-grid-cell {
+  width: 1rem;
+  height: 1rem;
+  border: 1px solid var(--tiptap-card-border-color);
+  background-color: var(--tiptap-card-bg-color);
+  cursor: pointer;
+  transition: background-color 150ms ease;
+  
+  &:hover {
+    background-color: var(--tt-color-highlight-blue);
+  }
+  
+  &.highlighted {
+    background-color: var(--tt-color-highlight-blue);
+  }
+  
+  // Remove border overlap
+  margin-top: -1px;
+  margin-left: -1px;
+  
+  &:first-child {
+    margin-left: 0;
+  }
+  
+  .table-grid-row:first-child & {
+    margin-top: 0;
+  }
+}
+
+.table-grid-info {
+  font-size: 0.75rem;
+  color: var(--tiptap-card-group-label-color);
+  text-align: center;
+  min-height: 1rem;
+}
+
+// Manual input styles
+.table-input-group {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  align-items: end;
+}
+
+.table-input-item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex: 1;
+  
+  .tiptap-label {
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+  
+  .tiptap-input {
+    width: 100%;
+  }
+}

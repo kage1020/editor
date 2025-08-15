@@ -1,8 +1,8 @@
 "use client"
 
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { cn } from "@/lib/utils"
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react"
 
 type BaseProps = React.HTMLAttributes<HTMLDivElement>
 

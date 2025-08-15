@@ -22,3 +22,5 @@ export const CloudUploadIcon = memo(
     </svg>
   ),
 )
+
+CloudUploadIcon.displayName = "CloudUploadIcon"

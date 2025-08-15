@@ -1,5 +1,8 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useCallback, useEffect, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { BoldIcon } from "@/components/tiptap-icons/bold-icon"
 import { Code2Icon } from "@/components/tiptap-icons/code2-icon"
 import { ItalicIcon } from "@/components/tiptap-icons/italic-icon"
@@ -10,9 +13,6 @@ import { UnderlineIcon } from "@/components/tiptap-icons/underline-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
 export type Mark =
   | "bold"

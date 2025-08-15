@@ -18,3 +18,5 @@ export const FileCornerIcon = memo(
     </svg>
   ),
 )
+
+FileCornerIcon.displayName = "FileCornerIcon"

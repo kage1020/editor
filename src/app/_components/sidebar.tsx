@@ -1,5 +1,6 @@
 "use client"
 
+import { ChevronsRight } from "lucide-react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -14,7 +15,6 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { ChevronsRight } from "lucide-react"
 
 const histories = Array.from({ length: 30 }, (_, i) => ({
   id: `${i}`,

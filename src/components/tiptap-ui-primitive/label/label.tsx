@@ -1,7 +1,7 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { createElement, forwardRef } from "react"
+import { cn } from "@/lib/utils"
 
 export interface BaseProps extends React.HTMLAttributes<HTMLElement> {
   as?: "label" | "div"

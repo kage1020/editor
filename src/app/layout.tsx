@@ -1,8 +1,8 @@
+import type { Metadata } from "next"
+import { ThemeProvider } from "next-themes"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import type { Metadata } from "next"
-import { ThemeProvider } from "next-themes"
 import "./globals.css"
 
 export const metadata: Metadata = {
