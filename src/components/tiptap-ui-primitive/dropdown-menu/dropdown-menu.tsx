@@ -1,8 +1,8 @@
 "use client"
 
+import { cn } from "@/lib/utils"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { forwardRef } from "react"
-import { cn } from "@/lib/utils"
 
 function DropdownMenu({
   ...props
@@ -41,7 +41,25 @@ const DropdownMenuSubContent = forwardRef<
   const content = (
     <DropdownMenuPrimitive.SubContent
       ref={ref}
-      className={cn("tiptap-dropdown-menu", className)}
+      className={cn(
+        "tiptap-dropdown-menu",
+        "z-50 outline-none origin-[var(--radix-dropdown-menu-content-transform-origin)] max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
+        "data-[state=open]:animate-[fadeIn_150ms_cubic-bezier(0.16,1,0.3,1),zoomIn_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[state=closed]:animate-[fadeOut_150ms_cubic-bezier(0.16,1,0.3,1),zoomOut_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top-start]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top-end]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right-start]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right-end]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom-start]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom-end]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left-start]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left-end]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        className,
+      )}
       {...props}
     />
   )
@@ -68,7 +86,25 @@ const DropdownMenuContent = forwardRef<
       ref={ref}
       sideOffset={sideOffset}
       onCloseAutoFocus={(e) => e.preventDefault()}
-      className={cn("tiptap-dropdown-menu", className)}
+      className={cn(
+        "tiptap-dropdown-menu",
+        "z-50 outline-none origin-[var(--radix-dropdown-menu-content-transform-origin)] max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
+        "data-[state=open]:animate-[fadeIn_150ms_cubic-bezier(0.16,1,0.3,1),zoomIn_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[state=closed]:animate-[fadeOut_150ms_cubic-bezier(0.16,1,0.3,1),zoomOut_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top-start]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=top-end]:animate-[slideFromBottom_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right-start]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=right-end]:animate-[slideFromLeft_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom-start]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=bottom-end]:animate-[slideFromTop_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left-start]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        "data-[side=left-end]:animate-[slideFromRight_150ms_cubic-bezier(0.16,1,0.3,1)]",
+        className,
+      )}
       {...props}
     />
   )

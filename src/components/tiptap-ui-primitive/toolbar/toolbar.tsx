@@ -276,7 +276,13 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(
         role="toolbar"
         aria-label="toolbar"
         data-variant={variant}
-        className={cn("tiptap-toolbar", className)}
+        className={cn(
+          "tiptap-toolbar",
+          "flex items-center gap-1",
+          variant === "fixed" && "sticky top-0 z-10 w-full min-h-[var(--tt-toolbar-height)] bg-[var(--tt-toolbar-bg-color)] border-b border-solid border-[var(--tt-toolbar-border-color)] px-2 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-[480px]:fixed max-[480px]:top-auto max-[480px]:bottom-0 max-[480px]:h-[calc(var(--tt-toolbar-height)+var(--tt-safe-area-bottom))] max-[480px]:border-t max-[480px]:border-b-0 max-[480px]:pb-[var(--tt-safe-area-bottom)] max-[480px]:flex-nowrap max-[480px]:justify-start",
+          variant === "floating" && "p-[0.188rem] rounded-[calc(0.125rem+var(--tt-radius-lg)+1px)] border border-solid border-[var(--tt-toolbar-border-color)] bg-[var(--tt-toolbar-bg-color)] shadow-[var(--tt-shadow-elevated-md)] outline-none overflow-hidden data-[plain=true]:p-0 data-[plain=true]:rounded-none data-[plain=true]:border-none data-[plain=true]:shadow-none data-[plain=true]:bg-transparent max-[480px]:w-full max-[480px]:rounded-none max-[480px]:border-none max-[480px]:shadow-none",
+          className
+        )}
         {...props}
       >
         {children}
@@ -298,7 +304,12 @@ export const ToolbarGroup = forwardRef<HTMLDivElement, BaseProps>(
       <div
         ref={mergeRefs([groupRef, ref])}
         role="group"
-        className={cn("tiptap-toolbar-group", className)}
+        className={cn(
+          "tiptap-toolbar-group",
+          "flex items-center gap-0.5 empty:hidden [&:empty+.tiptap-separator]:hidden [.tiptap-separator+&:empty]:hidden",
+          "[.tiptap-toolbar[data-variant=fixed]_&]:max-[480px]:flex-[0_0_auto]",
+          className
+        )}
         {...props}
       >
         {children}

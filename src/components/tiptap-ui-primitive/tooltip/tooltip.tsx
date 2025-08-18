@@ -2,16 +2,16 @@
 
 import {
   autoUpdate,
+  flip,
   FloatingDelayGroup,
   FloatingPortal,
-  flip,
   offset,
   type Placement,
   type ReferenceType,
   shift,
-  type UseFloatingReturn,
   useDismiss,
   useFloating,
+  type UseFloatingReturn,
   useFocus,
   useHover,
   useInteractions,
@@ -212,7 +212,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
           ...style,
         }}
         {...context.getFloatingProps(props)}
-        className="tiptap-tooltip"
+        className="tiptap-tooltip z-200 overflow-hidden rounded-[var(--tt-radius-md,0.375rem)] bg-[var(--tt-tooltip-bg)] px-2 py-1.5 text-xs font-medium text-[var(--tt-tooltip-text)] shadow-md text-center [&_kbd]:inline-block [&_kbd]:text-center [&_kbd]:align-baseline [&_kbd]:font-sans [&_kbd]:capitalize [&_kbd]:text-[var(--tt-kbd)]"
       >
         {children}
       </div>

@@ -32,7 +32,11 @@ export const Label = forwardRef<
   return createElement(as, {
     ...renderProps,
     ref,
-    className: cn("tiptap-label", props.className),
+    className: cn(
+      "tiptap-label",
+      "mt-3 mx-2 mb-1 text-xs font-semibold leading-normal capitalize text-[var(--tt-label-color)]",
+      props.className
+    ),
   })
 })
 
