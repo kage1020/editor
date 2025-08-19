@@ -117,9 +117,13 @@ export const ColorHighlightButton = forwardRef<
         {children ?? (
           <>
             <span
-              className="tiptap-button-highlight"
+              className="tiptap-button-highlight relative w-5 h-5 mx-[-0.175rem] rounded-xl transition-transform duration-200 ease-in-out after:content-[''] after:absolute after:w-full after:h-full after:left-0 after:top-0 after:rounded-[inherit] after:box-border after:border after:brightness-95 after:mix-blend-multiply dark:after:brightness-140 dark:after:mix-blend-lighten data-[active-state=on]:after:brightness-80 dark:data-[active-state=on]:after:brightness-180"
               style={
-                { "--highlight-color": highlightColor } as React.CSSProperties
+                { 
+                  backgroundColor: highlightColor,
+                  "--tw-border-opacity": "1",
+                  borderColor: highlightColor
+                } as React.CSSProperties
               }
             />
             {text && <span className="tiptap-button-text">{text}</span>}

@@ -100,8 +100,8 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
-            {text && <span className="tiptap-button-text">{text}</span>}
+            <Icon className="tiptap-button-icon w-4 h-4" />
+            {text && <span className="tiptap-button-text text-sm">{text}</span>}
             {showShortcut && (
               <DetailsShortcutBadge shortcutKeys={shortcutKeys} />
             )}

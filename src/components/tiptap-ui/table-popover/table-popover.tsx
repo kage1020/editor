@@ -112,19 +112,19 @@ const TableGridSelector = ({
   }
 
   return (
-    <div className="table-grid-selector">
-      <div className="table-grid">
+    <div className="table-grid-selector flex flex-col items-center gap-2 p-2">
+      <div className="table-grid flex flex-col border border-neutral-100 dark:border-neutral-900 rounded-md overflow-hidden">
         {Array.from({ length: maxRows }, (_, rowIndex) => (
-          <div key={rowIndex} className="table-grid-row">
+          <div key={rowIndex} className="table-grid-row flex">
             {Array.from({ length: maxCols }, (_, colIndex) => (
               <button
                 key={`${rowIndex}-${colIndex}`}
                 type="button"
-                className={`table-grid-cell ${
+                className={`table-grid-cell w-4 h-4 border border-neutral-100 dark:border-neutral-900 bg-white dark:bg-zinc-950 cursor-pointer transition-colors duration-150 ease-in-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-sky-100 dark:hover:bg-sky-900 ${
                   hoveredCell &&
                   rowIndex <= hoveredCell.row &&
                   colIndex <= hoveredCell.col
-                    ? "highlighted"
+                    ? "bg-sky-100 dark:bg-sky-900"
                     : ""
                 }`}
                 onMouseEnter={() => handleCellHover(rowIndex, colIndex)}
@@ -135,7 +135,7 @@ const TableGridSelector = ({
           </div>
         ))}
       </div>
-      <div className="table-grid-info">
+      <div className="table-grid-info text-xs text-neutral-800 dark:text-neutral-200 text-center min-h-4">
         {hoveredCell
           ? `${hoveredCell.row + 1} � ${hoveredCell.col + 1}`
           : "Select table size"}
@@ -210,7 +210,7 @@ export function TablePopoverContent({
       >
         <CardItemGroup orientation="vertical">
           {/* Grid Selector */}
-          <div className="table-popover-section">
+          <div className="table-popover-section flex flex-col gap-2 w-full">
             <TableGridSelector
               maxRows={maxRows}
               maxCols={maxCols}
@@ -221,9 +221,9 @@ export function TablePopoverContent({
           <Separator />
 
           {/* Manual Input */}
-          <div className="table-popover-section">
-            <div className="table-input-group">
-              <div className="table-input-item">
+          <div className="table-popover-section flex flex-col gap-2 w-full">
+            <div className="table-input-group flex gap-3 w-full items-end">
+              <div className="table-input-item flex flex-col gap-1 flex-1">
                 <Label htmlFor={rowsId}>Rows</Label>
                 <InputGroup>
                   <Input
@@ -239,7 +239,7 @@ export function TablePopoverContent({
                 </InputGroup>
               </div>
 
-              <div className="table-input-item">
+              <div className="table-input-item flex flex-col gap-1 flex-1">
                 <Label htmlFor={colsId}>Columns</Label>
                 <InputGroup>
                   <Input

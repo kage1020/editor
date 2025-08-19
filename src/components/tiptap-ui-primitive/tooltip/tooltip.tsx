@@ -212,7 +212,7 @@ export const TooltipContent = forwardRef<HTMLDivElement, TooltipContentProps>(
           ...style,
         }}
         {...context.getFloatingProps(props)}
-        className="tiptap-tooltip z-200 overflow-hidden rounded-[var(--tt-radius-md,0.375rem)] bg-[var(--tt-tooltip-bg)] px-2 py-1.5 text-xs font-medium text-[var(--tt-tooltip-text)] shadow-md text-center [&_kbd]:inline-block [&_kbd]:text-center [&_kbd]:align-baseline [&_kbd]:font-sans [&_kbd]:capitalize [&_kbd]:text-[var(--tt-kbd)]"
+        className="tiptap-tooltip z-200 overflow-hidden rounded-md bg-neutral-900 dark:bg-white px-2 py-1.5 text-xs font-medium text-white dark:text-neutral-600 shadow-md text-center [&_kbd]:inline-block [&_kbd]:text-center [&_kbd]:align-baseline [&_kbd]:font-sans [&_kbd]:capitalize [&_kbd]:text-neutral-400 dark:[&_kbd]:text-neutral-400"
       >
         {children}
       </div>

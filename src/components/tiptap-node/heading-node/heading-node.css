@@ -6,7 +6,12 @@
     position: relative;
     color: inherit;
     font-style: inherit;
+  }
 
+  h1,
+  h2,
+  h3,
+  h4 {
     &:first-child {
       margin-top: 0;
     }

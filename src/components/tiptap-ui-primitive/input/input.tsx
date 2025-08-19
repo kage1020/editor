@@ -5,7 +5,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef } from "react"
 
 const tiptapInputVariants = cva(
-  "tiptap-input block w-full h-8 text-sm font-normal leading-[1.5] py-1.5 px-2 rounded-md bg-transparent appearance-none outline-none placeholder:text-[var(--tiptap-input-placeholder)]",
+  "tiptap-input block w-full h-8 text-sm font-normal leading-[1.5] py-1.5 px-2 rounded-md bg-transparent appearance-none outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
   {
     variants: {
       variant: {

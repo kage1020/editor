@@ -1,0 +1,39 @@
+/* =====================
+     Mathematics
+     ===================== */
+.tiptap.ProseMirror {
+  .Tiptap-mathematics-editor {
+    padding: 0 0.25rem;
+    margin: 0 0.25rem;
+    border: 1px solid rgb(98 41 255);
+    font-family: monospace;
+    font-size: 0.875rem;
+  }
+
+  .dark & .Tiptap-mathematics-editor {
+    border: 1px solid rgb(122 82 255);
+  }
+
+  .Tiptap-mathematics-render {
+    padding: 0 0.25rem;
+  }
+
+  .Tiptap-mathematics-render--editable {
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .Tiptap-mathematics-render--editable:hover {
+    background: rgba(37, 39, 45, 0.1);
+  }
+
+  .dark & .Tiptap-mathematics-render--editable:hover {
+    background: rgba(238, 238, 246, 0.11);
+  }
+
+  .Tiptap-mathematics-editor,
+  .Tiptap-mathematics-render {
+    border-radius: 0.25rem;
+    display: inline-block;
+  }
+}

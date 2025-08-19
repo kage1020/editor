@@ -10,7 +10,7 @@ const Card = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         ref={ref} 
         className={cn(
           "tiptap-card",
-          "rounded-[calc(0.375rem+var(--tt-radius-lg))] shadow-[var(--tt-shadow-elevated-md)] bg-[var(--tiptap-card-bg-color)] border border-solid border-[var(--tiptap-card-border-color)] flex flex-col outline-none items-center relative min-w-0 break-words bg-clip-border",
+          "rounded-xl shadow-[0_16px_48px_rgba(17,24,39,0.04),0_12px_24px_rgba(17,24,39,0.04),0_6px_8px_rgba(17,24,39,0.02),0_2px_3px_rgba(17,24,39,0.02)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.5),0_12px_24px_rgba(0,0,0,0.24),0_6px_8px_rgba(0,0,0,0.22),0_2px_3px_rgba(0,0,0,0.12)] bg-white dark:bg-zinc-950 border border-solid border-neutral-100 dark:border-neutral-900 flex flex-col outline-none items-center relative min-w-0 break-words bg-clip-border",
           className
         )} 
         {...props} 
@@ -27,7 +27,7 @@ const CardHeader = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         ref={ref}
         className={cn(
           "tiptap-card-header",
-          "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-[var(--tiptap-card-border-color)]",
+          "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-neutral-100 dark:border-neutral-900",
           className
         )}
         {...props}
@@ -83,7 +83,7 @@ const CardGroupLabel = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         ref={ref}
         className={cn(
           "tiptap-card-group-label",
-          "pt-3 px-2 pb-1 leading-normal text-xs font-semibold capitalize text-[var(--tiptap-card-group-label-color)]",
+          "pt-3 px-2 pb-1 leading-normal text-xs font-semibold capitalize text-neutral-800 dark:text-neutral-200",
           className
         )}
         {...props}
