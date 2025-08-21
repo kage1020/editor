@@ -25,7 +25,7 @@ interface MenuNavigationOptions<T> {
   /**
    * Callback fired when an item is selected.
    */
-  onSelect?: (item: T) => void
+  onSelect?: (item: T, index: number) => void
   /**
    * Callback fired when the menu should close.
    */
@@ -136,7 +136,7 @@ export function useMenuNavigation<T>({
           if (event.isComposing) return false
           event.preventDefault()
           if (selectedIndex !== -1 && items[selectedIndex]) {
-            onSelect?.(items[selectedIndex])
+            onSelect?.(items[selectedIndex], selectedIndex)
           }
           return true
         }

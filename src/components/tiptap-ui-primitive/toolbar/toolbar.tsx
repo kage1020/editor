@@ -278,10 +278,12 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(
         data-variant={variant}
         className={cn(
           "tiptap-toolbar",
-          "flex items-center gap-1",
-          variant === "fixed" && "sticky top-0 z-10 w-full min-h-11 bg-white dark:bg-black border-b border-solid border-neutral-100 dark:border-neutral-900 px-2 overflow-x-auto overscroll-x-contain [-webkit-overflow-scrolling:touch] [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden max-[480px]:fixed max-[480px]:top-auto max-[480px]:bottom-0 max-[480px]:h-[calc(2.75rem+env(safe-area-inset-bottom,0px))] max-[480px]:border-t max-[480px]:border-b-0 max-[480px]:pb-[env(safe-area-inset-bottom,0px)] max-[480px]:flex-nowrap max-[480px]:justify-start",
-          variant === "floating" && "p-[0.188rem] rounded-[calc(0.125rem+0.75rem+1px)] border border-solid border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black shadow-[0_16px_48px_rgba(17,24,39,0.04),0_12px_24px_rgba(17,24,39,0.04),0_6px_8px_rgba(17,24,39,0.02),0_2px_3px_rgba(17,24,39,0.02)] dark:shadow-[0_16px_48px_rgba(0,0,0,0.5),0_12px_24px_rgba(0,0,0,0.24),0_6px_8px_rgba(0,0,0,0.22),0_2px_3px_rgba(0,0,0,0.12)] outline-none overflow-hidden data-[plain=true]:p-0 data-[plain=true]:rounded-none data-[plain=true]:border-none data-[plain=true]:shadow-none data-[plain=true]:bg-transparent max-[480px]:w-full max-[480px]:rounded-none max-[480px]:border-none max-[480px]:shadow-none",
-          className
+          "flex items-center justify-center w-fit gap-1",
+          variant === "fixed" &&
+            "sticky top-0 z-10 min-h-11 bg-white dark:bg-black border-b border-solid border-neutral-100 dark:border-neutral-900 px-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-xs:fixed max-xs:top-auto max-xs:bottom-0 max-xs:h-11 max-xs:border-t max-xs:border-b-0 max-xs:pb-0 max-xs:flex-nowrap max-xs:justify-start",
+          variant === "floating" &&
+            "p-[0.188rem] rounded-[calc(0.875rem+1px)] border border-solid border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black shadow-xl shadow-neutral-800 dark:shadow-black outline-none overflow-hidden data-[plain=true]:p-0 data-[plain=true]:rounded-none data-[plain=true]:border-none data-[plain=true]:shadow-none data-[plain=true]:bg-transparent max-xs:w-full max-xs:rounded-none max-xs:border-none max-xs:shadow-none",
+          className,
         )}
         {...props}
       >
@@ -307,8 +309,8 @@ export const ToolbarGroup = forwardRef<HTMLDivElement, BaseProps>(
         className={cn(
           "tiptap-toolbar-group",
           "flex items-center gap-0.5 empty:hidden [&:empty+.tiptap-separator]:hidden [.tiptap-separator+&:empty]:hidden",
-          "[.tiptap-toolbar[data-variant=fixed]_&]:max-[480px]:flex-[0_0_auto]",
-          className
+          "[.tiptap-toolbar[data-variant=fixed]_&]:max-xs:flex-[0_0_auto]",
+          className,
         )}
         {...props}
       >

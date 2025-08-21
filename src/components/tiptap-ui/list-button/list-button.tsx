@@ -1,16 +1,16 @@
 "use client"
 
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
+import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
 import type {
   ListType,
   UseListConfig,
 } from "@/components/tiptap-ui/list-button"
 import { LIST_SHORTCUT_KEYS, useList } from "@/components/tiptap-ui/list-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
+import { forwardRef, useCallback } from "react"
 
 export interface ListButtonProps
   extends Omit<ButtonProps, "type">,
@@ -89,11 +89,10 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
       <Button
         type="button"
         data-style="ghost"
-        data-active-state={isActive ? "on" : "off"}
+        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
         disabled={!canToggle}
-        data-disabled={!canToggle}
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
@@ -103,7 +102,9 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
             {showShortcut && (
               <ListShortcutBadge type={type} shortcutKeys={shortcutKeys} />

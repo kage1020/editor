@@ -23,7 +23,7 @@ export const Separator = forwardRef<HTMLDivElement, SeparatorProps>(
           "tiptap-separator",
           "shrink-0 bg-neutral-200 dark:bg-neutral-800",
           orientation === "horizontal" ? "h-px w-full my-2" : "h-6 w-px",
-          className
+          className,
         )}
         data-orientation={orientation}
         {...semanticProps}

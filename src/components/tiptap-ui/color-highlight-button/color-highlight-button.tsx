@@ -1,17 +1,18 @@
 "use client"
 
-import { forwardRef, useCallback, useMemo } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 import type { UseColorHighlightConfig } from "@/components/tiptap-ui/color-highlight-button"
 import {
   COLOR_HIGHLIGHT_SHORTCUT_KEY,
   useColorHighlight,
 } from "@/components/tiptap-ui/color-highlight-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback, useMemo } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
+import { cn } from "@/lib/utils"
 
 export interface ColorHighlightButtonProps
   extends Omit<ButtonProps, "type">,
@@ -25,6 +26,11 @@ export interface ColorHighlightButtonProps
    * @default false
    */
   showShortcut?: boolean
+  /**
+   * Whether the button is currently highlighted.
+   * @default false
+   */
+  highlighted?: boolean
 }
 
 export function ColorHighlightShortcutBadge({
@@ -46,6 +52,7 @@ export const ColorHighlightButton = forwardRef<
 >(
   (
     {
+      className,
       editor: providedEditor,
       highlightColor,
       text,
@@ -55,6 +62,8 @@ export const ColorHighlightButton = forwardRef<
       onClick,
       children,
       style,
+      highlighted = false,
+      disabled,
       ...buttonProps
     },
     ref,
@@ -101,11 +110,19 @@ export const ColorHighlightButton = forwardRef<
       <Button
         type="button"
         data-style="ghost"
-        data-active-state={isActive ? "on" : "off"}
+        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
+        className={cn(
+          highlighted &&
+            "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100",
+          highlighted &&
+            !disabled &&
+            "dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 [&_.tiptap-button-icon]:text-neutral-900 dark:[&_.tiptap-button-icon]:text-neutral-100 [&_.tiptap-button-icon-sub]:text-neutral-500 dark:[&_.tiptap-button-icon-sub]:text-neutral-500 [&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:[&_.tiptap-button-dropdown-arrows]:text-neutral-300 [&_.tiptap-button-dropdown-small]:text-neutral-700 dark:[&_.tiptap-button-dropdown-small]:text-neutral-300",
+          isActive && "after:brightness-80 dark:after:brightness-180",
+          className,
+        )}
         disabled={!canColorHighlight}
-        data-disabled={!canColorHighlight}
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
@@ -117,12 +134,12 @@ export const ColorHighlightButton = forwardRef<
         {children ?? (
           <>
             <span
-              className="tiptap-button-highlight relative w-5 h-5 mx-[-0.175rem] rounded-xl transition-transform duration-200 ease-in-out after:content-[''] after:absolute after:w-full after:h-full after:left-0 after:top-0 after:rounded-[inherit] after:box-border after:border after:brightness-95 after:mix-blend-multiply dark:after:brightness-140 dark:after:mix-blend-lighten data-[active-state=on]:after:brightness-80 dark:data-[active-state=on]:after:brightness-180"
+              className="tiptap-button-highlight relative w-5 h-5 mx-[-0.175rem] rounded-xl transition-transform duration-200 ease-in-out after:content-[''] after:absolute after:w-full after:h-full after:left-0 after:top-0 after:rounded-[inherit] after:box-border after:border after:brightness-95 after:mix-blend-multiply dark:after:brightness-140 dark:after:mix-blend-lighten"
               style={
-                { 
+                {
                   backgroundColor: highlightColor,
                   "--tw-border-opacity": "1",
-                  borderColor: highlightColor
+                  borderColor: highlightColor,
                 } as React.CSSProperties
               }
             />

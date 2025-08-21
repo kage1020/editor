@@ -4,9 +4,12 @@ import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 
 import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
-import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"
+import {
+  Button,
+  ButtonGroup,
+  ButtonIcon,
+} from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
 import {
   DropdownMenu,
@@ -14,6 +17,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/tiptap-ui-primitive/dropdown-menu"
+import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { useListDropdownMenu } from "./use-list-dropdown-menu"
 
@@ -78,17 +82,20 @@ export function ListDropdownMenu({
         <Button
           type="button"
           data-style="ghost"
-          data-active-state={isActive ? "on" : "off"}
+          active={isActive ? "on" : "off"}
           role="button"
           tabIndex={-1}
           disabled={!canToggle}
-          data-disabled={!canToggle}
           aria-label="List options"
           tooltip="List"
           {...props}
         >
-          <Icon className="tiptap-button-icon" />
-          <ChevronDownIcon className="tiptap-button-dropdown-small" />
+          <ButtonIcon>
+            <Icon />
+          </ButtonIcon>
+          <ButtonIcon variant="dropdown-small">
+            <ChevronDownIcon />
+          </ButtonIcon>
         </Button>
       </DropdownMenuTrigger>
 

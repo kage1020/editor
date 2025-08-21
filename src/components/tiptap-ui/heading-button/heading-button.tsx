@@ -1,6 +1,8 @@
 "use client"
 
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
+import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
 import type {
   Level,
   UseHeadingConfig,
@@ -9,11 +11,9 @@ import {
   HEADING_SHORTCUT_KEYS,
   useHeading,
 } from "@/components/tiptap-ui/heading-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
+import { forwardRef, useCallback } from "react"
 
 export interface HeadingButtonProps
   extends Omit<ButtonProps, "type">,
@@ -92,11 +92,10 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
       <Button
         type="button"
         data-style="ghost"
-        data-active-state={isActive ? "on" : "off"}
+        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
         disabled={!canToggle}
-        data-disabled={!canToggle}
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
@@ -106,7 +105,9 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
             {showShortcut && (
               <HeadingShortcutBadge level={level} shortcutKeys={shortcutKeys} />

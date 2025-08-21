@@ -1,10 +1,12 @@
 "use client"
 
-import type { Editor } from "@tiptap/react"
-import { forwardRef, useCallback, useId, useState } from "react"
 import { TableIcon } from "@/components/tiptap-icons/table-icon"
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"
+import {
+  Button,
+  ButtonGroup,
+  ButtonIcon,
+} from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
   CardBody,
@@ -20,6 +22,8 @@ import {
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import type { Editor } from "@tiptap/react"
+import { forwardRef, useCallback, useId, useState } from "react"
 
 export interface TablePopoverContentProps {
   /**
@@ -70,7 +74,7 @@ export const TablePopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
         type="button"
         className={className}
         data-style="ghost"
-        data-appearance="default"
+        appearance="default"
         role="button"
         tabIndex={-1}
         aria-label="Insert table"
@@ -78,7 +82,11 @@ export const TablePopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        {children ?? <TableIcon className="tiptap-button-icon" />}
+        {children ?? (
+          <ButtonIcon>
+            <TableIcon />
+          </ButtonIcon>
+        )}
       </Button>
     )
   },
@@ -321,11 +329,12 @@ export function TablePopover({
       <PopoverTrigger asChild>
         <TablePopoverButton
           disabled={!canInsertTable}
-          data-disabled={!canInsertTable}
           aria-label="Insert table"
           {...props}
         >
-          <TableIcon className="tiptap-button-icon" />
+          <ButtonIcon>
+            <TableIcon />
+          </ButtonIcon>
         </TablePopoverButton>
       </PopoverTrigger>
       <PopoverContent aria-label="Insert table">

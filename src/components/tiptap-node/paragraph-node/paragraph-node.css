@@ -1,5 +1,5 @@
 
-/* Ensure each top-level node has relative positioning 
+/* Ensure each top-level node has relative positioning
    so absolutely positioned placeholders work correctly */
 .tiptap.ProseMirror > * {
   position: relative;
@@ -11,16 +11,11 @@
 .tiptap.ProseMirror {
   white-space: pre-wrap;
   outline: none;
-  caret-color: rgb(98 41 255);
+  caret-color: var(--primary);
 }
 
 .dark .tiptap.ProseMirror {
-  caret-color: rgb(122 82 255);
-}
-
-.tiptap.ProseMirror {
-
-  /* Paragraph spacing */
+  caret-color: var(--primary);
 }
 
 .tiptap.ProseMirror p:not(:first-child) {
@@ -30,17 +25,12 @@
   margin-top: 20px;
 }
 
-.tiptap.ProseMirror {
-
-  /* Selection styles */
-}
-
 .tiptap.ProseMirror:not(.readonly):not(.ProseMirror-hideselection) ::selection {
-  background-color: rgba(157, 138, 255, 0.2);
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .dark .tiptap.ProseMirror:not(.readonly):not(.ProseMirror-hideselection) ::selection {
-  background-color: rgba(122, 82, 255, 0.2);
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .tiptap.ProseMirror:not(.readonly):not(.ProseMirror-hideselection) .selection::selection {
@@ -49,25 +39,20 @@
 
 .tiptap.ProseMirror .selection {
   display: inline;
-  background-color: rgba(157, 138, 255, 0.2);
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .dark .tiptap.ProseMirror .selection {
-  background-color: rgba(122, 82, 255, 0.2);
-}
-
-.tiptap.ProseMirror {
-
-  /* Selected node styles */
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .tiptap.ProseMirror .ProseMirror-selectednode:not(img):not(pre):not(.react-renderer) {
   border-radius: 0.5rem;
-  background-color: rgba(157, 138, 255, 0.2);
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .dark .tiptap.ProseMirror .ProseMirror-selectednode:not(img):not(pre):not(.react-renderer) {
-  background-color: rgba(122, 82, 255, 0.2);
+  background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
 .tiptap.ProseMirror .ProseMirror-hideselection {
@@ -97,11 +82,11 @@
 }
 
 .tiptap.ProseMirror .tiptap-ai-insertion {
-  color: rgb(84 0 229);
+  color: var(--accent);
 }
 
 .dark .tiptap.ProseMirror .tiptap-ai-insertion {
-  color: rgb(122 82 255);
+  color: var(--accent);
 }
 
 /* =====================
@@ -118,7 +103,7 @@
 }
 
 .tiptap.ProseMirror .collaboration-carets__label {
-  color: rgb(34 35 37);
+  color: var(--foreground);
   border-radius: 0.25rem;
   border-bottom-left-radius: 0;
   font-size: 0.75rem;
@@ -133,7 +118,7 @@
 }
 
 .dark .tiptap.ProseMirror .collaboration-carets__label {
-  color: rgb(32 32 34);
+  color: var(--foreground);
 }
 
 /* =====================
@@ -150,12 +135,12 @@
      LINKS
      ===================== */
 .tiptap.ProseMirror a {
-  color: rgb(98 41 255);
+  color: var(--primary);
   text-decoration: underline;
 }
 
 .dark .tiptap.ProseMirror a {
-  color: rgb(122 82 255);
+  color: var(--primary);
 }
 
 /* =====================
@@ -163,11 +148,11 @@
      ===================== */
 .tiptap.ProseMirror [data-type="mention"] {
   display: inline-block;
-  color: rgb(98 41 255);
+  color: var(--primary);
 }
 
 .dark .tiptap.ProseMirror [data-type="mention"] {
-  color: rgb(122 82 255);
+  color: var(--primary);
 }
 
 /* =====================
@@ -178,24 +163,24 @@
   transition:
     color 0.2s ease-in-out,
     background-color 0.2s ease-in-out;
-  color: rgb(34 35 37);
-  border-bottom: 2px dashed hsl(52, 100%, 50%);
+  color: var(--foreground);
+  border-bottom: 2px dashed var(--destructive);
   font-weight: 600;
 }
 
 .dark .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--inline {
-  color: rgb(245 245 245);
+  color: var(--foreground);
 }
 
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--inline.tiptap-thread--selected,
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--inline.tiptap-thread--hovered {
-  background-color: hsl(50, 100%, 77%);
+  background-color: color-mix(in srgb, var(--destructive) 30%, transparent);
   border-bottom-color: transparent;
 }
 
 .dark .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--inline.tiptap-thread--selected,
 .dark .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--inline.tiptap-thread--hovered {
-  background-color: hsl(52, 100%, 32%);
+  background-color: color-mix(in srgb, var(--destructive) 30%, transparent);
 }
 
 /* Block thread styles with images */
@@ -271,11 +256,11 @@
 }
 
 .is-empty[data-placeholder]:has(> .ProseMirror-trailingBreak):before {
-  color: rgba(40, 44, 51, 0.42);
+  color: var(--muted-foreground);
 }
 
 .dark .is-empty[data-placeholder]:has(> .ProseMirror-trailingBreak):before {
-  color: rgba(244, 244, 255, 0.37);
+  color: var(--muted-foreground);
 }
 
 /* =====================
@@ -283,7 +268,7 @@
      ===================== */
 .prosemirror-dropcursor-block,
 .prosemirror-dropcursor-inline {
-  background: rgb(122 82 255) !important;
+  background: var(--primary) !important;
   border-radius: 0.25rem;
   margin-left: -1px;
   margin-right: -1px;

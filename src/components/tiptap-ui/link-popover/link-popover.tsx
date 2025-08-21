@@ -1,15 +1,15 @@
 "use client"
 
-import type { Editor } from "@tiptap/react"
-import { forwardRef, useCallback, useEffect, useState } from "react"
 import { CornerDownLeftIcon } from "@/components/tiptap-icons/corner-down-left-icon"
 import { ExternalLinkIcon } from "@/components/tiptap-icons/external-link-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 import { TrashIcon } from "@/components/tiptap-icons/trash-icon"
-import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
-import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonGroup } from "@/components/tiptap-ui-primitive/button"
+import {
+  Button,
+  ButtonGroup,
+  ButtonIcon,
+} from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
   CardBody,
@@ -22,8 +22,12 @@ import {
   PopoverTrigger,
 } from "@/components/tiptap-ui-primitive/popover"
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
+import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
+import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import type { Editor } from "@tiptap/react"
+import { forwardRef, useCallback, useEffect, useState } from "react"
 
 export interface LinkMainProps {
   /**
@@ -83,7 +87,11 @@ export const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
         ref={ref}
         {...props}
       >
-        {children || <LinkIcon className="tiptap-button-icon" />}
+        {children || (
+          <ButtonIcon>
+            <LinkIcon />
+          </ButtonIcon>
+        )}
       </Button>
     )
   },
@@ -145,7 +153,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <CornerDownLeftIcon className="tiptap-button-icon" />
+              <ButtonIcon>
+                <CornerDownLeftIcon />
+              </ButtonIcon>
             </Button>
           </ButtonGroup>
 
@@ -159,7 +169,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <ExternalLinkIcon className="tiptap-button-icon" />
+              <ButtonIcon>
+                <ExternalLinkIcon />
+              </ButtonIcon>
             </Button>
 
             <Button
@@ -169,7 +181,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <TrashIcon className="tiptap-button-icon" />
+              <ButtonIcon>
+                <TrashIcon />
+              </ButtonIcon>
             </Button>
           </ButtonGroup>
         </CardItemGroup>
@@ -267,15 +281,18 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
         <PopoverTrigger asChild>
           <LinkButton
             disabled={!canSet}
-            data-active-state={isActive ? "on" : "off"}
-            data-disabled={!canSet}
+            active={isActive ? "on" : "off"}
             aria-label={label}
             aria-pressed={isActive}
             onClick={handleClick}
             {...buttonProps}
             ref={ref}
           >
-            {children ?? <Icon className="tiptap-button-icon" />}
+            {children ?? (
+              <ButtonIcon>
+                <Icon />
+              </ButtonIcon>
+            )}
           </LinkButton>
         </PopoverTrigger>
 

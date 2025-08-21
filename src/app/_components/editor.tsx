@@ -1,8 +1,16 @@
 "use client"
 
-import { FlexibleToolbar } from "@/app/_components/toolbar"
-import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
-import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
+// Import Tiptap node styles
+import "@/components/tiptap-node/blockquote-node/blockquote-node.css"
+import "@/components/tiptap-node/code-block-node/code-block-node.css"
+import "@/components/tiptap-node/heading-node/heading-node.css"
+import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.css"
+import "@/components/tiptap-node/image-node/image-node.css"
+import "@/components/tiptap-node/image-upload-node/image-upload-node.css"
+import "@/components/tiptap-node/list-node/list-node.css"
+import "@/components/tiptap-node/mathematics-node/mathematics-node.css"
+import "@/components/tiptap-node/paragraph-node/paragraph-node.css"
+
 import {
   Details,
   DetailsContent,
@@ -12,7 +20,6 @@ import Emoji from "@tiptap/extension-emoji"
 import FileHandler from "@tiptap/extension-file-handler"
 import Highlight from "@tiptap/extension-highlight"
 import Image from "@tiptap/extension-image"
-import InvisibleCharacters from "@tiptap/extension-invisible-characters"
 import Mathematics from "@tiptap/extension-mathematics"
 import Mention from "@tiptap/extension-mention"
 import Subscript from "@tiptap/extension-subscript"
@@ -30,6 +37,10 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+// import InvisibleCharacters from "@tiptap/extension-invisible-characters"
+import { FlexibleToolbar } from "@/app/_components/toolbar"
+import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
+import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
 
 export function Editor() {
   const editor = useEditor({
@@ -43,11 +54,11 @@ export function Editor() {
       Emoji,
       FileHandler,
       Focus,
-      Highlight,
+      Highlight.configure({ multicolor: true }),
       HorizontalRule,
       Image,
       ImageUploadNode,
-      InvisibleCharacters,
+      // InvisibleCharacters,
       Mathematics,
       Mention,
       Placeholder,
@@ -70,28 +81,15 @@ export function Editor() {
       },
     },
     content: `
-      <table>
-          <tbody>
-            <tr>
-              <th>Name</th>
-              <th colspan="3">Description</th>
-            </tr>
-            <tr>
-              <td>Cyndi Lauper</td>
-              <td>Singer</td>
-              <td>Songwriter</td>
-              <td>Actress</td>
-            </tr>
-          </tbody>
-        </table>
+      <p>Hello World!</p>
     `,
   })
 
   return (
     <EditorContext value={{ editor }}>
-      <div className="max-w-[90vw] md:max-w-[70vw] mx-auto w-full py-4 flex flex-col gap-4">
+      <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full py-4 flex flex-col items-center gap-4">
         <FlexibleToolbar />
-        <EditorContent editor={editor} />
+        <EditorContent editor={editor} className="w-full" />
       </div>
     </EditorContext>
   )

@@ -1,6 +1,6 @@
 "use client"
 
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 import type {
   TextAlign,
   UseTextAlignConfig,
@@ -9,10 +9,10 @@ import {
   TEXT_ALIGN_SHORTCUT_KEYS,
   useTextAlign,
 } from "@/components/tiptap-ui/text-align-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
@@ -97,8 +97,7 @@ export const TextAlignButton = forwardRef<
         type="button"
         disabled={!canAlign}
         data-style="ghost"
-        data-active-state={isActive ? "on" : "off"}
-        data-disabled={!canAlign}
+        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
         aria-label={label}
@@ -110,7 +109,9 @@ export const TextAlignButton = forwardRef<
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
             {showShortcut && (
               <TextAlignShortcutBadge

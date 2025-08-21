@@ -1,15 +1,15 @@
 "use client"
 
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 import type { UseDetailsConfig } from "@/components/tiptap-ui/details-button"
 import {
   DETAILS_SHORTCUT_KEY,
   useDetails,
 } from "@/components/tiptap-ui/details-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
@@ -86,11 +86,10 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
       <Button
         type="button"
         data-style="ghost"
-        data-active-state={isActive ? "on" : "off"}
+        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
         disabled={!canToggle}
-        data-disabled={!canToggle}
         aria-label={label}
         aria-pressed={isActive}
         tooltip="Details"
@@ -100,7 +99,9 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon w-4 h-4" />
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
             {text && <span className="tiptap-button-text text-sm">{text}</span>}
             {showShortcut && (
               <DetailsShortcutBadge shortcutKeys={shortcutKeys} />

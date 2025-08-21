@@ -22,13 +22,13 @@
     top: 0;
     height: 100%;
     width: 0.25em;
-    background-color: rgb(34 35 37);
+    background-color: oklch(var(--muted-foreground));
     content: "";
     border-radius: 0;
   }
 
   .dark & blockquote::before,
   .dark & blockquote.is-empty::before {
-    background-color: rgb(245 245 245);
+    background-color: oklch(var(--muted-foreground));
   }
 }

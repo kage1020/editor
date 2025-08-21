@@ -12,7 +12,7 @@
   }
 
   img:not([data-type="emoji"] img).ProseMirror-selectednode {
-    outline-color: rgb(98 41 255);
+    outline-color: oklch(var(--primary));
   }
 
   /* Thread image handling */

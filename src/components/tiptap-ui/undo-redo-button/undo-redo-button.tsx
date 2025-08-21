@@ -1,6 +1,6 @@
 "use client"
 
-import { forwardRef, useCallback } from "react"
+import { Badge } from "@/components/tiptap-ui-primitive/badge"
 import type {
   UndoRedoAction,
   UseUndoRedoConfig,
@@ -9,10 +9,10 @@ import {
   UNDO_REDO_SHORTCUT_KEYS,
   useUndoRedo,
 } from "@/components/tiptap-ui/undo-redo-button"
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
+import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
+import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
@@ -90,7 +90,6 @@ export const UndoRedoButton = forwardRef<
         type="button"
         disabled={!canExecute}
         data-style="ghost"
-        data-disabled={!canExecute}
         role="button"
         tabIndex={-1}
         aria-label={label}
@@ -101,7 +100,9 @@ export const UndoRedoButton = forwardRef<
       >
         {children ?? (
           <>
-            <Icon className="tiptap-button-icon" />
+            <ButtonIcon>
+              <Icon />
+            </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
             {showShortcut && (
               <HistoryShortcutBadge

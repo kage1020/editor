@@ -1,8 +1,3 @@
-import {
-  Toolbar,
-  ToolbarGroup,
-  ToolbarSeparator,
-} from "@/components/tiptap-ui-primitive/toolbar"
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button"
 import { ColorHighlightPopover } from "@/components/tiptap-ui/color-highlight-popover"
@@ -15,6 +10,11 @@ import { MarkButton } from "@/components/tiptap-ui/mark-button"
 import { TablePopover } from "@/components/tiptap-ui/table-popover"
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button"
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
+import {
+  Toolbar,
+  ToolbarGroup,
+  ToolbarSeparator,
+} from "@/components/tiptap-ui-primitive/toolbar"
 
 export function FlexibleToolbar() {
   return (
