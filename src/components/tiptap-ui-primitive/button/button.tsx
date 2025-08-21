@@ -54,7 +54,7 @@ const tiptapButtonVariants = cva(
   },
 )
 
-interface ButtonProps
+export interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof tiptapButtonVariants> {
   className?: string
@@ -198,7 +198,7 @@ interface ButtonIconProps
   className?: string
 }
 
-export const ButtonIcon = forwardRef<SVGSVGElement, ButtonIconProps>(
+export const IconButton = forwardRef<SVGSVGElement, ButtonIconProps>(
   ({ className, variant, children, ...props }, ref) => {
     return cloneElement(children, {
       className: cn(
@@ -215,4 +215,4 @@ export const ButtonIcon = forwardRef<SVGSVGElement, ButtonIconProps>(
   },
 )
 
-ButtonIcon.displayName = "ButtonIcon"
+IconButton.displayName = "ButtonIcon"

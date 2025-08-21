@@ -3,10 +3,12 @@
 import type { ChainedCommands, Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { AlignCenterIcon } from "@/components/tiptap-icons/align-center-icon"
-import { AlignJustifyIcon } from "@/components/tiptap-icons/align-justify-icon"
-import { AlignLeftIcon } from "@/components/tiptap-icons/align-left-icon"
-import { AlignRightIcon } from "@/components/tiptap-icons/align-right-icon"
+import {
+  AlignCenterIcon,
+  AlignJustifyIcon,
+  AlignLeftIcon,
+  AlignRightIcon,
+} from "@/components/tiptap-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"

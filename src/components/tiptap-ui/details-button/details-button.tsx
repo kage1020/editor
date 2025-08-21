@@ -3,8 +3,8 @@
 import { forwardRef, useCallback } from "react"
 import {
   Button,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { type UseDetailsConfig, useDetails } from "./use-details"
 
@@ -54,9 +54,9 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
       >
         {children ?? (
           <>
-            <ButtonIcon>
+            <IconButton>
               <Icon />
-            </ButtonIcon>
+            </IconButton>
             {text && <span className="tiptap-button-text text-sm">{text}</span>}
           </>
         )}

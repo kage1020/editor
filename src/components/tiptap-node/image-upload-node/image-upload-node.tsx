@@ -3,11 +3,13 @@
 import type { NodeViewProps } from "@tiptap/react"
 import { NodeViewWrapper } from "@tiptap/react"
 import { useRef, useState } from "react"
-import { CloseIcon } from "@/components/tiptap-icons/close-icon"
-import { CloudUploadIcon } from "@/components/tiptap-icons/cloud-upload-icon"
-import { FileCornerIcon } from "@/components/tiptap-icons/file-corner-icon"
-import { FileIcon } from "@/components/tiptap-icons/file-icon"
-import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
+import {
+  CloseIcon,
+  CloudUploadIcon,
+  FileCornerIcon,
+  FileIcon,
+} from "@/components/tiptap-icons"
+import { Button, IconButton } from "@/components/tiptap-ui-primitive/button"
 import { isValidPosition } from "@/lib/tiptap-utils"
 import { cn } from "@/lib/utils"
 
@@ -352,9 +354,9 @@ const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({
               onRemove()
             }}
           >
-            <ButtonIcon>
+            <IconButton>
               <CloseIcon />
-            </ButtonIcon>
+            </IconButton>
           </Button>
         </div>
       </div>

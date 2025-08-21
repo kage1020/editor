@@ -1,13 +1,13 @@
 "use client"
 
 import { forwardRef, useCallback, useState } from "react"
-import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
+import { ChevronDownIcon } from "@/components/tiptap-icons"
 import { HeadingButton } from "@/components/tiptap-ui/heading-button"
 import {
   Button,
   ButtonGroup,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
 import {
@@ -85,12 +85,12 @@ export const HeadingDropdownMenu = forwardRef<
             {...buttonProps}
             ref={ref}
           >
-            <ButtonIcon>
+            <IconButton>
               <Icon />
-            </ButtonIcon>
-            <ButtonIcon variant="dropdown-small">
+            </IconButton>
+            <IconButton variant="dropdown-small">
               <ChevronDownIcon />
-            </ButtonIcon>
+            </IconButton>
           </Button>
         </DropdownMenuTrigger>
 

@@ -4,7 +4,7 @@ import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { CodeBlockIcon } from "@/components/tiptap-icons/code-block-icon"
+import { CodeBlockIcon } from "@/components/tiptap-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {

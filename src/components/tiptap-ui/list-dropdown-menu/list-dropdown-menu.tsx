@@ -3,13 +3,13 @@
 import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 
-import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
+import { ChevronDownIcon } from "@/components/tiptap-icons"
 import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import {
   Button,
   ButtonGroup,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
 import {
@@ -80,12 +80,12 @@ export function ListDropdownMenu({
           tooltip="List"
           {...props}
         >
-          <ButtonIcon>
+          <IconButton>
             <Icon />
-          </ButtonIcon>
-          <ButtonIcon variant="dropdown-small">
+          </IconButton>
+          <IconButton variant="dropdown-small">
             <ChevronDownIcon />
-          </ButtonIcon>
+          </IconButton>
         </Button>
       </DropdownMenuTrigger>
 

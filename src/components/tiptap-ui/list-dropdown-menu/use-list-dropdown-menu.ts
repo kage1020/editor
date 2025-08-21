@@ -3,9 +3,11 @@
 import type { Editor } from "@tiptap/react"
 import { useMemo } from "react"
 
-import { ListIcon } from "@/components/tiptap-icons/list-icon"
-import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
-import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
+import {
+  ListIcon,
+  ListOrderedIcon,
+  ListTodoIcon,
+} from "@/components/tiptap-icons"
 import {
   canToggleList,
   isListActive,

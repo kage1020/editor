@@ -2,7 +2,7 @@
 
 import type { Editor } from "@tiptap/react"
 
-import { HeadingIcon } from "@/components/tiptap-icons/heading-icon"
+import { HeadingIcon } from "@/components/tiptap-icons"
 
 import {
   canToggle,

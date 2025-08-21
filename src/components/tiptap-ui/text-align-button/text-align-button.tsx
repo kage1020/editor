@@ -3,8 +3,8 @@
 import { forwardRef, useCallback } from "react"
 import {
   Button,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { type UseTextAlignConfig, useTextAlign } from "./use-text-align"
 
@@ -57,9 +57,9 @@ export const TextAlignButton = forwardRef<
     >
       {children ?? (
         <>
-          <ButtonIcon>
+          <IconButton>
             <Icon />
-          </ButtonIcon>
+          </IconButton>
           {text && <span className="tiptap-button-text">{text}</span>}
         </>
       )}

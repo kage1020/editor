@@ -2,12 +2,12 @@
 
 import type { Editor } from "@tiptap/react"
 import { forwardRef, useCallback, useId, useState } from "react"
-import { TableIcon } from "@/components/tiptap-icons/table-icon"
+import { TableIcon } from "@/components/tiptap-icons"
 import {
   Button,
   ButtonGroup,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -74,9 +74,9 @@ export const TablePopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {children ?? (
-          <ButtonIcon>
+          <IconButton>
             <TableIcon />
-          </ButtonIcon>
+          </IconButton>
         )}
       </Button>
     )
@@ -317,9 +317,9 @@ export function TablePopover({
           aria-label="Insert table"
           {...props}
         >
-          <ButtonIcon>
+          <IconButton>
             <TableIcon />
-          </ButtonIcon>
+          </IconButton>
         </TablePopoverButton>
       </PopoverTrigger>
       <PopoverContent aria-label="Insert table">

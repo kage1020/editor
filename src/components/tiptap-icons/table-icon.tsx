@@ -1,12 +1,12 @@
 "use client"
 
-import type { ComponentProps } from "react"
+import { memo } from "react"
 
-export function TableIcon(props: ComponentProps<"svg">) {
+export const TableIcon = memo((props: React.SVGProps<SVGSVGElement>) => {
   return (
     <svg
-      width="16"
-      height="16"
+      width="24"
+      height="24"
       viewBox="0 0 24 24"
       fill="none"
       stroke="currentColor"
@@ -22,6 +22,5 @@ export function TableIcon(props: ComponentProps<"svg">) {
       <path d="M3 15h18" />
     </svg>
   )
-}
-
-export default TableIcon
+})
+TableIcon.displayName = "TableIcon"

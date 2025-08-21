@@ -3,8 +3,8 @@
 import { forwardRef, useCallback } from "react"
 import {
   Button,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { type UseListConfig, useList } from "./use-list"
 
@@ -53,9 +53,9 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
       >
         {children ?? (
           <>
-            <ButtonIcon>
+            <IconButton>
               <Icon />
-            </ButtonIcon>
+            </IconButton>
             {text && <span className="tiptap-button-text">{text}</span>}
           </>
         )}

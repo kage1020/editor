@@ -4,9 +4,11 @@ import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { ListIcon } from "@/components/tiptap-icons/list-icon"
-import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
-import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
+import {
+  ListIcon,
+  ListOrderedIcon,
+  ListTodoIcon,
+} from "@/components/tiptap-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {

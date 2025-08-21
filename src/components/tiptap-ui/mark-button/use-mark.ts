@@ -3,13 +3,15 @@
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { BoldIcon } from "@/components/tiptap-icons/bold-icon"
-import { Code2Icon } from "@/components/tiptap-icons/code2-icon"
-import { ItalicIcon } from "@/components/tiptap-icons/italic-icon"
-import { StrikeIcon } from "@/components/tiptap-icons/strike-icon"
-import { SubscriptIcon } from "@/components/tiptap-icons/subscript-icon"
-import { SuperscriptIcon } from "@/components/tiptap-icons/superscript-icon"
-import { UnderlineIcon } from "@/components/tiptap-icons/underline-icon"
+import {
+  BoldIcon,
+  Code2Icon,
+  ItalicIcon,
+  StrikeIcon,
+  SubscriptIcon,
+  SuperscriptIcon,
+  UnderlineIcon,
+} from "@/components/tiptap-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"

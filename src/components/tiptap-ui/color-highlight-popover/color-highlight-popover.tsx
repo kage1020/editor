@@ -1,8 +1,7 @@
 "use client"
 
 import { forwardRef, useMemo, useRef, useState } from "react"
-import { BanIcon } from "@/components/tiptap-icons/ban-icon"
-import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
+import { BanIcon, HighlighterIcon } from "@/components/tiptap-icons"
 import {
   ColorHighlightButton,
   type HighlightColor,
@@ -14,8 +13,8 @@ import {
 import {
   Button,
   ButtonGroup,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -65,9 +64,9 @@ const ColorHighlightPopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
       {...props}
     >
       {children ?? (
-        <ButtonIcon>
+        <IconButton>
           <HighlighterIcon />
-        </ButtonIcon>
+        </IconButton>
       )}
     </Button>
   ),
@@ -144,9 +143,9 @@ function ColorHighlightPopoverContent({
               role="menuitem"
               data-style="ghost"
             >
-              <ButtonIcon>
+              <IconButton>
                 <BanIcon />
-              </ButtonIcon>
+              </IconButton>
             </Button>
           </ButtonGroup>
         </CardItemGroup>
@@ -182,9 +181,9 @@ export function ColorHighlightPopover({
           tooltip={label}
           {...props}
         >
-          <ButtonIcon>
+          <IconButton>
             <Icon />
-          </ButtonIcon>
+          </IconButton>
         </ColorHighlightPopoverButton>
       </PopoverTrigger>
       <PopoverContent aria-label="Highlight colors">

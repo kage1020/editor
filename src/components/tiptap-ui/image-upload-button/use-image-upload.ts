@@ -3,7 +3,7 @@
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-import { ImagePlusIcon } from "@/components/tiptap-icons/image-plus-icon"
+import { ImagePlusIcon } from "@/components/tiptap-icons"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"

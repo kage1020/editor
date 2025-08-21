@@ -3,8 +3,8 @@
 import { forwardRef, useCallback } from "react"
 import {
   Button,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { type UseImageUploadConfig, useImageUpload } from "./use-image-upload"
 
@@ -56,9 +56,9 @@ export const ImageUploadButton = forwardRef<
     >
       {children ?? (
         <>
-          <ButtonIcon>
+          <IconButton>
             <Icon />
-          </ButtonIcon>
+          </IconButton>
           {text && <span className="tiptap-button-text">{text}</span>}
         </>
       )}

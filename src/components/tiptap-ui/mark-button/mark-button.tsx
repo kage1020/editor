@@ -5,7 +5,7 @@ import type { UseMarkConfig } from "@/components/tiptap-ui/mark-button"
 import { useMark } from "@/components/tiptap-ui/mark-button"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
+import { Button, IconButton } from "@/components/tiptap-ui-primitive/button"
 
 interface MarkButtonProps extends Omit<ButtonProps, "type">, UseMarkConfig {
   /**
@@ -52,9 +52,9 @@ export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
       >
         {children ?? (
           <>
-            <ButtonIcon>
+            <IconButton>
               <Icon />
-            </ButtonIcon>
+            </IconButton>
             {text && <span className="tiptap-button-text">{text}</span>}
           </>
         )}

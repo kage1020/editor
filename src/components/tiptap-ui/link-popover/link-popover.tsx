@@ -1,15 +1,17 @@
 "use client"
 
 import { forwardRef, useCallback, useEffect, useState } from "react"
-import { CornerDownLeftIcon } from "@/components/tiptap-icons/corner-down-left-icon"
-import { ExternalLinkIcon } from "@/components/tiptap-icons/external-link-icon"
-import { LinkIcon } from "@/components/tiptap-icons/link-icon"
-import { TrashIcon } from "@/components/tiptap-icons/trash-icon"
+import {
+  CornerDownLeftIcon,
+  ExternalLinkIcon,
+  LinkIcon,
+  TrashIcon,
+} from "@/components/tiptap-icons"
 import {
   Button,
   ButtonGroup,
-  ButtonIcon,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -85,9 +87,9 @@ const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
         {...props}
       >
         {children || (
-          <ButtonIcon>
+          <IconButton>
             <LinkIcon />
-          </ButtonIcon>
+          </IconButton>
         )}
       </Button>
     )
@@ -150,9 +152,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <ButtonIcon>
+              <IconButton>
                 <CornerDownLeftIcon />
-              </ButtonIcon>
+              </IconButton>
             </Button>
           </ButtonGroup>
 
@@ -166,9 +168,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <ButtonIcon>
+              <IconButton>
                 <ExternalLinkIcon />
-              </ButtonIcon>
+              </IconButton>
             </Button>
 
             <Button
@@ -178,9 +180,9 @@ const LinkMain: React.FC<LinkMainProps> = ({
               disabled={!url && !isActive}
               data-style="ghost"
             >
-              <ButtonIcon>
+              <IconButton>
                 <TrashIcon />
-              </ButtonIcon>
+              </IconButton>
             </Button>
           </ButtonGroup>
         </CardItemGroup>
@@ -263,9 +265,9 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
             ref={ref}
           >
             {children ?? (
-              <ButtonIcon>
+              <IconButton>
                 <Icon />
-              </ButtonIcon>
+              </IconButton>
             )}
           </LinkButton>
         </PopoverTrigger>
