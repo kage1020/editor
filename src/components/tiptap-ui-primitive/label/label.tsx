@@ -3,12 +3,12 @@
 import { createElement, forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
-export interface BaseProps extends React.HTMLAttributes<HTMLElement> {
+interface BaseProps extends React.HTMLAttributes<HTMLElement> {
   as?: "label" | "div"
   onMouseDown?: React.MouseEventHandler<HTMLElement>
 }
 
-export type LabelProps<T extends "label" | "div"> = T extends "label"
+type LabelProps<T extends "label" | "div"> = T extends "label"
   ? BaseProps & { htmlFor?: string }
   : BaseProps
 
@@ -41,5 +41,3 @@ export const Label = forwardRef<
 })
 
 Label.displayName = "Label"
-
-export default Label

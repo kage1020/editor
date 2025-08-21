@@ -1,36 +1,17 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { Mark, UseMarkConfig } from "@/components/tiptap-ui/mark-button"
-import { MARK_SHORTCUT_KEYS, useMark } from "@/components/tiptap-ui/mark-button"
 import { forwardRef, useCallback } from "react"
+import type { UseMarkConfig } from "@/components/tiptap-ui/mark-button"
+import { useMark } from "@/components/tiptap-ui/mark-button"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
-export interface MarkButtonProps
-  extends Omit<ButtonProps, "type">,
-    UseMarkConfig {
+interface MarkButtonProps extends Omit<ButtonProps, "type">, UseMarkConfig {
   /**
    * Optional text to display alongside the icon.
    */
   text?: string
-  /**
-   * Optional show shortcut keys in the button.
-   * @default false
-   */
-  showShortcut?: boolean
-}
-
-export function MarkShortcutBadge({
-  type,
-  shortcutKeys = MARK_SHORTCUT_KEYS[type],
-}: {
-  type: Mark
-  shortcutKeys?: string
-}) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
 }
 
 /**
@@ -39,23 +20,11 @@ export function MarkShortcutBadge({
  * For custom button implementations, use the `useMark` hook instead.
  */
 export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
-  (
-    {
+  ({ type, text, onToggled, onClick, children, ...buttonProps }, ref) => {
+    const { handleMark, label, canToggle, isActive, Icon } = useMark({
       type,
-      text,
       onToggled,
-      showShortcut = false,
-      onClick,
-      children,
-      ...buttonProps
-    },
-    ref,
-  ) => {
-    const { handleMark, label, canToggle, isActive, Icon, shortcutKeys } =
-      useMark({
-        type,
-        onToggled,
-      })
+    })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,7 +46,6 @@ export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
-        shortcutKeys={shortcutKeys}
         onClick={handleClick}
         {...buttonProps}
         ref={ref}
@@ -88,9 +56,6 @@ export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
               <Icon />
             </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
-            {showShortcut && (
-              <MarkShortcutBadge type={type} shortcutKeys={shortcutKeys} />
-            )}
           </>
         )}
       </Button>

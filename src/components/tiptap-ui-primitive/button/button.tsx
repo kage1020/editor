@@ -1,5 +1,7 @@
 "use client"
 
+import { cva, type VariantProps } from "class-variance-authority"
+import { cloneElement, Fragment, forwardRef, useMemo } from "react"
 import {
   Tooltip,
   TooltipContent,
@@ -7,8 +9,6 @@ import {
 } from "@/components/tiptap-ui-primitive/tooltip"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { cn } from "@/lib/utils"
-import { cva, type VariantProps } from "class-variance-authority"
-import { cloneElement, forwardRef, Fragment, useMemo } from "react"
 
 const tiptapButtonVariants = cva(
   "group/button text-sm font-medium [font-feature:'salt'_on,'cv01'_on] leading-[1.15] h-8 min-w-8 border-none p-2 gap-1 flex items-center justify-center rounded-lg transition-all duration-200 ease-in-out focus-visible:outline-none bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600 disabled:bg-neutral-50 dark:disabled:bg-neutral-900 disabled:text-neutral-400 dark:disabled:text-neutral-600 [&:has(>svg):not(:has(>:not(svg)))]:gap-0.5 [&_.tiptap-button-text]:px-0.5 [&_.tiptap-button-text]:flex-grow [&_.tiptap-button-text]:text-left [&_.tiptap-button-text]:leading-6 data-[text-trim=on]:[&_.tiptap-button-text]:text-ellipsis data-[text-trim=on]:[&_.tiptap-button-text]:overflow-hidden [&_.tiptap-button-emoji]:w-4 [&_.tiptap-button-emoji]:flex [&_.tiptap-button-emoji]:justify-center [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:gap-0 [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:pr-1",
@@ -54,7 +54,7 @@ const tiptapButtonVariants = cva(
   },
 )
 
-export interface ButtonProps
+interface ButtonProps
   extends React.ButtonHTMLAttributes<HTMLButtonElement>,
     VariantProps<typeof tiptapButtonVariants> {
   className?: string
@@ -64,9 +64,7 @@ export interface ButtonProps
   active?: "on" | "off"
 }
 
-export const ShortcutDisplay: React.FC<{ shortcuts: string[] }> = ({
-  shortcuts,
-}) => {
+const ShortcutDisplay: React.FC<{ shortcuts: string[] }> = ({ shortcuts }) => {
   if (shortcuts.length === 0) return null
 
   return (
@@ -217,4 +215,4 @@ export const ButtonIcon = forwardRef<SVGSVGElement, ButtonIconProps>(
   },
 )
 
-export default Button
+ButtonIcon.displayName = "ButtonIcon"

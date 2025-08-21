@@ -1,23 +1,21 @@
 "use client"
 
+import { forwardRef, useMemo, useRef, useState } from "react"
 import { BanIcon } from "@/components/tiptap-icons/ban-icon"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
-import type {
-  HighlightColor,
-  UseColorHighlightConfig,
-} from "@/components/tiptap-ui/color-highlight-button"
 import {
   ColorHighlightButton,
+  type HighlightColor,
   pickHighlightColorsByValue,
+  type UseColorHighlightConfig,
   useColorHighlight,
 } from "@/components/tiptap-ui/color-highlight-button"
-import { forwardRef, useMemo, useRef, useState } from "react"
 
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  type ButtonProps,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -34,7 +32,7 @@ import { useMenuNavigation } from "@/hooks/use-menu-navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { cn } from "@/lib/utils"
 
-export interface ColorHighlightPopoverContentProps {
+interface ColorHighlightPopoverContentProps {
   /**
    * Optional colors to use in the highlight popover.
    * If not provided, defaults to a predefined set of colors.
@@ -42,7 +40,7 @@ export interface ColorHighlightPopoverContentProps {
   colors?: HighlightColor[]
 }
 
-export interface ColorHighlightPopoverProps
+interface ColorHighlightPopoverProps
   extends Omit<ButtonProps, "type">,
     Pick<UseColorHighlightConfig, "onApplied"> {
   /**
@@ -52,33 +50,32 @@ export interface ColorHighlightPopoverProps
   colors?: HighlightColor[]
 }
 
-export const ColorHighlightPopoverButton = forwardRef<
-  HTMLButtonElement,
-  ButtonProps
->(({ className, children, ...props }, ref) => (
-  <Button
-    type="button"
-    className={className}
-    data-style="ghost"
-    appearance="default"
-    role="button"
-    tabIndex={-1}
-    aria-label="Highlight text"
-    tooltip="Highlight"
-    ref={ref}
-    {...props}
-  >
-    {children ?? (
-      <ButtonIcon>
-        <HighlighterIcon />
-      </ButtonIcon>
-    )}
-  </Button>
-))
+const ColorHighlightPopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
+  ({ className, children, ...props }, ref) => (
+    <Button
+      type="button"
+      className={className}
+      data-style="ghost"
+      appearance="default"
+      role="button"
+      tabIndex={-1}
+      aria-label="Highlight text"
+      tooltip="Highlight"
+      ref={ref}
+      {...props}
+    >
+      {children ?? (
+        <ButtonIcon>
+          <HighlighterIcon />
+        </ButtonIcon>
+      )}
+    </Button>
+  ),
+)
 
 ColorHighlightPopoverButton.displayName = "ColorHighlightPopoverButton"
 
-export function ColorHighlightPopoverContent({
+function ColorHighlightPopoverContent({
   colors = pickHighlightColorsByValue([
     "#dcfce7",
     "#e0f2fe",
@@ -196,5 +193,3 @@ export function ColorHighlightPopover({
     </Popover>
   )
 }
-
-export default ColorHighlightPopover

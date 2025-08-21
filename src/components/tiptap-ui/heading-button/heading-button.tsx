@@ -1,41 +1,20 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import type {
-  Level,
-  UseHeadingConfig,
-} from "@/components/tiptap-ui/heading-button"
-import {
-  HEADING_SHORTCUT_KEYS,
-  useHeading,
-} from "@/components/tiptap-ui/heading-button"
-import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { forwardRef, useCallback } from "react"
+import {
+  Button,
+  ButtonIcon,
+  type ButtonProps,
+} from "@/components/tiptap-ui-primitive/button"
+import { type UseHeadingConfig, useHeading } from "./use-heading"
 
-export interface HeadingButtonProps
+interface HeadingButtonProps
   extends Omit<ButtonProps, "type">,
     UseHeadingConfig {
   /**
    * Optional text to display alongside the icon.
    */
   text?: string
-  /**
-   * Optional show shortcut keys in the button.
-   * @default false
-   */
-  showShortcut?: boolean
-}
-
-export function HeadingShortcutBadge({
-  level,
-  shortcutKeys = HEADING_SHORTCUT_KEYS[level],
-}: {
-  level: Level
-  shortcutKeys?: string
-}) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
 }
 
 /**
@@ -44,23 +23,11 @@ export function HeadingShortcutBadge({
  * For custom button implementations, use the `useHeading` hook instead.
  */
 export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
-  (
-    {
+  ({ level, text, onToggled, onClick, children, ...buttonProps }, ref) => {
+    const { canToggle, isActive, handleToggle, label, Icon } = useHeading({
       level,
-      text,
       onToggled,
-      showShortcut = false,
-      onClick,
-      children,
-      ...buttonProps
-    },
-    ref,
-  ) => {
-    const { canToggle, isActive, handleToggle, label, Icon, shortcutKeys } =
-      useHeading({
-        level,
-        onToggled,
-      })
+    })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -92,9 +59,6 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
               <Icon />
             </ButtonIcon>
             {text && <span className="tiptap-button-text">{text}</span>}
-            {showShortcut && (
-              <HeadingShortcutBadge level={level} shortcutKeys={shortcutKeys} />
-            )}
           </>
         )}
       </Button>

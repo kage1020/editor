@@ -1,5 +1,9 @@
 "use client"
 
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
 import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
 import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
@@ -11,10 +15,6 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
 export type ListType = "bulletList" | "orderedList" | "taskList"
 
@@ -38,13 +38,13 @@ export const listIcons = {
   taskList: ListTodoIcon,
 }
 
-export const listLabels: Record<ListType, string> = {
+const listLabels: Record<ListType, string> = {
   bulletList: "Bullet List",
   orderedList: "Ordered List",
   taskList: "Task List",
 }
 
-export const LIST_SHORTCUT_KEYS: Record<ListType, string> = {
+const LIST_SHORTCUT_KEYS: Record<ListType, string> = {
   bulletList: "mod+shift+8",
   orderedList: "mod+shift+7",
   taskList: "mod+shift+9",
@@ -115,7 +115,7 @@ export function isListActive(editor: Editor | null, type: ListType): boolean {
 /**
  * Toggles list in the editor
  */
-export function toggleList(editor: Editor | null, type: ListType): boolean {
+function toggleList(editor: Editor | null, type: ListType): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canToggleList(editor, type)) return false
 
@@ -185,26 +185,6 @@ export function toggleList(editor: Editor | null, type: ListType): boolean {
   } catch {
     return false
   }
-}
-
-/**
- * Determines if the list button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  type: ListType
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, type, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isNodeInSchema(type, editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canToggleList(editor, type)
-  }
-
-  return true
 }
 
 /**

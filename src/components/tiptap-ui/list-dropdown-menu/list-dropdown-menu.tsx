@@ -4,11 +4,12 @@ import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 
 import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
+import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  type ButtonProps,
 } from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
 import {
@@ -17,10 +18,9 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/tiptap-ui-primitive/dropdown-menu"
-import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
 import { useListDropdownMenu } from "./use-list-dropdown-menu"
 
-export interface ListDropdownMenuProps extends Omit<ButtonProps, "type"> {
+interface ListDropdownMenuProps extends Omit<ButtonProps, "type"> {
   /**
    * The Tiptap editor instance.
    */
@@ -95,11 +95,7 @@ export function ListDropdownMenu({
             <ButtonGroup>
               {filteredLists.map((option) => (
                 <DropdownMenuItem key={option.type} asChild>
-                  <ListButton
-                    type={option.type}
-                    text={option.label}
-                    showTooltip={false}
-                  />
+                  <ListButton type={option.type} text={option.label} />
                 </DropdownMenuItem>
               ))}
             </ButtonGroup>
@@ -109,5 +105,3 @@ export function ListDropdownMenu({
     </DropdownMenu>
   )
 }
-
-export default ListDropdownMenu

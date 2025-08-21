@@ -3,7 +3,7 @@
 import { forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
-const Card = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+export const Card = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     return (
       <div
@@ -20,24 +20,25 @@ const Card = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
 )
 Card.displayName = "Card"
 
-const CardHeader = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "tiptap-card-header",
-          "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-neutral-100 dark:border-neutral-900",
-          className,
-        )}
-        {...props}
-      />
-    )
-  },
-)
+export const CardHeader = forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "tiptap-card-header",
+        "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-neutral-100 dark:border-neutral-900",
+        className,
+      )}
+      {...props}
+    />
+  )
+})
 CardHeader.displayName = "CardHeader"
 
-const CardBody = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
+export const CardBody = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
   ({ className, ...props }, ref) => {
     return (
       <div
@@ -54,7 +55,7 @@ const CardBody = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
 )
 CardBody.displayName = "CardBody"
 
-const CardItemGroup = forwardRef<
+export const CardItemGroup = forwardRef<
   HTMLDivElement,
   React.ComponentProps<"div"> & {
     orientation?: "horizontal" | "vertical"
@@ -78,34 +79,34 @@ const CardItemGroup = forwardRef<
 })
 CardItemGroup.displayName = "CardItemGroup"
 
-const CardGroupLabel = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "tiptap-card-group-label",
-          "pt-3 px-2 pb-1 leading-normal text-xs font-semibold capitalize text-neutral-800 dark:text-neutral-200",
-          className,
-        )}
-        {...props}
-      />
-    )
-  },
-)
+export const CardGroupLabel = forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "tiptap-card-group-label",
+        "pt-3 px-2 pb-1 leading-normal text-xs font-semibold capitalize text-neutral-800 dark:text-neutral-200",
+        className,
+      )}
+      {...props}
+    />
+  )
+})
 CardGroupLabel.displayName = "CardGroupLabel"
 
-const CardFooter = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
-  ({ className, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn("tiptap-card-footer", "p-1.5 flex-none", className)}
-        {...props}
-      />
-    )
-  },
-)
+export const CardFooter = forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn("tiptap-card-footer", "p-1.5 flex-none", className)}
+      {...props}
+    />
+  )
+})
 CardFooter.displayName = "CardFooter"
-
-export { Card, CardBody, CardFooter, CardGroupLabel, CardHeader, CardItemGroup }

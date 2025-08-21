@@ -1,15 +1,15 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { Redo2Icon } from "@/components/tiptap-icons/redo2-icon"
 import { Undo2Icon } from "@/components/tiptap-icons/undo2-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isNodeTypeSelected } from "@/lib/tiptap-utils"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
-export type UndoRedoAction = "undo" | "redo"
+type UndoRedoAction = "undo" | "redo"
 
 /**
  * Configuration for the history functionality
@@ -25,17 +25,17 @@ export interface UseUndoRedoConfig {
   onExecuted?: () => void
 }
 
-export const UNDO_REDO_SHORTCUT_KEYS: Record<UndoRedoAction, string> = {
+const UNDO_REDO_SHORTCUT_KEYS: Record<UndoRedoAction, string> = {
   undo: "mod+z",
   redo: "mod+shift+z",
 }
 
-export const historyActionLabels: Record<UndoRedoAction, string> = {
+const historyActionLabels: Record<UndoRedoAction, string> = {
   undo: "Undo",
   redo: "Redo",
 }
 
-export const historyIcons = {
+const historyIcons = {
   undo: Undo2Icon,
   redo: Redo2Icon,
 }
@@ -43,7 +43,7 @@ export const historyIcons = {
 /**
  * Checks if a history action can be executed
  */
-export function canExecuteUndoRedoAction(
+function canExecuteUndoRedoAction(
   editor: Editor | null,
   action: UndoRedoAction,
 ): boolean {
@@ -56,7 +56,7 @@ export function canExecuteUndoRedoAction(
 /**
  * Executes a history action on the editor
  */
-export function executeUndoRedoAction(
+function executeUndoRedoAction(
   editor: Editor | null,
   action: UndoRedoAction,
 ): boolean {
@@ -65,25 +65,6 @@ export function executeUndoRedoAction(
 
   const chain = editor.chain().focus()
   return action === "undo" ? chain.undo().run() : chain.redo().run()
-}
-
-/**
- * Determines if the history button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-  action: UndoRedoAction
-}): boolean {
-  const { editor, hideWhenUnavailable, action } = props
-
-  if (!editor || !editor.isEditable) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canExecuteUndoRedoAction(editor, action)
-  }
-
-  return true
 }
 
 /**

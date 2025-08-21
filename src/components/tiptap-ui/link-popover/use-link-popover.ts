@@ -2,10 +2,9 @@
 
 import type { Editor } from "@tiptap/react"
 import { useCallback, useEffect, useState } from "react"
-
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { isMarkInSchema, sanitizeUrl } from "@/lib/tiptap-utils"
+import { sanitizeUrl } from "@/lib/tiptap-utils"
 
 /**
  * Configuration for the link popover functionality
@@ -20,7 +19,7 @@ export interface UseLinkPopoverConfig {
 /**
  * Configuration for the link handler functionality
  */
-export interface LinkHandlerProps {
+interface LinkHandlerProps {
   /**
    * The Tiptap editor instance.
    */
@@ -34,7 +33,7 @@ export interface LinkHandlerProps {
 /**
  * Checks if a link can be set in the current editor state
  */
-export function canSetLink(editor: Editor | null): boolean {
+function canSetLink(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   return editor.can().setMark("link")
 }
@@ -42,31 +41,9 @@ export function canSetLink(editor: Editor | null): boolean {
 /**
  * Checks if a link is currently active in the editor
  */
-export function isLinkActive(editor: Editor | null): boolean {
+function isLinkActive(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   return editor.isActive("link")
-}
-
-/**
- * Determines if the link button should be shown
- */
-export function shouldShowLinkButton(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, hideWhenUnavailable } = props
-
-  const linkInSchema = isMarkInSchema("link", editor)
-
-  if (!linkInSchema || !editor) {
-    return false
-  }
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canSetLink(editor)
-  }
-
-  return true
 }
 
 /**

@@ -1,11 +1,13 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { forwardRef, useCallback, useId, useState } from "react"
 import { TableIcon } from "@/components/tiptap-icons/table-icon"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  type ButtonProps,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -22,10 +24,8 @@ import {
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import type { Editor } from "@tiptap/react"
-import { forwardRef, useCallback, useId, useState } from "react"
 
-export interface TablePopoverContentProps {
+interface TablePopoverContentProps {
   /**
    * The Tiptap editor instance.
    */
@@ -46,7 +46,7 @@ export interface TablePopoverContentProps {
   onTableInsert?: (rows: number, cols: number) => void
 }
 
-export interface TablePopoverProps
+interface TablePopoverProps
   extends Omit<ButtonProps, "type">,
     Pick<TablePopoverContentProps, "maxRows" | "maxCols" | "onTableInsert"> {
   /**
@@ -146,7 +146,7 @@ const TableGridSelector = ({
 /**
  * Main content component for the table popover
  */
-export function TablePopoverContent({
+function TablePopoverContent({
   editor,
   maxRows = 10,
   maxCols = 10,

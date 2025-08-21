@@ -9,8 +9,8 @@ import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
 import {
   canToggleList,
   isListActive,
-  listIcons,
   type ListType,
+  listIcons,
 } from "@/components/tiptap-ui/list-button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
@@ -25,13 +25,13 @@ export interface UseListDropdownMenuConfig {
   types?: ListType[]
 }
 
-export interface ListOption {
+interface ListOption {
   label: string
   type: ListType
   icon: React.ElementType
 }
 
-export const listOptions: ListOption[] = [
+const listOptions: ListOption[] = [
   {
     label: "Bullet List",
     type: "bulletList",
@@ -49,7 +49,7 @@ export const listOptions: ListOption[] = [
   },
 ]
 
-export function canToggleAnyList(
+function canToggleAnyList(
   editor: Editor | null,
   listTypes: ListType[],
 ): boolean {
@@ -57,7 +57,7 @@ export function canToggleAnyList(
   return listTypes.some((type) => canToggleList(editor, type))
 }
 
-export function isAnyListActive(
+function isAnyListActive(
   editor: Editor | null,
   listTypes: ListType[],
 ): boolean {
@@ -65,7 +65,7 @@ export function isAnyListActive(
   return listTypes.some((type) => isListActive(editor, type))
 }
 
-export function getFilteredListOptions(
+function getFilteredListOptions(
   availableTypes: ListType[],
 ): typeof listOptions {
   return listOptions.filter(
@@ -73,30 +73,10 @@ export function getFilteredListOptions(
   )
 }
 
-export function shouldShowListDropdown(params: {
-  editor: Editor | null
-  listTypes: ListType[]
-  hideWhenUnavailable: boolean
-  listInSchema: boolean
-  canToggleAny: boolean
-}): boolean {
-  const { editor, hideWhenUnavailable, listInSchema, canToggleAny } = params
-
-  if (!listInSchema || !editor) {
-    return false
-  }
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canToggleAny
-  }
-
-  return true
-}
-
 /**
  * Gets the currently active list type from the available types
  */
-export function getActiveListType(
+function getActiveListType(
   editor: Editor | null,
   availableTypes: ListType[],
 ): ListType | undefined {

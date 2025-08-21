@@ -1,5 +1,9 @@
 "use client"
 
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { CodeBlockIcon } from "@/components/tiptap-icons/code-block-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -9,12 +13,8 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
-export const CODE_BLOCK_SHORTCUT_KEY = "mod+alt+c"
+const CODE_BLOCK_SHORTCUT_KEY = "mod+alt+c"
 
 /**
  * Configuration for the code block functionality
@@ -29,10 +29,7 @@ export interface UseCodeBlockConfig {
 /**
  * Checks if code block can be toggled in the current editor state
  */
-export function canToggle(
-  editor: Editor | null,
-  turnInto: boolean = true,
-): boolean {
+function canToggle(editor: Editor | null, turnInto: boolean = true): boolean {
   if (!editor || !editor.isEditable) return false
   if (
     !isNodeInSchema("codeBlock", editor) ||
@@ -66,7 +63,7 @@ export function canToggle(
 /**
  * Toggles code block in the editor
  */
-export function toggleCodeBlock(editor: Editor | null): boolean {
+function toggleCodeBlock(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canToggle(editor)) return false
 
@@ -120,25 +117,6 @@ export function toggleCodeBlock(editor: Editor | null): boolean {
   } catch {
     return false
   }
-}
-
-/**
- * Determines if the code block button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isNodeInSchema("codeBlock", editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canToggle(editor)
-  }
-
-  return true
 }
 
 /**

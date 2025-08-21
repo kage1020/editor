@@ -1,22 +1,22 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import * as PopoverPrimitive from "@radix-ui/react-popover"
 import { cva } from "class-variance-authority"
+import { cn } from "@/lib/utils"
 
-function Popover({
+export function Popover({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root {...props} />
 }
 
-function PopoverTrigger({
+export function PopoverTrigger({
   ...props
 }: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
   return <PopoverPrimitive.Trigger {...props} />
 }
 
-const popoverVariants = cva("", {
+export const popoverVariants = cva("", {
   variants: {
     side: {
       top: "animate-slideFromBottom",
@@ -38,7 +38,7 @@ const popoverVariants = cva("", {
   },
 })
 
-function PopoverContent({
+export function PopoverContent({
   className,
   align = "center",
   sideOffset = 4,
@@ -62,5 +62,3 @@ function PopoverContent({
     </PopoverPrimitive.Portal>
   )
 }
-
-export { Popover, PopoverContent, PopoverTrigger }

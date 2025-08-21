@@ -1,15 +1,15 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { HighlighterIcon } from "@/components/tiptap-icons/highlighter-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
-export const COLOR_HIGHLIGHT_SHORTCUT_KEY = "mod+shift+h"
-export const HIGHLIGHT_COLORS = [
+const COLOR_HIGHLIGHT_SHORTCUT_KEY = "mod+shift+h"
+const HIGHLIGHT_COLORS = [
   {
     label: "Default background",
     value: "transparent",
@@ -90,7 +90,7 @@ export function pickHighlightColorsByValue(values: string[]) {
     .filter((color): color is (typeof HIGHLIGHT_COLORS)[number] => !!color)
 }
 
-export function canColorHighlight(editor: Editor | null): boolean {
+function canColorHighlight(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   if (
     !isMarkInSchema("highlight", editor) ||
@@ -101,7 +101,7 @@ export function canColorHighlight(editor: Editor | null): boolean {
   return editor.can().setMark("highlight")
 }
 
-export function isColorHighlightActive(
+function isColorHighlightActive(
   editor: Editor | null,
   highlightColor?: string,
 ): boolean {
@@ -111,27 +111,11 @@ export function isColorHighlightActive(
     : editor.isActive("highlight")
 }
 
-export function removeHighlight(editor: Editor | null): boolean {
+function removeHighlight(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canColorHighlight(editor)) return false
 
   return editor.chain().focus().unsetMark("highlight").run()
-}
-
-export function shouldShowButton(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isMarkInSchema("highlight", editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canColorHighlight(editor)
-  }
-
-  return true
 }
 
 export function useColorHighlight(config: UseColorHighlightConfig) {

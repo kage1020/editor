@@ -1,5 +1,9 @@
 "use client"
 
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { DetailsIcon } from "@/components/tiptap-icons/details-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -9,12 +13,8 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
-export const DETAILS_SHORTCUT_KEY = "mod+shift+d"
+const DETAILS_SHORTCUT_KEY = "mod+shift+d"
 
 /**
  * Configuration for the details functionality
@@ -29,7 +29,7 @@ export interface UseDetailsConfig {
 /**
  * Checks if details can be toggled in the current editor state
  */
-export function canToggleDetails(
+function canToggleDetails(
   editor: Editor | null,
   turnInto: boolean = true,
 ): boolean {
@@ -66,7 +66,7 @@ export function canToggleDetails(
 /**
  * Toggles details formatting for a specific node or the current selection
  */
-export function toggleDetails(editor: Editor | null): boolean {
+function toggleDetails(editor: Editor | null): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canToggleDetails(editor)) return false
 
@@ -120,25 +120,6 @@ export function toggleDetails(editor: Editor | null): boolean {
   } catch {
     return false
   }
-}
-
-/**
- * Determines if the details button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isNodeInSchema("details", editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canToggleDetails(editor)
-  }
-
-  return true
 }
 
 /**

@@ -1,17 +1,13 @@
 "use client"
 
-import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 import { forwardRef, useCallback, useState } from "react"
-
+import { ChevronDownIcon } from "@/components/tiptap-icons/chevron-down-icon"
 import { HeadingButton } from "@/components/tiptap-ui/heading-button"
-import type { UseHeadingDropdownMenuConfig } from "@/components/tiptap-ui/heading-dropdown-menu"
-import { useHeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
-
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  type ButtonProps,
 } from "@/components/tiptap-ui-primitive/button"
 import { Card, CardBody } from "@/components/tiptap-ui-primitive/card"
 import {
@@ -21,8 +17,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/tiptap-ui-primitive/dropdown-menu"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import {
+  type UseHeadingDropdownMenuConfig,
+  useHeadingDropdownMenu,
+} from "./use-heading-dropdown-menu"
 
-export interface HeadingDropdownMenuProps
+interface HeadingDropdownMenuProps
   extends Omit<ButtonProps, "type">,
     UseHeadingDropdownMenuConfig {
   /**
@@ -100,11 +100,7 @@ export const HeadingDropdownMenu = forwardRef<
               <ButtonGroup>
                 {levels.map((level) => (
                   <DropdownMenuItem key={`heading-${level}`} asChild>
-                    <HeadingButton
-                      level={level}
-                      text={`Heading ${level}`}
-                      showTooltip={false}
-                    />
+                    <HeadingButton level={level} text={`Heading ${level}`} />
                   </DropdownMenuItem>
                 ))}
               </ButtonGroup>
@@ -117,5 +113,3 @@ export const HeadingDropdownMenu = forwardRef<
 )
 
 HeadingDropdownMenu.displayName = "HeadingDropdownMenu"
-
-export default HeadingDropdownMenu

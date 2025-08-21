@@ -1,8 +1,8 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import { cva, type VariantProps } from "class-variance-authority"
 import { forwardRef } from "react"
+import { cn } from "@/lib/utils"
 
 const tiptapBadgeVariants = cva(
   "text-[0.625rem] font-bold [font-feature:'salt'_on,'cv01'_on] leading-[1.15] flex items-center justify-center border border-solid rounded-sm transition-all duration-200 ease-in-out [&_.tiptap-badge-text]:px-0.5 [&_.tiptap-badge-text]:flex-grow [&_.tiptap-badge-text]:text-left [&_.tiptap-badge-icon]:pointer-events-none [&_.tiptap-badge-icon]:shrink-0 [&_.tiptap-badge-icon]:w-2.5 [&_.tiptap-badge-icon]:h-2.5",
@@ -35,7 +35,7 @@ const tiptapBadgeVariants = cva(
   },
 )
 
-export interface BadgeProps
+interface BadgeProps
   extends React.HTMLAttributes<HTMLDivElement>,
     VariantProps<typeof tiptapBadgeVariants> {
   variant?: "ghost" | "white" | "gray" | "green" | "default"
@@ -97,5 +97,3 @@ export const BadgeGroup = forwardRef<
   )
 })
 BadgeGroup.displayName = "BadgeGroup"
-
-export default Badge

@@ -1,42 +1,20 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type {
-  UndoRedoAction,
-  UseUndoRedoConfig,
-} from "@/components/tiptap-ui/undo-redo-button"
-import {
-  UNDO_REDO_SHORTCUT_KEYS,
-  useUndoRedo,
-} from "@/components/tiptap-ui/undo-redo-button"
 import { forwardRef, useCallback } from "react"
+import {
+  Button,
+  ButtonIcon,
+  type ButtonProps,
+} from "@/components/tiptap-ui-primitive/button"
+import { type UseUndoRedoConfig, useUndoRedo } from "./use-undo-redo"
 
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { parseShortcutKeys } from "@/lib/tiptap-utils"
-
-export interface UndoRedoButtonProps
+interface UndoRedoButtonProps
   extends Omit<ButtonProps, "type">,
     UseUndoRedoConfig {
   /**
    * Optional text to display alongside the icon.
    */
   text?: string
-  /**
-   * Optional show shortcut keys in the button.
-   * @default false
-   */
-  showShortcut?: boolean
-}
-
-export function HistoryShortcutBadge({
-  action,
-  shortcutKeys = UNDO_REDO_SHORTCUT_KEYS[action],
-}: {
-  action: UndoRedoAction
-  shortcutKeys?: string
-}) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
 }
 
 /**
@@ -47,65 +25,44 @@ export function HistoryShortcutBadge({
 export const UndoRedoButton = forwardRef<
   HTMLButtonElement,
   UndoRedoButtonProps
->(
-  (
-    {
-      action,
-      text,
-      onExecuted,
-      showShortcut = false,
-      onClick,
-      children,
-      ...buttonProps
+>(({ action, text, onExecuted, onClick, children, ...buttonProps }, ref) => {
+  const { handleAction, label, canExecute, Icon } = useUndoRedo({
+    action,
+    onExecuted,
+  })
+
+  const handleClick = useCallback(
+    (event: React.MouseEvent<HTMLButtonElement>) => {
+      onClick?.(event)
+      if (event.defaultPrevented) return
+      handleAction()
     },
-    ref,
-  ) => {
-    const { handleAction, label, canExecute, Icon, shortcutKeys } = useUndoRedo(
-      {
-        action,
-        onExecuted,
-      },
-    )
+    [handleAction, onClick],
+  )
 
-    const handleClick = useCallback(
-      (event: React.MouseEvent<HTMLButtonElement>) => {
-        onClick?.(event)
-        if (event.defaultPrevented) return
-        handleAction()
-      },
-      [handleAction, onClick],
-    )
-
-    return (
-      <Button
-        type="button"
-        disabled={!canExecute}
-        data-style="ghost"
-        role="button"
-        tabIndex={-1}
-        aria-label={label}
-        tooltip={label}
-        onClick={handleClick}
-        {...buttonProps}
-        ref={ref}
-      >
-        {children ?? (
-          <>
-            <ButtonIcon>
-              <Icon />
-            </ButtonIcon>
-            {text && <span className="tiptap-button-text">{text}</span>}
-            {showShortcut && (
-              <HistoryShortcutBadge
-                action={action}
-                shortcutKeys={shortcutKeys}
-              />
-            )}
-          </>
-        )}
-      </Button>
-    )
-  },
-)
+  return (
+    <Button
+      type="button"
+      disabled={!canExecute}
+      data-style="ghost"
+      role="button"
+      tabIndex={-1}
+      aria-label={label}
+      tooltip={label}
+      onClick={handleClick}
+      {...buttonProps}
+      ref={ref}
+    >
+      {children ?? (
+        <>
+          <ButtonIcon>
+            <Icon />
+          </ButtonIcon>
+          {text && <span className="tiptap-button-text">{text}</span>}
+        </>
+      )}
+    </Button>
+  )
+})
 
 UndoRedoButton.displayName = "UndoRedoButton"

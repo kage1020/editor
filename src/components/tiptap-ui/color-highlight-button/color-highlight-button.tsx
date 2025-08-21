@@ -1,19 +1,17 @@
 "use client"
 
-import { Badge } from "@/components/tiptap-ui-primitive/badge"
-import type { UseColorHighlightConfig } from "@/components/tiptap-ui/color-highlight-button"
-import {
-  COLOR_HIGHLIGHT_SHORTCUT_KEY,
-  useColorHighlight,
-} from "@/components/tiptap-ui/color-highlight-button"
 import { forwardRef, useCallback, useMemo } from "react"
-
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
-import { Button } from "@/components/tiptap-ui-primitive/button"
-import { parseShortcutKeys } from "@/lib/tiptap-utils"
+import {
+  Button,
+  type ButtonProps,
+} from "@/components/tiptap-ui-primitive/button"
 import { cn } from "@/lib/utils"
+import {
+  type UseColorHighlightConfig,
+  useColorHighlight,
+} from "./use-color-highlight"
 
-export interface ColorHighlightButtonProps
+interface ColorHighlightButtonProps
   extends Omit<ButtonProps, "type">,
     UseColorHighlightConfig {
   /**
@@ -21,23 +19,10 @@ export interface ColorHighlightButtonProps
    */
   text?: string
   /**
-   * Optional show shortcut keys in the button.
-   * @default false
-   */
-  showShortcut?: boolean
-  /**
    * Whether the button is currently highlighted.
    * @default false
    */
   highlighted?: boolean
-}
-
-export function ColorHighlightShortcutBadge({
-  shortcutKeys = COLOR_HIGHLIGHT_SHORTCUT_KEY,
-}: {
-  shortcutKeys?: string
-}) {
-  return <Badge>{parseShortcutKeys({ shortcutKeys })}</Badge>
 }
 
 /**
@@ -55,7 +40,6 @@ export const ColorHighlightButton = forwardRef<
       highlightColor,
       text,
       onApplied,
-      showShortcut = false,
       onClick,
       children,
       style,
@@ -65,17 +49,12 @@ export const ColorHighlightButton = forwardRef<
     },
     ref,
   ) => {
-    const {
-      canColorHighlight,
-      isActive,
-      handleColorHighlight,
-      label,
-      shortcutKeys,
-    } = useColorHighlight({
-      highlightColor,
-      label: text || `Toggle highlight (${highlightColor})`,
-      onApplied,
-    })
+    const { canColorHighlight, isActive, handleColorHighlight, label } =
+      useColorHighlight({
+        highlightColor,
+        label: text || `Toggle highlight (${highlightColor})`,
+        onApplied,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -133,9 +112,6 @@ export const ColorHighlightButton = forwardRef<
               }
             />
             {text && <span className="tiptap-button-text">{text}</span>}
-            {showShortcut && (
-              <ColorHighlightShortcutBadge shortcutKeys={shortcutKeys} />
-            )}
           </>
         )}
       </Button>

@@ -1,14 +1,15 @@
 "use client"
 
+import { forwardRef, useCallback, useEffect, useState } from "react"
 import { CornerDownLeftIcon } from "@/components/tiptap-icons/corner-down-left-icon"
 import { ExternalLinkIcon } from "@/components/tiptap-icons/external-link-icon"
 import { LinkIcon } from "@/components/tiptap-icons/link-icon"
 import { TrashIcon } from "@/components/tiptap-icons/trash-icon"
-import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import {
   Button,
   ButtonGroup,
   ButtonIcon,
+  type ButtonProps,
 } from "@/components/tiptap-ui-primitive/button"
 import {
   Card,
@@ -22,12 +23,10 @@ import {
   PopoverTrigger,
 } from "@/components/tiptap-ui-primitive/popover"
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
-import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
-import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { forwardRef, useCallback, useEffect, useState } from "react"
+import { type UseLinkPopoverConfig, useLinkPopover } from "./use-link-popover"
 
-export interface LinkMainProps {
+interface LinkMainProps {
   /**
    * The URL to set for the link.
    */
@@ -54,7 +53,7 @@ export interface LinkMainProps {
   isActive: boolean
 }
 
-export interface LinkPopoverProps
+interface LinkPopoverProps
   extends Omit<ButtonProps, "type">,
     UseLinkPopoverConfig {
   /**
@@ -71,7 +70,7 @@ export interface LinkPopoverProps
 /**
  * Link button component for triggering the link popover
  */
-export const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
+const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
   ({ className, children, ...props }, ref) => {
     return (
       <Button
@@ -287,5 +286,3 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
 )
 
 LinkPopover.displayName = "LinkPopover"
-
-export default LinkPopover

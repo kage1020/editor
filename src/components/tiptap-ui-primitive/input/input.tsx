@@ -20,11 +20,11 @@ const tiptapInputVariants = cva(
   },
 )
 
-export interface InputProps
+interface InputProps
   extends React.ComponentProps<"input">,
     VariantProps<typeof tiptapInputVariants> {}
 
-const Input = forwardRef<HTMLInputElement, InputProps>(
+export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className, type, variant, ...props }, ref) => {
     return (
       <input
@@ -38,23 +38,22 @@ const Input = forwardRef<HTMLInputElement, InputProps>(
 )
 Input.displayName = "Input"
 
-const InputGroup = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
-  ({ className, children, ...props }, ref) => {
-    return (
-      <div
-        ref={ref}
-        className={cn(
-          "tiptap-input-group",
-          "relative flex flex-wrap items-stretch",
-          className,
-        )}
-        {...props}
-      >
-        {children}
-      </div>
-    )
-  },
-)
+export const InputGroup = forwardRef<
+  HTMLDivElement,
+  React.ComponentProps<"div">
+>(({ className, children, ...props }, ref) => {
+  return (
+    <div
+      ref={ref}
+      className={cn(
+        "tiptap-input-group",
+        "relative flex flex-wrap items-stretch",
+        className,
+      )}
+      {...props}
+    >
+      {children}
+    </div>
+  )
+})
 InputGroup.displayName = "InputGroup"
-
-export { Input, InputGroup }

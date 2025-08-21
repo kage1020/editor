@@ -1,39 +1,39 @@
 "use client"
 
-import { cn } from "@/lib/utils"
 import * as DropdownMenuPrimitive from "@radix-ui/react-dropdown-menu"
 import { cva } from "class-variance-authority"
 import { forwardRef } from "react"
+import { cn } from "@/lib/utils"
 
-function DropdownMenu({
+export function DropdownMenu({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Root>) {
   return <DropdownMenuPrimitive.Root modal={false} {...props} />
 }
 
-function DropdownMenuPortal({
+export function DropdownMenuPortal({
   ...props
 }: React.ComponentProps<typeof DropdownMenuPrimitive.Portal>) {
   return <DropdownMenuPrimitive.Portal {...props} />
 }
 
-const DropdownMenuTrigger = forwardRef<
+export const DropdownMenuTrigger = forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Trigger>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Trigger>
 >(({ ...props }, ref) => <DropdownMenuPrimitive.Trigger ref={ref} {...props} />)
 DropdownMenuTrigger.displayName = DropdownMenuPrimitive.Trigger.displayName
 
-const DropdownMenuGroup = DropdownMenuPrimitive.Group
+export const DropdownMenuGroup = DropdownMenuPrimitive.Group
 
-const DropdownMenuSub = DropdownMenuPrimitive.Sub
+export const DropdownMenuSub = DropdownMenuPrimitive.Sub
 
-const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
+export const DropdownMenuRadioGroup = DropdownMenuPrimitive.RadioGroup
 
-const DropdownMenuItem = DropdownMenuPrimitive.Item
+export const DropdownMenuItem = DropdownMenuPrimitive.Item
 
-const DropdownMenuSubTrigger = DropdownMenuPrimitive.SubTrigger
+export const DropdownMenuSubTrigger = DropdownMenuPrimitive.SubTrigger
 
-const DropdownMenuSubContent = forwardRef<
+export const DropdownMenuSubContent = forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.SubContent>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.SubContent> & {
     portal?: boolean | React.ComponentProps<typeof DropdownMenuPortal>
@@ -83,7 +83,7 @@ const dropdownMenuContentVariants = cva("", {
   },
 })
 
-const DropdownMenuContent = forwardRef<
+export const DropdownMenuContent = forwardRef<
   React.ComponentRef<typeof DropdownMenuPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DropdownMenuPrimitive.Content> & {
     portal?: boolean
@@ -115,16 +115,3 @@ const DropdownMenuContent = forwardRef<
   )
 })
 DropdownMenuContent.displayName = DropdownMenuPrimitive.Content.displayName
-
-export {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuPortal,
-  DropdownMenuRadioGroup,
-  DropdownMenuSub,
-  DropdownMenuSubContent,
-  DropdownMenuSubTrigger,
-  DropdownMenuTrigger,
-}

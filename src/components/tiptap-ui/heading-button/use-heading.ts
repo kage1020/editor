@@ -1,12 +1,11 @@
 "use client"
 
-import { HeadingFiveIcon } from "@/components/tiptap-icons/heading-five-icon"
-import { HeadingFourIcon } from "@/components/tiptap-icons/heading-four-icon"
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
-
+import { HeadingFiveIcon } from "@/components/tiptap-icons/heading-five-icon"
+import { HeadingFourIcon } from "@/components/tiptap-icons/heading-four-icon"
 import { HeadingOneIcon } from "@/components/tiptap-icons/heading-one-icon"
 import { HeadingSixIcon } from "@/components/tiptap-icons/heading-six-icon"
 import { HeadingThreeIcon } from "@/components/tiptap-icons/heading-three-icon"
@@ -45,7 +44,7 @@ export const headingIcons = {
   6: HeadingSixIcon,
 }
 
-export const HEADING_SHORTCUT_KEYS: Record<Level, string> = {
+const HEADING_SHORTCUT_KEYS: Record<Level, string> = {
   1: "ctrl+alt+1",
   2: "ctrl+alt+2",
   3: "ctrl+alt+3",
@@ -115,10 +114,7 @@ export function isHeadingActive(
 /**
  * Toggles heading in the editor
  */
-export function toggleHeading(
-  editor: Editor | null,
-  level: Level | Level[],
-): boolean {
+function toggleHeading(editor: Editor | null, level: Level | Level[]): boolean {
   if (!editor || !editor.isEditable) return false
 
   const levels = Array.isArray(level) ? level : [level]
@@ -179,29 +175,6 @@ export function toggleHeading(
   } catch {
     return false
   }
-}
-
-/**
- * Determines if the heading button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  level?: Level | Level[]
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, level, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isNodeInSchema("heading", editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    if (Array.isArray(level)) {
-      return level.some((l) => canToggle(editor, l))
-    }
-    return canToggle(editor, level)
-  }
-
-  return true
 }
 
 /**

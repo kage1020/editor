@@ -1,5 +1,8 @@
 "use client"
 
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import { BoldIcon } from "@/components/tiptap-icons/bold-icon"
 import { Code2Icon } from "@/components/tiptap-icons/code2-icon"
 import { ItalicIcon } from "@/components/tiptap-icons/italic-icon"
@@ -10,11 +13,8 @@ import { UnderlineIcon } from "@/components/tiptap-icons/underline-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
-import type { Editor } from "@tiptap/react"
-import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 
-export type Mark =
+type Mark =
   | "bold"
   | "italic"
   | "strike"
@@ -37,7 +37,7 @@ export interface UseMarkConfig {
   onToggled?: () => void
 }
 
-export const markIcons = {
+const markIcons = {
   bold: BoldIcon,
   italic: ItalicIcon,
   underline: UnderlineIcon,
@@ -47,7 +47,7 @@ export const markIcons = {
   subscript: SubscriptIcon,
 }
 
-export const MARK_SHORTCUT_KEYS: Record<Mark, string> = {
+const MARK_SHORTCUT_KEYS: Record<Mark, string> = {
   bold: "mod+b",
   italic: "mod+i",
   underline: "mod+u",
@@ -60,7 +60,7 @@ export const MARK_SHORTCUT_KEYS: Record<Mark, string> = {
 /**
  * Checks if a mark can be toggled in the current editor state
  */
-export function canToggleMark(editor: Editor | null, type: Mark): boolean {
+function canToggleMark(editor: Editor | null, type: Mark): boolean {
   if (!editor || !editor.isEditable) return false
   if (!isMarkInSchema(type, editor) || isNodeTypeSelected(editor, ["image"]))
     return false
@@ -71,7 +71,7 @@ export function canToggleMark(editor: Editor | null, type: Mark): boolean {
 /**
  * Checks if a mark is currently active
  */
-export function isMarkActive(editor: Editor | null, type: Mark): boolean {
+function isMarkActive(editor: Editor | null, type: Mark): boolean {
   if (!editor || !editor.isEditable) return false
   return editor.isActive(type)
 }
@@ -79,7 +79,7 @@ export function isMarkActive(editor: Editor | null, type: Mark): boolean {
 /**
  * Toggles a mark in the editor
  */
-export function toggleMark(editor: Editor | null, type: Mark): boolean {
+function toggleMark(editor: Editor | null, type: Mark): boolean {
   if (!editor || !editor.isEditable) return false
   if (!canToggleMark(editor, type)) return false
 
@@ -87,29 +87,9 @@ export function toggleMark(editor: Editor | null, type: Mark): boolean {
 }
 
 /**
- * Determines if the mark button should be shown
- */
-export function shouldShowButton(props: {
-  editor: Editor | null
-  type: Mark
-  hideWhenUnavailable: boolean
-}): boolean {
-  const { editor, type, hideWhenUnavailable } = props
-
-  if (!editor || !editor.isEditable) return false
-  if (!isMarkInSchema(type, editor)) return false
-
-  if (hideWhenUnavailable && !editor.isActive("code")) {
-    return canToggleMark(editor, type)
-  }
-
-  return true
-}
-
-/**
  * Gets the formatted mark name
  */
-export function getFormattedMarkName(type: Mark): string {
+function getFormattedMarkName(type: Mark): string {
   return type.charAt(0).toUpperCase() + type.slice(1)
 }
 
