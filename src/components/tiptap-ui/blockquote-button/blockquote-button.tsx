@@ -10,7 +10,6 @@ import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
 export interface BlockquoteButtonProps
@@ -46,9 +45,7 @@ export const BlockquoteButton = forwardRef<
 >(
   (
     {
-      editor: providedEditor,
       text,
-      hideWhenUnavailable = false,
       onToggled,
       showShortcut = false,
       onClick,
@@ -57,20 +54,10 @@ export const BlockquoteButton = forwardRef<
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      canToggle,
-      isActive,
-      handleToggle,
-      label,
-      shortcutKeys,
-      Icon,
-    } = useBlockquote({
-      editor,
-      hideWhenUnavailable,
-      onToggled,
-    })
+    const { canToggle, isActive, handleToggle, label, shortcutKeys, Icon } =
+      useBlockquote({
+        onToggled,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,10 +67,6 @@ export const BlockquoteButton = forwardRef<
       },
       [handleToggle, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

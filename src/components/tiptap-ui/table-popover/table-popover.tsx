@@ -50,15 +50,6 @@ export interface TablePopoverProps
   extends Omit<ButtonProps, "type">,
     Pick<TablePopoverContentProps, "maxRows" | "maxCols" | "onTableInsert"> {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether to hide the button when the table functionality is unavailable.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
-  /**
    * Callback for when the popover opens or closes.
    */
   onOpenChange?: (isOpen: boolean) => void
@@ -290,15 +281,13 @@ export function TablePopoverContent({
  * Table popover component for Tiptap editors.
  */
 export function TablePopover({
-  editor: providedEditor,
   maxRows = 10,
   maxCols = 10,
-  hideWhenUnavailable = false,
   onTableInsert,
   onOpenChange,
   ...props
 }: TablePopoverProps) {
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const [isOpen, setIsOpen] = useState(false)
 
   const canInsertTable =
@@ -319,10 +308,6 @@ export function TablePopover({
     },
     [onTableInsert],
   )
-
-  if (hideWhenUnavailable && !canInsertTable) {
-    return null
-  }
 
   return (
     <Popover open={isOpen} onOpenChange={handleOnOpenChange}>

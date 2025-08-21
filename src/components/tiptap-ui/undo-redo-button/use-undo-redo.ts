@@ -1,13 +1,13 @@
 "use client"
 
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { Redo2Icon } from "@/components/tiptap-icons/redo2-icon"
 import { Undo2Icon } from "@/components/tiptap-icons/undo2-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isNodeTypeSelected } from "@/lib/tiptap-utils"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export type UndoRedoAction = "undo" | "redo"
 
@@ -16,18 +16,9 @@ export type UndoRedoAction = "undo" | "redo"
  */
 export interface UseUndoRedoConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The history action to perform (undo or redo).
    */
   action: UndoRedoAction
-  /**
-   * Whether the button should hide when action is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful action execution.
    */
@@ -99,33 +90,11 @@ export function shouldShowButton(props: {
  * Custom hook that provides history functionality for Tiptap editor
  */
 export function useUndoRedo(config: UseUndoRedoConfig) {
-  const {
-    editor: providedEditor,
-    action,
-    hideWhenUnavailable = false,
-    onExecuted,
-  } = config
+  const { action, onExecuted } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canExecute = canExecuteUndoRedoAction(editor, action)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable, action }))
-    }
-
-    handleUpdate()
-
-    editor.on("transaction", handleUpdate)
-
-    return () => {
-      editor.off("transaction", handleUpdate)
-    }
-  }, [editor, hideWhenUnavailable, action])
 
   const handleAction = useCallback(() => {
     if (!editor) return false
@@ -144,14 +113,13 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
       handleAction()
     },
     {
-      enabled: isVisible && canExecute,
+      enabled: canExecute,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     handleAction,
     canExecute,
     label: historyActionLabels[action],

@@ -1,7 +1,7 @@
 "use client"
 
 import type { Editor } from "@tiptap/react"
-import { useEffect, useMemo, useState } from "react"
+import { useMemo } from "react"
 
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
 import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
@@ -9,30 +9,20 @@ import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
 import {
   canToggleList,
   isListActive,
-  type ListType,
   listIcons,
+  type ListType,
 } from "@/components/tiptap-ui/list-button"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { isNodeInSchema } from "@/lib/tiptap-utils"
 
 /**
  * Configuration for the list dropdown menu functionality
  */
 export interface UseListDropdownMenuConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The list types to display in the dropdown.
    * @default ["bulletList", "orderedList", "taskList"]
    */
   types?: ListType[]
-  /**
-   * Whether the dropdown should be hidden when no list types are available
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
 }
 
 export interface ListOption {
@@ -118,16 +108,9 @@ export function getActiveListType(
  * Custom hook that provides list dropdown menu functionality for Tiptap editor
  */
 export function useListDropdownMenu(config?: UseListDropdownMenuConfig) {
-  const {
-    editor: providedEditor,
-    types = ["bulletList", "orderedList", "taskList"],
-    hideWhenUnavailable = false,
-  } = config || {}
+  const { types = ["bulletList", "orderedList", "taskList"] } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
-  const [isVisible, setIsVisible] = useState(false)
-
-  const listInSchema = types.some((type) => isNodeInSchema(type, editor))
+  const { editor } = useTiptapEditor()
 
   const filteredLists = useMemo(() => getFilteredListOptions(types), [types])
 
@@ -136,32 +119,7 @@ export function useListDropdownMenu(config?: UseListDropdownMenuConfig) {
   const activeType = getActiveListType(editor, types)
   const activeList = filteredLists.find((option) => option.type === activeType)
 
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(
-        shouldShowListDropdown({
-          editor,
-          listTypes: types,
-          hideWhenUnavailable,
-          listInSchema,
-          canToggleAny,
-        }),
-      )
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [canToggleAny, editor, hideWhenUnavailable, listInSchema, types])
-
   return {
-    isVisible,
     activeType,
     isActive: isAnyActive,
     canToggle: canToggleAny,

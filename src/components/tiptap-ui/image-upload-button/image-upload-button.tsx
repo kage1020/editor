@@ -10,7 +10,6 @@ import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
 export interface ImageUploadButtonProps
@@ -46,9 +45,7 @@ export const ImageUploadButton = forwardRef<
 >(
   (
     {
-      editor: providedEditor,
       text,
-      hideWhenUnavailable = false,
       onInserted,
       showShortcut = false,
       onClick,
@@ -57,20 +54,10 @@ export const ImageUploadButton = forwardRef<
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      canInsert,
-      handleImage,
-      label,
-      isActive,
-      shortcutKeys,
-      Icon,
-    } = useImageUpload({
-      editor,
-      hideWhenUnavailable,
-      onInserted,
-    })
+    const { canInsert, handleImage, label, isActive, shortcutKeys, Icon } =
+      useImageUpload({
+        onInserted,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,10 +67,6 @@ export const ImageUploadButton = forwardRef<
       },
       [handleImage, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

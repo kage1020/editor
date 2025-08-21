@@ -1,8 +1,5 @@
 "use client"
 
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { BoldIcon } from "@/components/tiptap-icons/bold-icon"
 import { Code2Icon } from "@/components/tiptap-icons/code2-icon"
 import { ItalicIcon } from "@/components/tiptap-icons/italic-icon"
@@ -13,6 +10,9 @@ import { UnderlineIcon } from "@/components/tiptap-icons/underline-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export type Mark =
   | "bold"
@@ -28,18 +28,9 @@ export type Mark =
  */
 export interface UseMarkConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The type of mark to toggle
    */
   type: Mark
-  /**
-   * Whether the button should hide when mark is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful mark toggle.
    */
@@ -126,34 +117,12 @@ export function getFormattedMarkName(type: Mark): string {
  * Custom hook that provides mark functionality for Tiptap editor
  */
 export function useMark(config: UseMarkConfig) {
-  const {
-    editor: providedEditor,
-    type,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config
+  const { type, onToggled } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleMark(editor, type)
   const isActive = isMarkActive(editor, type)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, type, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, type, hideWhenUnavailable])
 
   const handleMark = useCallback(() => {
     if (!editor) return false
@@ -172,14 +141,13 @@ export function useMark(config: UseMarkConfig) {
       handleMark()
     },
     {
-      enabled: isVisible && canToggle,
+      enabled: canToggle,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleMark,
     canToggle,

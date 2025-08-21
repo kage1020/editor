@@ -10,7 +10,6 @@ import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
 export interface DetailsButtonProps
@@ -43,9 +42,7 @@ export function DetailsShortcutBadge({
 export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
   (
     {
-      editor: providedEditor,
       text,
-      hideWhenUnavailable = false,
       onToggled,
       showShortcut = false,
       onClick,
@@ -54,20 +51,10 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      canToggle,
-      isActive,
-      handleToggle,
-      label,
-      shortcutKeys,
-      Icon,
-    } = useDetails({
-      editor,
-      hideWhenUnavailable,
-      onToggled,
-    })
+    const { canToggle, isActive, handleToggle, label, shortcutKeys, Icon } =
+      useDetails({
+        onToggled,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -77,10 +64,6 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
       },
       [handleToggle, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

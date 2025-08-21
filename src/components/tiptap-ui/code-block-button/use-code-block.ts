@@ -1,9 +1,5 @@
 "use client"
 
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { CodeBlockIcon } from "@/components/tiptap-icons/code-block-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -13,6 +9,10 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export const CODE_BLOCK_SHORTCUT_KEY = "mod+alt+c"
 
@@ -20,15 +20,6 @@ export const CODE_BLOCK_SHORTCUT_KEY = "mod+alt+c"
  * Configuration for the code block functionality
  */
 export interface UseCodeBlockConfig {
-  /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether the button should hide when code block is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful code block toggle.
    */
@@ -154,33 +145,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides code block functionality for Tiptap editor
  */
 export function useCodeBlock(config?: UseCodeBlockConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config || {}
+  const { onToggled } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggleState = canToggle(editor)
   const isActive = editor?.isActive("codeBlock") || false
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {
     if (!editor) return false
@@ -199,14 +169,13 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
       handleToggle()
     },
     {
-      enabled: isVisible && canToggleState,
+      enabled: canToggleState,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleToggle,
     canToggle: canToggleState,

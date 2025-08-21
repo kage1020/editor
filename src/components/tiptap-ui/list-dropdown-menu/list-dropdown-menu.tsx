@@ -18,7 +18,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/tiptap-ui-primitive/dropdown-menu"
 import { ListButton, type ListType } from "@/components/tiptap-ui/list-button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { useListDropdownMenu } from "./use-list-dropdown-menu"
 
 export interface ListDropdownMenuProps extends Omit<ButtonProps, "type"> {
@@ -49,20 +48,15 @@ export interface ListDropdownMenuProps extends Omit<ButtonProps, "type"> {
 export function ListDropdownMenu({
   editor: providedEditor,
   types = ["bulletList", "orderedList", "taskList"],
-  hideWhenUnavailable = false,
   onOpenChange,
   portal = false,
   ...props
 }: ListDropdownMenuProps) {
-  const { editor } = useTiptapEditor(providedEditor)
   const [isOpen, setIsOpen] = useState(false)
 
-  const { filteredLists, canToggle, isActive, isVisible, Icon } =
-    useListDropdownMenu({
-      editor,
-      types,
-      hideWhenUnavailable,
-    })
+  const { filteredLists, canToggle, isActive, Icon } = useListDropdownMenu({
+    types,
+  })
 
   const handleOnOpenChange = useCallback(
     (open: boolean) => {
@@ -71,10 +65,6 @@ export function ListDropdownMenu({
     },
     [onOpenChange],
   )
-
-  if (!isVisible || !editor || !editor.isEditable) {
-    return null
-  }
 
   return (
     <DropdownMenu open={isOpen} onOpenChange={handleOnOpenChange}>
@@ -106,7 +96,6 @@ export function ListDropdownMenu({
               {filteredLists.map((option) => (
                 <DropdownMenuItem key={option.type} asChild>
                   <ListButton
-                    editor={editor}
                     type={option.type}
                     text={option.label}
                     showTooltip={false}

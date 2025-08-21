@@ -10,7 +10,6 @@ import { forwardRef, useCallback, useMemo } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { cn } from "@/lib/utils"
 
@@ -53,10 +52,8 @@ export const ColorHighlightButton = forwardRef<
   (
     {
       className,
-      editor: providedEditor,
       highlightColor,
       text,
-      hideWhenUnavailable = false,
       onApplied,
       showShortcut = false,
       onClick,
@@ -68,19 +65,15 @@ export const ColorHighlightButton = forwardRef<
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
     const {
-      isVisible,
       canColorHighlight,
       isActive,
       handleColorHighlight,
       label,
       shortcutKeys,
     } = useColorHighlight({
-      editor,
       highlightColor,
       label: text || `Toggle highlight (${highlightColor})`,
-      hideWhenUnavailable,
       onApplied,
     })
 
@@ -101,10 +94,6 @@ export const ColorHighlightButton = forwardRef<
         }) as React.CSSProperties,
       [highlightColor, style],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

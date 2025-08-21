@@ -5,7 +5,7 @@ import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
 import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
+import { useCallback } from "react"
 import { useHotkeys } from "react-hotkeys-hook"
 
 export const COLOR_HIGHLIGHT_SHORTCUT_KEY = "mod+shift+h"
@@ -68,10 +68,6 @@ export type HighlightColor = (typeof HIGHLIGHT_COLORS)[number]
  */
 export interface UseColorHighlightConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The color to apply when toggling the highlight.
    */
   highlightColor?: string
@@ -79,11 +75,6 @@ export interface UseColorHighlightConfig {
    * Optional label to display alongside the icon.
    */
   label?: string
-  /**
-   * Whether the button should hide when the mark is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Called when the highlight is applied.
    */
@@ -144,35 +135,12 @@ export function shouldShowButton(props: {
 }
 
 export function useColorHighlight(config: UseColorHighlightConfig) {
-  const {
-    editor: providedEditor,
-    label,
-    highlightColor,
-    hideWhenUnavailable = false,
-    onApplied,
-  } = config
+  const { label, highlightColor, onApplied } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canColorHighlightState = canColorHighlight(editor)
   const isActive = isColorHighlightActive(editor, highlightColor)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
 
   const handleColorHighlight = useCallback(() => {
     if (!editor || !canColorHighlightState || !highlightColor || !label)
@@ -204,14 +172,13 @@ export function useColorHighlight(config: UseColorHighlightConfig) {
       handleColorHighlight()
     },
     {
-      enabled: isVisible && canColorHighlightState,
+      enabled: canColorHighlightState,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleColorHighlight,
     handleRemoveHighlight,

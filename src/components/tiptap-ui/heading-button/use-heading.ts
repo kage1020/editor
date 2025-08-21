@@ -1,11 +1,11 @@
 "use client"
 
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { HeadingFiveIcon } from "@/components/tiptap-icons/heading-five-icon"
 import { HeadingFourIcon } from "@/components/tiptap-icons/heading-four-icon"
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 import { HeadingOneIcon } from "@/components/tiptap-icons/heading-one-icon"
 import { HeadingSixIcon } from "@/components/tiptap-icons/heading-six-icon"
@@ -27,18 +27,9 @@ export type Level = 1 | 2 | 3 | 4 | 5 | 6
  */
 export interface UseHeadingConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The heading level.
    */
   level: Level
-  /**
-   * Whether the button should hide when heading is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful heading toggle.
    */
@@ -217,34 +208,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides heading functionality for Tiptap editor
  */
 export function useHeading(config: UseHeadingConfig) {
-  const {
-    editor: providedEditor,
-    level,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config
+  const { level, onToggled } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggleState = canToggle(editor, level)
   const isActive = isHeadingActive(editor, level)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, level, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, level, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {
     if (!editor) return false
@@ -263,14 +232,13 @@ export function useHeading(config: UseHeadingConfig) {
       handleToggle()
     },
     {
-      enabled: isVisible && canToggleState,
+      enabled: canToggleState,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleToggle,
     canToggle: canToggleState,

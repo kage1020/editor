@@ -1,12 +1,12 @@
 "use client"
 
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { ImagePlusIcon } from "@/components/tiptap-icons/image-plus-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export const IMAGE_UPLOAD_SHORTCUT_KEY = "mod+shift+i"
 
@@ -14,15 +14,6 @@ export const IMAGE_UPLOAD_SHORTCUT_KEY = "mod+shift+i"
  * Configuration for the image upload functionality
  */
 export interface UseImageUploadConfig {
-  /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether the button should hide when insertion is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful image insertion.
    */
@@ -94,33 +85,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides image functionality for Tiptap editor
  */
 export function useImageUpload(config?: UseImageUploadConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onInserted,
-  } = config || {}
+  const { onInserted } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canInsert = canInsertImage(editor)
   const isActive = isImageActive(editor)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
 
   const handleImage = useCallback(() => {
     if (!editor) return false
@@ -139,14 +109,13 @@ export function useImageUpload(config?: UseImageUploadConfig) {
       handleImage()
     },
     {
-      enabled: isVisible && canInsert,
+      enabled: canInsert,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleImage,
     canInsert,

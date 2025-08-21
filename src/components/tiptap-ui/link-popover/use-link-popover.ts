@@ -12,15 +12,6 @@ import { isMarkInSchema, sanitizeUrl } from "@/lib/tiptap-utils"
  */
 export interface UseLinkPopoverConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether to hide the link popover when not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
-  /**
    * Callback function called when the link is set.
    */
   onSetLink?: () => void
@@ -165,63 +156,14 @@ export function useLinkHandler(props: LinkHandlerProps) {
 }
 
 /**
- * Custom hook for link popover state management
- */
-export function useLinkState(props: {
-  editor: Editor | null
-  hideWhenUnavailable: boolean
-}) {
-  const { editor, hideWhenUnavailable = false } = props
-
-  const canSet = canSetLink(editor)
-  const isActive = isLinkActive(editor)
-
-  const [isVisible, setIsVisible] = useState(false)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(
-        shouldShowLinkButton({
-          editor,
-          hideWhenUnavailable,
-        }),
-      )
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
-
-  return {
-    isVisible,
-    canSet,
-    isActive,
-  }
-}
-
-/**
  * Main hook that provides link popover functionality for Tiptap editor
  */
 export function useLinkPopover(config?: UseLinkPopoverConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onSetLink,
-  } = config || {}
+  const { onSetLink } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
-
-  const { isVisible, canSet, isActive } = useLinkState({
-    editor,
-    hideWhenUnavailable,
-  })
+  const { editor } = useTiptapEditor()
+  const canSet = canSetLink(editor)
+  const isActive = isLinkActive(editor)
 
   const linkHandler = useLinkHandler({
     editor,
@@ -229,7 +171,6 @@ export function useLinkPopover(config?: UseLinkPopoverConfig) {
   })
 
   return {
-    isVisible,
     canSet,
     isActive,
     label: "Link",

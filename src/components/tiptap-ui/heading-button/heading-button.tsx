@@ -11,7 +11,6 @@ import {
   HEADING_SHORTCUT_KEYS,
   useHeading,
 } from "@/components/tiptap-ui/heading-button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { forwardRef, useCallback } from "react"
 
@@ -47,10 +46,8 @@ export function HeadingShortcutBadge({
 export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
   (
     {
-      editor: providedEditor,
       level,
       text,
-      hideWhenUnavailable = false,
       onToggled,
       showShortcut = false,
       onClick,
@@ -59,21 +56,11 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      canToggle,
-      isActive,
-      handleToggle,
-      label,
-      Icon,
-      shortcutKeys,
-    } = useHeading({
-      editor,
-      level,
-      hideWhenUnavailable,
-      onToggled,
-    })
+    const { canToggle, isActive, handleToggle, label, Icon, shortcutKeys } =
+      useHeading({
+        level,
+        onToggled,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -83,10 +70,6 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
       },
       [handleToggle, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

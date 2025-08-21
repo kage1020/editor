@@ -25,8 +25,6 @@ import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import type { UseLinkPopoverConfig } from "@/components/tiptap-ui/link-popover"
 import { useLinkPopover } from "@/components/tiptap-ui/link-popover"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import type { Editor } from "@tiptap/react"
 import { forwardRef, useCallback, useEffect, useState } from "react"
 
 export interface LinkMainProps {
@@ -193,19 +191,6 @@ const LinkMain: React.FC<LinkMainProps> = ({
 }
 
 /**
- * Link content component for standalone use
- */
-export const LinkContent: React.FC<{
-  editor?: Editor | null
-}> = ({ editor }) => {
-  const linkPopover = useLinkPopover({
-    editor,
-  })
-
-  return <LinkMain {...linkPopover} />
-}
-
-/**
  * Link popover component for Tiptap editors.
  *
  * For custom popover implementations, use the `useLinkPopover` hook instead.
@@ -213,8 +198,6 @@ export const LinkContent: React.FC<{
 export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
   (
     {
-      editor: providedEditor,
-      hideWhenUnavailable = false,
       onSetLink,
       onOpenChange,
       autoOpenOnLinkActive = true,
@@ -224,11 +207,9 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
     const [isOpen, setIsOpen] = useState(false)
 
     const {
-      isVisible,
       canSet,
       isActive,
       url,
@@ -239,8 +220,6 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
       label,
       Icon,
     } = useLinkPopover({
-      editor,
-      hideWhenUnavailable,
       onSetLink,
     })
 
@@ -271,10 +250,6 @@ export const LinkPopover = forwardRef<HTMLButtonElement, LinkPopoverProps>(
         setIsOpen(true)
       }
     }, [autoOpenOnLinkActive, isActive])
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Popover open={isOpen} onOpenChange={handleOnOpenChange}>

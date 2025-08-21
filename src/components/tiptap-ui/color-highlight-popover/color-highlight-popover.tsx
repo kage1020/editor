@@ -11,7 +11,6 @@ import {
   pickHighlightColorsByValue,
   useColorHighlight,
 } from "@/components/tiptap-ui/color-highlight-button"
-import type { Editor } from "@tiptap/react"
 import { forwardRef, useMemo, useRef, useState } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
@@ -33,14 +32,9 @@ import {
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { useMenuNavigation } from "@/hooks/use-menu-navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { cn } from "@/lib/utils"
 
 export interface ColorHighlightPopoverContentProps {
-  /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
   /**
    * Optional colors to use in the highlight popover.
    * If not provided, defaults to a predefined set of colors.
@@ -50,10 +44,7 @@ export interface ColorHighlightPopoverContentProps {
 
 export interface ColorHighlightPopoverProps
   extends Omit<ButtonProps, "type">,
-    Pick<
-      UseColorHighlightConfig,
-      "editor" | "hideWhenUnavailable" | "onApplied"
-    > {
+    Pick<UseColorHighlightConfig, "onApplied"> {
   /**
    * Optional colors to use in the highlight popover.
    * If not provided, defaults to a predefined set of colors.
@@ -88,7 +79,6 @@ export const ColorHighlightPopoverButton = forwardRef<
 ColorHighlightPopoverButton.displayName = "ColorHighlightPopoverButton"
 
 export function ColorHighlightPopoverContent({
-  editor,
   colors = pickHighlightColorsByValue([
     "#dcfce7",
     "#e0f2fe",
@@ -97,7 +87,7 @@ export function ColorHighlightPopoverContent({
     "#fef9c3",
   ]),
 }: ColorHighlightPopoverContentProps) {
-  const { handleRemoveHighlight } = useColorHighlight({ editor })
+  const { handleRemoveHighlight } = useColorHighlight({})
   const isMobile = useIsMobile()
   const containerRef = useRef<HTMLDivElement>(null)
   const colorsRefs = useRef<(HTMLButtonElement | null)[]>([])
@@ -134,7 +124,6 @@ export function ColorHighlightPopoverContent({
                   colorsRefs.current[index] = el
                 }}
                 key={color.value}
-                editor={editor}
                 highlightColor={color.value}
                 tooltip={color.label}
                 aria-label={`${color.label} highlight color`}
@@ -170,7 +159,6 @@ export function ColorHighlightPopoverContent({
 }
 
 export function ColorHighlightPopover({
-  editor: providedEditor,
   colors = pickHighlightColorsByValue([
     "#dcfce7",
     "#e0f2fe",
@@ -178,20 +166,13 @@ export function ColorHighlightPopover({
     "#f3e8ff",
     "#fef9c3",
   ]),
-  hideWhenUnavailable = false,
   onApplied,
   ...props
 }: ColorHighlightPopoverProps) {
-  const { editor } = useTiptapEditor(providedEditor)
   const [isOpen, setIsOpen] = useState(false)
-  const { isVisible, canColorHighlight, isActive, label, Icon } =
-    useColorHighlight({
-      editor,
-      hideWhenUnavailable,
-      onApplied,
-    })
-
-  if (!isVisible) return null
+  const { canColorHighlight, isActive, label, Icon } = useColorHighlight({
+    onApplied,
+  })
 
   return (
     <Popover open={isOpen} onOpenChange={setIsOpen}>
@@ -210,7 +191,7 @@ export function ColorHighlightPopover({
         </ColorHighlightPopoverButton>
       </PopoverTrigger>
       <PopoverContent aria-label="Highlight colors">
-        <ColorHighlightPopoverContent editor={editor} colors={colors} />
+        <ColorHighlightPopoverContent colors={colors} />
       </PopoverContent>
     </Popover>
   )

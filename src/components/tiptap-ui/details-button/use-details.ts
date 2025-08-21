@@ -1,9 +1,5 @@
 "use client"
 
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { DetailsIcon } from "@/components/tiptap-icons/details-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -13,6 +9,10 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export const DETAILS_SHORTCUT_KEY = "mod+shift+d"
 
@@ -20,15 +20,6 @@ export const DETAILS_SHORTCUT_KEY = "mod+shift+d"
  * Configuration for the details functionality
  */
 export interface UseDetailsConfig {
-  /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether the button should hide when details is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful toggle.
    */
@@ -154,33 +145,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides details functionality for Tiptap editor
  */
 export function useDetails(config?: UseDetailsConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config || {}
+  const { onToggled } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleDetails(editor)
   const isActive = editor?.isActive("details") || false
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {
     if (!editor) return false
@@ -199,14 +169,13 @@ export function useDetails(config?: UseDetailsConfig) {
       handleToggle()
     },
     {
-      enabled: isVisible && canToggle,
+      enabled: canToggle,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleToggle,
     canToggle,

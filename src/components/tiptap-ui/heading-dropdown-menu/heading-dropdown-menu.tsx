@@ -47,21 +47,17 @@ export const HeadingDropdownMenu = forwardRef<
 >(
   (
     {
-      editor: providedEditor,
       levels = [1, 2, 3, 4, 5, 6],
-      hideWhenUnavailable = false,
       portal = false,
       onOpenChange,
       ...buttonProps
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
+    const { editor } = useTiptapEditor()
     const [isOpen, setIsOpen] = useState(false)
-    const { isVisible, isActive, canToggle, Icon } = useHeadingDropdownMenu({
-      editor,
+    const { isActive, canToggle, Icon } = useHeadingDropdownMenu({
       levels,
-      hideWhenUnavailable,
     })
 
     const handleOpenChange = useCallback(
@@ -72,10 +68,6 @@ export const HeadingDropdownMenu = forwardRef<
       },
       [canToggle, editor, onOpenChange],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <DropdownMenu open={isOpen} onOpenChange={handleOpenChange}>
@@ -109,7 +101,6 @@ export const HeadingDropdownMenu = forwardRef<
                 {levels.map((level) => (
                   <DropdownMenuItem key={`heading-${level}`} asChild>
                     <HeadingButton
-                      editor={editor}
                       level={level}
                       text={`Heading ${level}`}
                       showTooltip={false}

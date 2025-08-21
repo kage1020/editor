@@ -1,9 +1,5 @@
 "use client"
 
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { BlockquoteIcon } from "@/components/tiptap-icons/blockquote-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
@@ -13,6 +9,10 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export const BLOCKQUOTE_SHORTCUT_KEY = "mod+shift+b"
 
@@ -20,15 +20,6 @@ export const BLOCKQUOTE_SHORTCUT_KEY = "mod+shift+b"
  * Configuration for the blockquote functionality
  */
 export interface UseBlockquoteConfig {
-  /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
-   * Whether the button should hide when blockquote is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful toggle.
    */
@@ -154,33 +145,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides blockquote functionality for Tiptap editor
  */
 export function useBlockquote(config?: UseBlockquoteConfig) {
-  const {
-    editor: providedEditor,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config || {}
+  const { onToggled } = config || {}
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleBlockquote(editor)
   const isActive = editor?.isActive("blockquote") || false
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {
     if (!editor) return false
@@ -199,14 +169,13 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
       handleToggle()
     },
     {
-      enabled: isVisible && canToggle,
+      enabled: canToggle,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleToggle,
     canToggle,

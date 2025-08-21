@@ -1,9 +1,5 @@
 "use client"
 
-import { NodeSelection, TextSelection } from "@tiptap/pm/state"
-import type { Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { ListIcon } from "@/components/tiptap-icons/list-icon"
 import { ListOrderedIcon } from "@/components/tiptap-icons/list-ordered-icon"
 import { ListTodoIcon } from "@/components/tiptap-icons/list-todo-icon"
@@ -15,6 +11,10 @@ import {
   isNodeTypeSelected,
   isValidPosition,
 } from "@/lib/tiptap-utils"
+import { NodeSelection, TextSelection } from "@tiptap/pm/state"
+import type { Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export type ListType = "bulletList" | "orderedList" | "taskList"
 
@@ -23,18 +23,9 @@ export type ListType = "bulletList" | "orderedList" | "taskList"
  */
 export interface UseListConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The type of list to toggle.
    */
   type: ListType
-  /**
-   * Whether the button should hide when list is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful toggle.
    */
@@ -220,34 +211,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides list functionality for Tiptap editor
  */
 export function useList(config: UseListConfig) {
-  const {
-    editor: providedEditor,
-    type,
-    hideWhenUnavailable = false,
-    onToggled,
-  } = config
+  const { type, onToggled } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canToggle = canToggleList(editor, type)
   const isActive = isListActive(editor, type)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, type, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, type, hideWhenUnavailable])
 
   const handleToggle = useCallback(() => {
     if (!editor) return false
@@ -266,14 +235,13 @@ export function useList(config: UseListConfig) {
       handleToggle()
     },
     {
-      enabled: isVisible && canToggle,
+      enabled: canToggle,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleToggle,
     canToggle,

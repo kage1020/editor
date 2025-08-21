@@ -13,7 +13,6 @@ import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
 export interface UndoRedoButtonProps
@@ -51,10 +50,8 @@ export const UndoRedoButton = forwardRef<
 >(
   (
     {
-      editor: providedEditor,
       action,
       text,
-      hideWhenUnavailable = false,
       onExecuted,
       showShortcut = false,
       onClick,
@@ -63,14 +60,12 @@ export const UndoRedoButton = forwardRef<
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const { isVisible, handleAction, label, canExecute, Icon, shortcutKeys } =
-      useUndoRedo({
-        editor,
+    const { handleAction, label, canExecute, Icon, shortcutKeys } = useUndoRedo(
+      {
         action,
-        hideWhenUnavailable,
         onExecuted,
-      })
+      },
+    )
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,10 +75,6 @@ export const UndoRedoButton = forwardRef<
       },
       [handleAction, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

@@ -1,8 +1,5 @@
 "use client"
 
-import type { ChainedCommands, Editor } from "@tiptap/react"
-import { useCallback, useEffect, useState } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { AlignCenterIcon } from "@/components/tiptap-icons/align-center-icon"
 import { AlignJustifyIcon } from "@/components/tiptap-icons/align-justify-icon"
 import { AlignLeftIcon } from "@/components/tiptap-icons/align-left-icon"
@@ -10,6 +7,9 @@ import { AlignRightIcon } from "@/components/tiptap-icons/align-right-icon"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"
+import type { ChainedCommands, Editor } from "@tiptap/react"
+import { useCallback } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 
 export type TextAlign = "left" | "center" | "right" | "justify"
 
@@ -18,18 +18,9 @@ export type TextAlign = "left" | "center" | "right" | "justify"
  */
 export interface UseTextAlignConfig {
   /**
-   * The Tiptap editor instance.
-   */
-  editor?: Editor | null
-  /**
    * The text alignment to apply.
    */
   align: TextAlign
-  /**
-   * Whether the button should hide when alignment is not available.
-   * @default false
-   */
-  hideWhenUnavailable?: boolean
   /**
    * Callback function called after a successful alignment change.
    */
@@ -132,34 +123,12 @@ export function shouldShowButton(props: {
  * Custom hook that provides text align functionality for Tiptap editor
  */
 export function useTextAlign(config: UseTextAlignConfig) {
-  const {
-    editor: providedEditor,
-    align,
-    hideWhenUnavailable = false,
-    onAligned,
-  } = config
+  const { align, onAligned } = config
 
-  const { editor } = useTiptapEditor(providedEditor)
+  const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
-  const [isVisible, setIsVisible] = useState<boolean>(true)
   const canAlign = canSetTextAlign(editor, align)
   const isActive = isTextAlignActive(editor, align)
-
-  useEffect(() => {
-    if (!editor) return
-
-    const handleSelectionUpdate = () => {
-      setIsVisible(shouldShowButton({ editor, align, hideWhenUnavailable }))
-    }
-
-    handleSelectionUpdate()
-
-    editor.on("selectionUpdate", handleSelectionUpdate)
-
-    return () => {
-      editor.off("selectionUpdate", handleSelectionUpdate)
-    }
-  }, [editor, hideWhenUnavailable, align])
 
   const handleTextAlign = useCallback(() => {
     if (!editor) return false
@@ -178,14 +147,13 @@ export function useTextAlign(config: UseTextAlignConfig) {
       handleTextAlign()
     },
     {
-      enabled: isVisible && canAlign,
+      enabled: canAlign,
       enableOnContentEditable: !isMobile,
       enableOnFormTags: true,
     },
   )
 
   return {
-    isVisible,
     isActive,
     handleTextAlign,
     canAlign,

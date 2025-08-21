@@ -13,7 +13,6 @@ import { forwardRef, useCallback } from "react"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, ButtonIcon } from "@/components/tiptap-ui-primitive/button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 
 export interface TextAlignButtonProps
@@ -51,10 +50,8 @@ export const TextAlignButton = forwardRef<
 >(
   (
     {
-      editor: providedEditor,
       align,
       text,
-      hideWhenUnavailable = false,
       onAligned,
       showShortcut = false,
       onClick,
@@ -63,21 +60,11 @@ export const TextAlignButton = forwardRef<
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      handleTextAlign,
-      label,
-      canAlign,
-      isActive,
-      Icon,
-      shortcutKeys,
-    } = useTextAlign({
-      editor,
-      align,
-      hideWhenUnavailable,
-      onAligned,
-    })
+    const { handleTextAlign, label, canAlign, isActive, Icon, shortcutKeys } =
+      useTextAlign({
+        align,
+        onAligned,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -87,10 +74,6 @@ export const TextAlignButton = forwardRef<
       },
       [handleTextAlign, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button

@@ -8,7 +8,6 @@ import type {
   UseListConfig,
 } from "@/components/tiptap-ui/list-button"
 import { LIST_SHORTCUT_KEYS, useList } from "@/components/tiptap-ui/list-button"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { forwardRef, useCallback } from "react"
 
@@ -44,10 +43,8 @@ export function ListShortcutBadge({
 export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
   (
     {
-      editor: providedEditor,
       type,
       text,
-      hideWhenUnavailable = false,
       onToggled,
       showShortcut = false,
       onClick,
@@ -56,21 +53,11 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
     },
     ref,
   ) => {
-    const { editor } = useTiptapEditor(providedEditor)
-    const {
-      isVisible,
-      canToggle,
-      isActive,
-      handleToggle,
-      label,
-      shortcutKeys,
-      Icon,
-    } = useList({
-      editor,
-      type,
-      hideWhenUnavailable,
-      onToggled,
-    })
+    const { canToggle, isActive, handleToggle, label, shortcutKeys, Icon } =
+      useList({
+        type,
+        onToggled,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -80,10 +67,6 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
       },
       [handleToggle, onClick],
     )
-
-    if (!isVisible) {
-      return null
-    }
 
     return (
       <Button
