@@ -24,11 +24,11 @@
   }
 
   .Tiptap-mathematics-render--editable:hover {
-    background: color-mix(in srgb, var(--muted) 50%);
+    background: color-mix(in srgb, var(--muted) 50%, transparent);
   }
 
   .dark & .Tiptap-mathematics-render--editable:hover {
-    background: color-mix(in srgb, var(--muted) 50%);
+    background: color-mix(in srgb, var(--muted) 50%, transparent);
   }
 
   .Tiptap-mathematics-editor,

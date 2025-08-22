@@ -348,7 +348,7 @@ const ImageUploadPreview: React.FC<ImageUploadPreviewProps> = ({
           )}
           <Button
             type="button"
-            data-style="ghost"
+            variant="ghost"
             onClick={(e) => {
               e.stopPropagation()
               onRemove()
@@ -469,7 +469,7 @@ export const ImageUploadNode: React.FC<NodeViewProps> = (props) => {
               <span>Uploading {fileItems.length} files</span>
               <Button
                 type="button"
-                data-style="ghost"
+                variant="ghost"
                 onClick={(e) => {
                   e.stopPropagation()
                   clearAllFiles()

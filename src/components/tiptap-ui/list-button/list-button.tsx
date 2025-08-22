@@ -21,7 +21,10 @@ interface ListButtonProps extends Omit<ButtonProps, "type">, UseListConfig {
  * For custom button implementations, use the `useList` hook instead.
  */
 export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
-  ({ type, text, onToggled, onClick, children, ...buttonProps }, ref) => {
+  (
+    { type, text, onToggled, onClick, shortcutKeys, children, ...buttonProps },
+    ref,
+  ) => {
     const { canToggle, isActive, handleToggle, label, Icon } = useList({
       type,
       onToggled,
@@ -39,7 +42,7 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
     return (
       <Button
         type="button"
-        data-style="ghost"
+        variant="ghost"
         active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
@@ -47,6 +50,7 @@ export const ListButton = forwardRef<HTMLButtonElement, ListButtonProps>(
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
+        shortcutKeys={shortcutKeys}
         onClick={handleClick}
         {...buttonProps}
         ref={ref}

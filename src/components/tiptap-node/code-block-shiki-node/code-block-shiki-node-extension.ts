@@ -72,8 +72,8 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
       ...this.parent?.(),
       theme: {
         default: "light-plus",
-        parseHTML: element => element.getAttribute("data-theme"),
-        renderHTML: attributes => {
+        parseHTML: (element) => element.getAttribute("data-theme"),
+        renderHTML: (attributes) => {
           if (!attributes.theme) {
             return {}
           }

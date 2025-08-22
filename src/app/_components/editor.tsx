@@ -3,9 +3,11 @@
 // Import Tiptap node styles
 import "@/components/tiptap-node/blockquote-node/blockquote-node.css"
 import "@/components/tiptap-node/code-block-node/code-block-node.css"
+import "@/components/tiptap-node/details-node/details-node.css"
 import "@/components/tiptap-node/heading-node/heading-node.css"
 import "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node.css"
 import "@/components/tiptap-node/image-node/image-node.css"
+import "@/components/tiptap-node/table-node/table-node.css"
 import "@/components/tiptap-node/image-upload-node/image-upload-node.css"
 import "@/components/tiptap-node/list-node/list-node.css"
 import "@/components/tiptap-node/mathematics-node/mathematics-node.css"
@@ -20,6 +22,7 @@ import Emoji from "@tiptap/extension-emoji"
 import FileHandler from "@tiptap/extension-file-handler"
 import Highlight from "@tiptap/extension-highlight"
 import Image from "@tiptap/extension-image"
+import { TaskItem, TaskList } from "@tiptap/extension-list"
 import Mathematics from "@tiptap/extension-mathematics"
 import Mention from "@tiptap/extension-mention"
 import Subscript from "@tiptap/extension-subscript"
@@ -70,9 +73,15 @@ export function Editor() {
       }),
       Subscript,
       Superscript,
-      TableKit,
+      TableKit.configure({
+        table: { resizable: true },
+      }),
       TableOfContents,
-      TextAlign,
+      TaskItem.configure({
+        nested: true,
+      }),
+      TaskList,
+      TextAlign.configure({ types: ["heading", "paragraph"] }),
       TextStyleKit,
       YouTube,
     ],
@@ -85,9 +94,20 @@ export function Editor() {
       },
     },
     content: `
-<pre>
-<code data-language="javascript">const data = 1;</code>
-</pre>
+<p>Look at these details</p>
+      <details>
+        <summary>This is a summary</summary>
+        <p>Surprise!</p>
+      </details>
+      <p>Nested details are also supported</p>
+      <details open>
+        <summary>This is another summary</summary>
+        <p>And there is even more.</p>
+        <details>
+          <summary>We need to go deeper</summary>
+          <p>Booya!</p>
+        </details>
+      </details>
     `,
   })
 

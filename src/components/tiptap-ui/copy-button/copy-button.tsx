@@ -1,13 +1,15 @@
 "use client"
 
 import { forwardRef, useCallback } from "react"
-import type { UseMarkConfig } from "@/components/tiptap-ui/mark-button"
-import { useMark } from "@/components/tiptap-ui/mark-button"
+import type { UseCopyConfig } from "@/components/tiptap-ui/copy-button"
+import { useCopy } from "@/components/tiptap-ui/copy-button"
 
 import type { ButtonProps } from "@/components/tiptap-ui-primitive/button"
 import { Button, IconButton } from "@/components/tiptap-ui-primitive/button"
 
-interface MarkButtonProps extends Omit<ButtonProps, "type">, UseMarkConfig {
+interface CopyButtonProps
+  extends Omit<ButtonProps, "type" | "onError">,
+    UseCopyConfig {
   /**
    * Optional text to display alongside the icon.
    */
@@ -15,40 +17,40 @@ interface MarkButtonProps extends Omit<ButtonProps, "type">, UseMarkConfig {
 }
 
 /**
- * Button component for toggling marks in a Tiptap editor.
+ * Button component for copying editor content in a Tiptap editor.
  *
- * For custom button implementations, use the `useMark` hook instead.
+ * For custom button implementations, use the `useCopy` hook instead.
  */
-export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
-  ({ type, text, onToggled, onClick, children, ...buttonProps }, ref) => {
-    const { handleMark, label, canToggle, isActive, Icon, shortcutKeys } =
-      useMark({
-        type,
-        onToggled,
-      })
+export const CopyButton = forwardRef<HTMLButtonElement, CopyButtonProps>(
+  (
+    { format, text, onCopied, onError, onClick, children, ...buttonProps },
+    ref,
+  ) => {
+    const { handleCopy, label, canCopy, Icon } = useCopy({
+      format,
+      onCopied,
+      onError,
+    })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
-        handleMark()
+        handleCopy()
       },
-      [handleMark, onClick],
+      [handleCopy, onClick],
     )
 
     return (
       <Button
         type="button"
-        disabled={!canToggle}
+        disabled={!canCopy}
         variant="ghost"
-        active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
         aria-label={label}
-        aria-pressed={isActive}
         tooltip={label}
         onClick={handleClick}
-        shortcutKeys={shortcutKeys}
         {...buttonProps}
         ref={ref}
       >
@@ -65,4 +67,4 @@ export const MarkButton = forwardRef<HTMLButtonElement, MarkButtonProps>(
   },
 )
 
-MarkButton.displayName = "MarkButton"
+CopyButton.displayName = "CopyButton"

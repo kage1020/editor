@@ -74,7 +74,7 @@ export const HeadingDropdownMenu = forwardRef<
         <DropdownMenuTrigger asChild>
           <Button
             type="button"
-            data-style="ghost"
+            variant="ghost"
             active={isActive ? "on" : "off"}
             role="button"
             tabIndex={-1}

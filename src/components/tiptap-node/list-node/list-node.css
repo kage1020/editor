@@ -105,7 +105,7 @@
     border-radius: 0.25rem;
     position: relative;
     cursor: pointer;
-    background-color: color-mix(in srgb, var(--muted) 30%);
+    background-color: color-mix(in srgb, var(--muted) 30%, transparent);
     transition:
       background-color 80ms ease-out,
       border-color 80ms ease-out;
@@ -113,7 +113,7 @@
 
   .dark & ul[data-type="taskList"] li label span {
     border: 1px solid var(--border);
-    background-color: color-mix(in srgb, var(--muted) 30%);
+    background-color: color-mix(in srgb, var(--muted) 30%, transparent);
   }
 
   ul[data-type="taskList"] li label span::before {

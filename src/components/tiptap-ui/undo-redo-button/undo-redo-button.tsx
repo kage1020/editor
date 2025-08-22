@@ -26,7 +26,7 @@ export const UndoRedoButton = forwardRef<
   HTMLButtonElement,
   UndoRedoButtonProps
 >(({ action, text, onExecuted, onClick, children, ...buttonProps }, ref) => {
-  const { handleAction, label, canExecute, Icon } = useUndoRedo({
+  const { handleAction, label, canExecute, Icon, shortcutKeys } = useUndoRedo({
     action,
     onExecuted,
   })
@@ -44,11 +44,12 @@ export const UndoRedoButton = forwardRef<
     <Button
       type="button"
       disabled={!canExecute}
-      data-style="ghost"
+      variant="ghost"
       role="button"
       tabIndex={-1}
       aria-label={label}
       tooltip={label}
+      shortcutKeys={shortcutKeys}
       onClick={handleClick}
       {...buttonProps}
       ref={ref}

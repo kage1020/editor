@@ -118,22 +118,22 @@
 
   .tiptap-image-upload-drag-area.drag-active {
     border-color: var(--primary);
-    background-color: color-mix(in srgb, var(--primary), 5%);
+    background-color: color-mix(in srgb, var(--primary) 5%, transparent);
   }
 
   .dark & .tiptap-image-upload-drag-area.drag-active {
     border-color: var(--primary);
-    background-color: color-mix(in srgb, var(--primary), 5%);
+    background-color: color-mix(in srgb, var(--primary) 5%, transparent);
   }
 
   .tiptap-image-upload-drag-area.drag-over {
     border-color: var(--primary);
-    background-color: color-mix(in srgb, var(--primary), 10%);
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent);
   }
 
   .dark & .tiptap-image-upload-drag-area.drag-over {
     border-color: var(--primary);
-    background-color: color-mix(in srgb, var(--primary), 10%);
+    background-color: color-mix(in srgb, var(--primary) 10%, transparent);
   }
 
   .tiptap-image-upload-content {
@@ -186,12 +186,12 @@
   .tiptap-image-upload-progress {
     position: absolute;
     inset: 0;
-    background-color: color-mix(in srgb, var(--accent), 10%);
+    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
     transition: all 300ms ease-out;
   }
 
   .dark & .tiptap-image-upload-progress {
-    background-color: color-mix(in srgb, var(--accent), 10%);
+    background-color: color-mix(in srgb, var(--accent) 10%, transparent);
   }
 
   .tiptap-image-upload-preview-content {

@@ -54,7 +54,7 @@ const ColorHighlightPopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
     <Button
       type="button"
       className={className}
-      data-style="ghost"
+      variant="ghost"
       appearance="default"
       role="button"
       tabIndex={-1}
@@ -141,7 +141,7 @@ function ColorHighlightPopoverContent({
               tabIndex={selectedIndex === colors.length ? 0 : -1}
               type="button"
               role="menuitem"
-              data-style="ghost"
+              variant="ghost"
             >
               <IconButton>
                 <BanIcon />

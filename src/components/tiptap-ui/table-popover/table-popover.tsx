@@ -64,7 +64,7 @@ export const TablePopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
       <Button
         type="button"
         className={className}
-        data-style="ghost"
+        variant="ghost"
         appearance="default"
         role="button"
         tabIndex={-1}
@@ -136,7 +136,7 @@ const TableGridSelector = ({
       </div>
       <div className="table-grid-info text-xs text-neutral-800 dark:text-neutral-200 text-center min-h-4">
         {hoveredCell
-          ? `${hoveredCell.row + 1} � ${hoveredCell.col + 1}`
+          ? `${hoveredCell.row + 1} x ${hoveredCell.col + 1}`
           : "Select table size"}
       </div>
     </div>
@@ -265,7 +265,7 @@ function TablePopoverContent({
                   parseInt(rows, 10) <= 0 ||
                   parseInt(cols, 10) <= 0
                 }
-                data-style="ghost"
+                variant="ghost"
               >
                 Insert Table
               </Button>

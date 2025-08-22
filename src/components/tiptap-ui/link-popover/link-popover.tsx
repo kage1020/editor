@@ -78,7 +78,7 @@ const LinkButton = forwardRef<HTMLButtonElement, ButtonProps>(
       <Button
         type="button"
         className={className}
-        data-style="ghost"
+        variant="ghost"
         role="button"
         tabIndex={-1}
         aria-label="Link"
@@ -150,7 +150,7 @@ const LinkMain: React.FC<LinkMainProps> = ({
               onClick={setLink}
               title="Apply link"
               disabled={!url && !isActive}
-              data-style="ghost"
+              variant="ghost"
             >
               <IconButton>
                 <CornerDownLeftIcon />
@@ -166,7 +166,7 @@ const LinkMain: React.FC<LinkMainProps> = ({
               onClick={openLink}
               title="Open in new window"
               disabled={!url && !isActive}
-              data-style="ghost"
+              variant="ghost"
             >
               <IconButton>
                 <ExternalLinkIcon />
@@ -178,7 +178,7 @@ const LinkMain: React.FC<LinkMainProps> = ({
               onClick={removeLink}
               title="Remove link"
               disabled={!url && !isActive}
-              data-style="ghost"
+              variant="ghost"
             >
               <IconButton>
                 <TrashIcon />

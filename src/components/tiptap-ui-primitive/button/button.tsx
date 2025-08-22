@@ -11,7 +11,7 @@ import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { cn } from "@/lib/utils"
 
 const tiptapButtonVariants = cva(
-  "group/button text-sm font-medium [font-feature:'salt'_on,'cv01'_on] leading-[1.15] h-8 min-w-8 border-none p-2 gap-1 flex items-center justify-center rounded-lg transition-all duration-200 ease-in-out focus-visible:outline-none bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600 disabled:bg-neutral-50 dark:disabled:bg-neutral-900 disabled:text-neutral-400 dark:disabled:text-neutral-600 [&:has(>svg):not(:has(>:not(svg)))]:gap-0.5 [&_.tiptap-button-text]:px-0.5 [&_.tiptap-button-text]:flex-grow [&_.tiptap-button-text]:text-left [&_.tiptap-button-text]:leading-6 data-[text-trim=on]:[&_.tiptap-button-text]:text-ellipsis data-[text-trim=on]:[&_.tiptap-button-text]:overflow-hidden [&_.tiptap-button-emoji]:w-4 [&_.tiptap-button-emoji]:flex [&_.tiptap-button-emoji]:justify-center [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:gap-0 [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:pr-1",
+  "group/button text-sm font-medium [font-feature:'salt'_on,'cv01'_on] leading-[1.15] h-8 min-w-8 border-none p-2 gap-1 flex items-center justify-center rounded-lg transition-all duration-200 ease-in-out focus-visible:outline-none [&:has(>svg):not(:has(>:not(svg)))]:gap-0.5 [&_.tiptap-button-text]:px-0.5 [&_.tiptap-button-text]:flex-grow [&_.tiptap-button-text]:text-left [&_.tiptap-button-text]:leading-6 data-[text-trim=on]:[&_.tiptap-button-text]:text-ellipsis data-[text-trim=on]:[&_.tiptap-button-text]:overflow-hidden [&_.tiptap-button-emoji]:w-4 [&_.tiptap-button-emoji]:flex [&_.tiptap-button-emoji]:justify-center [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:gap-0 [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:pr-1",
   {
     variants: {
       size: {
@@ -25,30 +25,106 @@ const tiptapButtonVariants = cva(
         default: "",
         small: "w-6 min-w-6 pr-0 pl-0",
       },
+      variant: {
+        default:
+          "bg-neutral-100 dark:bg-neutral-800 text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 disabled:bg-neutral-50 dark:disabled:bg-neutral-900 disabled:text-neutral-400 dark:disabled:text-neutral-600",
+        ghost:
+          "bg-transparent text-neutral-600 dark:text-neutral-400 hover:bg-neutral-200 dark:hover:bg-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 disabled:bg-transparent disabled:text-neutral-400 dark:disabled:text-neutral-600",
+        primary:
+          "bg-blue-500 text-white hover:bg-blue-600 disabled:bg-neutral-200 dark:disabled:bg-neutral-800 disabled:text-neutral-400 dark:disabled:text-neutral-600 [&_svg]:text-white [&_.tiptap-button-icon-sub]:text-neutral-300 dark:[&_.tiptap-button-icon-sub]:text-neutral-500 [&_.tiptap-button-dropdown-arrows]:text-white [&_.tiptap-button-dropdown-small]:text-white",
+      },
       appearance: {
         default: "",
-        emphasized:
-          "data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:[&_svg]:text-neutral-700 dark:data-[state=open]:[&_svg]:text-neutral-300 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600",
-        subdued:
-          "data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:[&_svg]:text-neutral-900 dark:data-[state=open]:[&_svg]:text-neutral-100 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600 data-[state=open]:hover:[&_svg]:text-neutral-900 dark:data-[state=open]:hover:[&_svg]:text-neutral-100",
+        emphasized: "",
+        subdued: "",
       },
       active: {
-        on: "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+        on: "",
         off: "",
       },
     },
     defaultVariants: {
       size: "default",
       weight: "default",
+      variant: "default",
       appearance: "default",
       active: "off",
     },
     compoundVariants: [
       {
-        appearance: "emphasized",
+        variant: "default",
         active: "on",
         className:
-          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 [&_svg]:text-neutral-700 dark:[&_svg]:text-neutral-300 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+      },
+      {
+        variant: "default",
+        active: "on",
+        appearance: "emphasized",
+        className:
+          "bg-blue-100 dark:bg-blue-900 text-neutral-900 dark:text-neutral-100 [&_svg]:text-blue-600 dark:[&_svg]:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800",
+      },
+      {
+        variant: "default",
+        active: "on",
+        appearance: "subdued",
+        className:
+          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 [&_svg]:text-neutral-900 dark:[&_svg]:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+      },
+      {
+        variant: "ghost",
+        active: "on",
+        className:
+          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+      },
+      {
+        variant: "ghost",
+        active: "on",
+        appearance: "emphasized",
+        className:
+          "bg-blue-100 dark:bg-blue-900 text-neutral-900 dark:text-neutral-100 [&_svg]:text-blue-600 dark:[&_svg]:text-blue-300 hover:bg-blue-200 dark:hover:bg-blue-800",
+      },
+      {
+        variant: "ghost",
+        active: "on",
+        appearance: "subdued",
+        className:
+          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-300 dark:hover:bg-neutral-600",
+      },
+      {
+        variant: "primary",
+        active: "on",
+        className:
+          "bg-blue-100 dark:bg-blue-900 text-neutral-900 dark:text-neutral-100 hover:bg-blue-200 dark:hover:bg-blue-800 [&_svg]:text-blue-600 dark:[&_svg]:text-blue-400 [&_.tiptap-button-icon-sub]:text-neutral-500 dark:[&_.tiptap-button-icon-sub]:text-neutral-400 [&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:[&_.tiptap-button-dropdown-arrows]:text-neutral-600 [&_.tiptap-button-dropdown-small]:text-neutral-700 dark:[&_.tiptap-button-dropdown-small]:text-neutral-600",
+      },
+      {
+        variant: "primary",
+        active: "on",
+        appearance: "emphasized",
+        className:
+          "bg-blue-100 dark:bg-blue-900 text-neutral-900 dark:text-neutral-100 hover:bg-blue-200 dark:hover:bg-blue-800 [&_svg]:text-blue-600 dark:[&_svg]:text-blue-400 [&_.tiptap-button-icon-sub]:text-neutral-500 dark:[&_.tiptap-button-icon-sub]:text-neutral-400 [&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:[&_.tiptap-button-dropdown-arrows]:text-neutral-600 [&_.tiptap-button-dropdown-small]:text-neutral-700 dark:[&_.tiptap-button-dropdown-small]:text-neutral-600",
+      },
+      {
+        variant: "primary",
+        active: "on",
+        appearance: "subdued",
+        className:
+          "bg-blue-100 dark:bg-blue-900 text-neutral-900 dark:text-neutral-100 hover:bg-blue-200 dark:hover:bg-blue-800 [&_svg]:text-blue-600 dark:[&_svg]:text-blue-400 [&_.tiptap-button-icon-sub]:text-neutral-500 dark:[&_.tiptap-button-icon-sub]:text-neutral-400 [&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:[&_.tiptap-button-dropdown-arrows]:text-neutral-600 [&_.tiptap-button-dropdown-small]:text-neutral-700 dark:[&_.tiptap-button-dropdown-small]:text-neutral-600",
+      },
+      {
+        variant: "default",
+        className:
+          "data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600",
+      },
+      {
+        variant: "ghost",
+        className:
+          "data-[state=open]:bg-neutral-200 dark:data-[state=open]:bg-neutral-700 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:hover:bg-neutral-300 dark:data-[state=open]:hover:bg-neutral-600",
+      },
+      {
+        variant: "primary",
+        className:
+          "data-[state=open]:bg-blue-100 dark:data-[state=open]:bg-blue-900 data-[state=open]:text-neutral-900 dark:data-[state=open]:text-neutral-100 data-[state=open]:hover:bg-blue-200 dark:data-[state=open]:hover:bg-blue-800 data-[state=open]:[&_svg]:text-blue-600 dark:data-[state=open]:[&_svg]:text-blue-400 data-[state=open]:[&_.tiptap-button-icon-sub]:text-neutral-500 dark:data-[state=open]:[&_.tiptap-button-icon-sub]:text-neutral-400 data-[state=open]:[&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:data-[state=open]:[&_.tiptap-button-dropdown-arrows]:text-neutral-600",
       },
     ],
   },
@@ -64,7 +140,7 @@ export interface ButtonProps
   active?: "on" | "off"
 }
 
-const ShortcutDisplay: React.FC<{ shortcuts: string[] }> = ({ shortcuts }) => {
+const ShortcutDisplay = ({ shortcuts }: { shortcuts: string[] }) => {
   if (shortcuts.length === 0) return null
 
   return (
@@ -89,9 +165,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       shortcutKeys,
       size,
       weight,
+      variant,
       appearance,
       active,
-      "aria-label": ariaLabel,
       ...props
     },
     ref,
@@ -100,10 +176,9 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
       () => parseShortcutKeys({ shortcutKeys }),
       [shortcutKeys],
     )
-
     const buttonClassName = cn(
-      "tiptap-button cursor-pointer",
-      tiptapButtonVariants({ size, weight, appearance, active }),
+      "tiptap-button cursor-pointer disabled:cursor-not-allowed",
+      tiptapButtonVariants({ size, weight, variant, appearance, active }),
       className,
     )
 
@@ -115,7 +190,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-size={size}
           data-appearance={appearance}
           data-active={active}
-          aria-label={ariaLabel}
           {...props}
         >
           {children}
@@ -131,7 +205,6 @@ export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
           data-size={size}
           data-appearance={appearance}
           data-active={active}
-          aria-label={ariaLabel}
           {...props}
         >
           {children}

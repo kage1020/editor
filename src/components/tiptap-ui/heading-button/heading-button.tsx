@@ -24,10 +24,11 @@ interface HeadingButtonProps
  */
 export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
   ({ level, text, onToggled, onClick, children, ...buttonProps }, ref) => {
-    const { canToggle, isActive, handleToggle, label, Icon } = useHeading({
-      level,
-      onToggled,
-    })
+    const { canToggle, isActive, shortcutKeys, handleToggle, label, Icon } =
+      useHeading({
+        level,
+        onToggled,
+      })
 
     const handleClick = useCallback(
       (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -41,7 +42,7 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
     return (
       <Button
         type="button"
-        data-style="ghost"
+        variant="ghost"
         active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}
@@ -49,6 +50,7 @@ export const HeadingButton = forwardRef<HTMLButtonElement, HeadingButtonProps>(
         aria-label={label}
         aria-pressed={isActive}
         tooltip={label}
+        shortcutKeys={shortcutKeys}
         onClick={handleClick}
         {...buttonProps}
         ref={ref}

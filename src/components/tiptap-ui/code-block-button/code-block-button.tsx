@@ -26,9 +26,10 @@ export const CodeBlockButton = forwardRef<
   HTMLButtonElement,
   CodeBlockButtonProps
 >(({ text, onToggled, onClick, children, ...buttonProps }, ref) => {
-  const { canToggle, isActive, handleToggle, label, Icon } = useCodeBlock({
-    onToggled,
-  })
+  const { canToggle, isActive, shortcutKeys, handleToggle, label, Icon } =
+    useCodeBlock({
+      onToggled,
+    })
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,13 +43,14 @@ export const CodeBlockButton = forwardRef<
   return (
     <Button
       type="button"
-      data-style="ghost"
+      variant="ghost"
       active={isActive ? "on" : "off"}
       role="button"
       disabled={!canToggle}
       tabIndex={-1}
       aria-label={label}
       aria-pressed={isActive}
+      shortcutKeys={shortcutKeys}
       tooltip="Code Block"
       onClick={handleClick}
       {...buttonProps}

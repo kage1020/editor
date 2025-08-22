@@ -1,6 +1,7 @@
 import { BlockquoteButton } from "@/components/tiptap-ui/blockquote-button"
 import { CodeBlockButton } from "@/components/tiptap-ui/code-block-button"
 import { ColorHighlightPopover } from "@/components/tiptap-ui/color-highlight-popover"
+import { CopyDropdownMenu } from "@/components/tiptap-ui/copy-dropdown-menu"
 import { DetailsButton } from "@/components/tiptap-ui/details-button"
 import { HeadingDropdownMenu } from "@/components/tiptap-ui/heading-dropdown-menu"
 import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
@@ -48,6 +49,7 @@ export function FlexibleToolbar() {
       <ToolbarGroup>
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
+        <CopyDropdownMenu />
       </ToolbarGroup>
     </Toolbar>
   )

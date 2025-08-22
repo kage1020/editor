@@ -26,9 +26,10 @@ export const BlockquoteButton = forwardRef<
   HTMLButtonElement,
   BlockquoteButtonProps
 >(({ text, onToggled, onClick, children, ...buttonProps }, ref) => {
-  const { canToggle, isActive, handleToggle, label, Icon } = useBlockquote({
-    onToggled,
-  })
+  const { canToggle, isActive, shortcutKeys, handleToggle, label, Icon } =
+    useBlockquote({
+      onToggled,
+    })
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,7 +43,7 @@ export const BlockquoteButton = forwardRef<
   return (
     <Button
       type="button"
-      data-style="ghost"
+      variant="ghost"
       active={isActive ? "on" : "off"}
       role="button"
       tabIndex={-1}
@@ -50,6 +51,7 @@ export const BlockquoteButton = forwardRef<
       aria-label={label}
       aria-pressed={isActive}
       tooltip="Blockquote"
+      shortcutKeys={shortcutKeys}
       onClick={handleClick}
       {...buttonProps}
       ref={ref}

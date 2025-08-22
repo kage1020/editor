@@ -26,10 +26,11 @@ export const TextAlignButton = forwardRef<
   HTMLButtonElement,
   TextAlignButtonProps
 >(({ align, text, onAligned, onClick, children, ...buttonProps }, ref) => {
-  const { handleTextAlign, label, canAlign, isActive, Icon } = useTextAlign({
-    align,
-    onAligned,
-  })
+  const { handleTextAlign, label, canAlign, isActive, Icon, shortcutKeys } =
+    useTextAlign({
+      align,
+      onAligned,
+    })
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -44,7 +45,7 @@ export const TextAlignButton = forwardRef<
     <Button
       type="button"
       disabled={!canAlign}
-      data-style="ghost"
+      variant="ghost"
       active={isActive ? "on" : "off"}
       role="button"
       tabIndex={-1}
@@ -52,6 +53,7 @@ export const TextAlignButton = forwardRef<
       aria-pressed={isActive}
       tooltip={label}
       onClick={handleClick}
+      shortcutKeys={shortcutKeys}
       {...buttonProps}
       ref={ref}
     >

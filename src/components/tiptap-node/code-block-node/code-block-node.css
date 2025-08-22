@@ -3,7 +3,7 @@
    ===================== */
 .tiptap.ProseMirror {
   :not(pre) > code {
-    background-color: color-mix(in srgb, var(--muted), 30%);
+    background-color: color-mix(in srgb, var(--muted) 30%, transparent);
     color: var(--foreground);
     border: 1px solid var(--border);
     font-family: "JetBrains Mono NL", monospace;
@@ -15,7 +15,7 @@
 
   /* ダークテーマ */
   .dark & :not(pre) > code {
-    background-color: color-mix(in srgb, var(--muted), 30%);
+    background-color: color-mix(in srgb, var(--muted) 30%, transparent);
     color: var(--foreground);
     border: 1px solid var(--border);
   }

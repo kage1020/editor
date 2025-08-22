@@ -40,7 +40,7 @@ export const DetailsButton = forwardRef<HTMLButtonElement, DetailsButtonProps>(
     return (
       <Button
         type="button"
-        data-style="ghost"
+        variant="ghost"
         active={isActive ? "on" : "off"}
         role="button"
         tabIndex={-1}

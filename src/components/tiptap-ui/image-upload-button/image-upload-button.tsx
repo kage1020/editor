@@ -26,9 +26,10 @@ export const ImageUploadButton = forwardRef<
   HTMLButtonElement,
   ImageUploadButtonProps
 >(({ text, onInserted, onClick, children, ...buttonProps }, ref) => {
-  const { canInsert, handleImage, label, isActive, Icon } = useImageUpload({
-    onInserted,
-  })
+  const { canInsert, handleImage, shortcutKeys, label, isActive, Icon } =
+    useImageUpload({
+      onInserted,
+    })
 
   const handleClick = useCallback(
     (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -42,13 +43,14 @@ export const ImageUploadButton = forwardRef<
   return (
     <Button
       type="button"
-      data-style="ghost"
+      variant="ghost"
       active={isActive ? "on" : "off"}
       role="button"
       tabIndex={-1}
       disabled={!canInsert}
       aria-label={label}
       aria-pressed={isActive}
+      shortcutKeys={shortcutKeys}
       tooltip={label}
       onClick={handleClick}
       {...buttonProps}
