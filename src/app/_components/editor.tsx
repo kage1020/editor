@@ -68,6 +68,7 @@ export function Editor() {
       MarkdownPaste.configure({
         enableTablePaste: true,
         enableListPaste: true,
+        enableImagePaste: true,
         enableMarkdownPaste: true,
       }),
       Mathematics,
@@ -76,6 +77,7 @@ export function Editor() {
       Selection,
       StarterKit.configure({
         codeBlock: false,
+        horizontalRule: false,
       }),
       Subscript,
       Superscript,

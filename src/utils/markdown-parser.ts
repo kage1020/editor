@@ -137,3 +137,47 @@ export function parseMarkdownList(text: string) {
 
   return items
 }
+
+/**
+ * Check if text contains markdown images
+ */
+export function hasMarkdownImages(text: string): boolean {
+  // Match markdown image pattern: ![alt](url) or ![alt](url "title")
+  const imagePattern = /!\[([^\]]*)\]\(([^)]+)\)/
+  return imagePattern.test(text)
+}
+
+/**
+ * Parse markdown images from text
+ */
+export function parseMarkdownImages(text: string) {
+  const images: Array<{
+    alt: string
+    src: string
+    title?: string
+    fullMatch: string
+  }> = []
+
+  // Match all markdown images: ![alt](url) or ![alt](url "title")
+  const imagePattern = /!\[([^\]]*)\]\(([^)]+)\)/g
+  let match: RegExpExecArray | null = imagePattern.exec(text)
+
+  while (match !== null) {
+    const [fullMatch, alt, urlPart] = match
+
+    // Parse URL and optional title
+    const urlTitleMatch = urlPart.match(/^([^\s]+)(?:\s+"([^"]*)")?$/)
+    if (urlTitleMatch) {
+      const [, src, title] = urlTitleMatch
+      images.push({
+        alt: alt || "",
+        src: src.trim(),
+        title: title || undefined,
+        fullMatch,
+      })
+    }
+    match = imagePattern.exec(text)
+  }
+
+  return images
+}

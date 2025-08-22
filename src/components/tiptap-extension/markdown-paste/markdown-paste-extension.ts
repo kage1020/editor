@@ -2,8 +2,10 @@ import { Extension } from "@tiptap/core"
 import type { Node, Schema } from "@tiptap/pm/model"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import {
+  hasMarkdownImages,
   isMarkdownList,
   isMarkdownTable,
+  parseMarkdownImages,
   parseMarkdownList,
   parseMarkdownTable,
 } from "@/utils/markdown-parser"
@@ -17,6 +19,10 @@ export interface MarkdownPasteOptions {
    * Whether to enable markdown list paste
    */
   enableListPaste: boolean
+  /**
+   * Whether to enable markdown image paste
+   */
+  enableImagePaste: boolean
   /**
    * Whether to enable general markdown paste
    */
@@ -142,6 +148,85 @@ function createListFromMarkdown(
   return fragments.length === 1 ? fragments[0] : fragments
 }
 
+/**
+ * Create image nodes from parsed markdown images and replace them in text
+ */
+function createContentWithImages(
+  text: string,
+  images: ReturnType<typeof parseMarkdownImages>,
+  schema: Schema,
+): Node[] {
+  if (images.length === 0) {
+    // No images, return text as paragraph
+    return [schema.nodes.paragraph.create({}, schema.text(text))]
+  }
+
+  const nodes: Node[] = []
+  let lastIndex = 0
+
+  // Sort images by their position in the text
+  const sortedImages = [...images].sort(
+    (a, b) => text.indexOf(a.fullMatch) - text.indexOf(b.fullMatch),
+  )
+
+  for (const image of sortedImages) {
+    const imageIndex = text.indexOf(image.fullMatch, lastIndex)
+
+    if (imageIndex === -1) continue
+
+    // Add text before the image
+    if (imageIndex > lastIndex) {
+      const beforeText = text.substring(lastIndex, imageIndex).trim()
+      if (beforeText) {
+        // Split by newlines to create separate paragraphs
+        const paragraphs = beforeText.split(/\n\n+/)
+        for (const para of paragraphs) {
+          if (para.trim()) {
+            nodes.push(
+              schema.nodes.paragraph.create({}, schema.text(para.trim())),
+            )
+          }
+        }
+      }
+    }
+
+    // Add the image node
+    const imageAttrs: Record<string, string | null> = {
+      src: image.src,
+      alt: image.alt || null,
+    }
+    if (image.title) {
+      imageAttrs.title = image.title
+    }
+
+    // Wrap image in a paragraph for better editing experience
+    nodes.push(
+      schema.nodes.paragraph.create({}, [
+        schema.nodes.image.create(imageAttrs),
+      ]),
+    )
+
+    lastIndex = imageIndex + image.fullMatch.length
+  }
+
+  // Add remaining text after the last image
+  if (lastIndex < text.length) {
+    const remainingText = text.substring(lastIndex).trim()
+    if (remainingText) {
+      const paragraphs = remainingText.split(/\n\n+/)
+      for (const para of paragraphs) {
+        if (para.trim()) {
+          nodes.push(
+            schema.nodes.paragraph.create({}, schema.text(para.trim())),
+          )
+        }
+      }
+    }
+  }
+
+  return nodes
+}
+
 export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
   name: "markdownPaste",
 
@@ -149,6 +234,7 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
     return {
       enableTablePaste: true,
       enableListPaste: true,
+      enableImagePaste: true,
       enableMarkdownPaste: true,
     }
   },
@@ -163,6 +249,7 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
             if (
               !this.options.enableTablePaste &&
               !this.options.enableListPaste &&
+              !this.options.enableImagePaste &&
               !this.options.enableMarkdownPaste
             ) {
               return false
@@ -228,6 +315,39 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                 }
               } catch (error) {
                 console.error("Failed to parse markdown list:", error)
+                return false
+              }
+            }
+
+            // Handle markdown image paste
+            if (this.options.enableImagePaste && hasMarkdownImages(text)) {
+              try {
+                const images = parseMarkdownImages(text)
+                const contentNodes = createContentWithImages(
+                  text,
+                  images,
+                  view.state.schema,
+                )
+
+                if (contentNodes.length > 0) {
+                  const { from, to } = view.state.selection
+                  let tr = view.state.tr
+
+                  // Replace selection with first node
+                  tr = tr.replaceWith(from, to, contentNodes[0])
+                  let insertPos = from + contentNodes[0].nodeSize
+
+                  // Insert remaining nodes
+                  for (let i = 1; i < contentNodes.length; i++) {
+                    tr = tr.insert(insertPos, contentNodes[i])
+                    insertPos += contentNodes[i].nodeSize
+                  }
+
+                  view.dispatch(tr)
+                  return true
+                }
+              } catch (error) {
+                console.error("Failed to parse markdown images:", error)
                 return false
               }
             }
