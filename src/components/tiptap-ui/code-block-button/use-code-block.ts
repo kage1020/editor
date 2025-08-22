@@ -32,13 +32,13 @@ export interface UseCodeBlockConfig {
 function canToggle(editor: Editor | null, turnInto: boolean = true): boolean {
   if (!editor || !editor.isEditable) return false
   if (
-    !isNodeInSchema("codeBlock", editor) ||
+    !isNodeInSchema("codeBlockShiki", editor) ||
     isNodeTypeSelected(editor, ["image"])
   )
     return false
 
   if (!turnInto) {
-    return editor.can().toggleNode("codeBlock", "paragraph")
+    return editor.can().toggleNode("codeBlockShiki", "paragraph")
   }
 
   try {
@@ -105,9 +105,9 @@ function toggleCodeBlock(editor: Editor | null): boolean {
       chain = chain.setTextSelection({ from, to }).clearNodes()
     }
 
-    const toggle = editor.isActive("codeBlock")
+    const toggle = editor.isActive("codeBlockShiki")
       ? chain.setNode("paragraph")
-      : chain.toggleNode("codeBlock", "paragraph")
+      : chain.toggleNode("codeBlockShiki", "paragraph")
 
     toggle.run()
 
@@ -128,7 +128,7 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
   const { editor } = useTiptapEditor()
   const isMobile = useIsMobile()
   const canToggleState = canToggle(editor)
-  const isActive = editor?.isActive("codeBlock") || false
+  const isActive = editor?.isActive("codeBlockShiki") || false
 
   const handleToggle = useCallback(() => {
     if (!editor) return false

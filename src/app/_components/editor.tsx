@@ -37,15 +37,17 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-// import InvisibleCharacters from "@tiptap/extension-invisible-characters"
-import { FlexibleToolbar } from "@/app/_components/toolbar"
+import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
+// import InvisibleCharacters from "@tiptap/extension-invisible-characters"
+import { FlexibleToolbar } from "./toolbar"
 
 export function Editor() {
   const editor = useEditor({
     extensions: [
       CharacterCount,
+      CodeBlockShiki,
       Details.configure({
         persist: true,
       }),
@@ -63,7 +65,9 @@ export function Editor() {
       Mention,
       Placeholder,
       Selection,
-      StarterKit,
+      StarterKit.configure({
+        codeBlock: false,
+      }),
       Subscript,
       Superscript,
       TableKit,
@@ -81,7 +85,9 @@ export function Editor() {
       },
     },
     content: `
-      <p>Hello World!</p>
+<pre>
+<code data-language="javascript">const data = 1;</code>
+</pre>
     `,
   })
 

@@ -24,7 +24,7 @@
     height: 1.75rem;
     bottom: 0;
     right: 0;
-    background-color: oklch(var(--primary));
+    background-color: var(--primary);
     border-radius: 0.75rem;
     display: flex;
     align-items: center;
@@ -32,26 +32,26 @@
   }
 
   .dark & .tiptap-image-upload-icon-container {
-    background-color: oklch(var(--primary));
+    background-color: var(--primary);
   }
 
   .tiptap-image-upload-icon {
     width: 0.875rem;
     height: 0.875rem;
-    color: oklch(var(--primary-foreground));
+    color: var(--primary-foreground);
   }
 
   .dark & .tiptap-image-upload-icon {
-    color: oklch(var(--primary-foreground));
+    color: var(--primary-foreground);
   }
 
   .tiptap-image-upload-dropzone-rect-primary {
-    color: oklch(var(--border));
+    color: var(--border);
     position: absolute;
   }
 
   .dark & .tiptap-image-upload-dropzone-rect-primary {
-    color: oklch(var(--border));
+    color: var(--border);
   }
 
   .tiptap-image-upload-dropzone-rect-secondary {
@@ -59,22 +59,22 @@
     top: 0;
     right: 0.25rem;
     bottom: 0;
-    color: oklch(var(--muted-foreground));
+    color: var(--muted-foreground);
   }
 
   .dark & .tiptap-image-upload-dropzone-rect-secondary {
-    color: oklch(var(--muted-foreground));
+    color: var(--muted-foreground);
   }
 
   .tiptap-image-upload-text {
-    color: oklch(var(--foreground));
+    color: var(--foreground);
     font-weight: 500;
     font-size: 0.875rem;
     line-height: normal;
   }
 
   .dark & .tiptap-image-upload-text {
-    color: oklch(var(--foreground));
+    color: var(--foreground);
   }
 
   .tiptap-image-upload-text em {
@@ -83,19 +83,19 @@
   }
 
   .tiptap-image-upload-subtext {
-    color: oklch(var(--muted-foreground));
+    color: var(--muted-foreground);
     font-weight: 600;
     line-height: normal;
     font-size: 0.75rem;
   }
 
   .dark & .tiptap-image-upload-subtext {
-    color: oklch(var(--muted-foreground));
+    color: var(--muted-foreground);
   }
 
   .tiptap-image-upload-drag-area {
     padding: 2rem 1.5rem;
-    border: 1.5px dashed oklch(var(--border));
+    border: 1.5px dashed var(--border);
     border-radius: 0.5rem;
     text-align: center;
     cursor: pointer;
@@ -105,35 +105,35 @@
   }
 
   .dark & .tiptap-image-upload-drag-area {
-    border: 1.5px dashed oklch(var(--border));
+    border: 1.5px dashed var(--border);
   }
 
   .tiptap-image-upload-drag-area:hover {
-    border-color: oklch(var(--muted-foreground));
+    border-color: var(--muted-foreground);
   }
 
   .dark & .tiptap-image-upload-drag-area:hover {
-    border-color: oklch(var(--muted-foreground));
+    border-color: var(--muted-foreground);
   }
 
   .tiptap-image-upload-drag-area.drag-active {
-    border-color: oklch(var(--primary));
-    background-color: oklch(var(--primary) / 0.05);
+    border-color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), 5%);
   }
 
   .dark & .tiptap-image-upload-drag-area.drag-active {
-    border-color: oklch(var(--primary));
-    background-color: oklch(var(--primary) / 0.05);
+    border-color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), 5%);
   }
 
   .tiptap-image-upload-drag-area.drag-over {
-    border-color: oklch(var(--primary));
-    background-color: oklch(var(--primary) / 0.1);
+    border-color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), 10%);
   }
 
   .dark & .tiptap-image-upload-drag-area.drag-over {
-    border-color: oklch(var(--primary));
-    background-color: oklch(var(--primary) / 0.1);
+    border-color: var(--primary);
+    background-color: color-mix(in srgb, var(--primary), 10%);
   }
 
   .tiptap-image-upload-content {
@@ -158,22 +158,22 @@
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 0;
-    border-bottom: 1px solid oklch(var(--border));
+    border-bottom: 1px solid var(--border);
     margin-bottom: 0.5rem;
   }
 
   .dark & .tiptap-image-upload-header {
-    border-bottom: 1px solid oklch(var(--border));
+    border-bottom: 1px solid var(--border);
   }
 
   .tiptap-image-upload-header span {
     font-size: 0.875rem;
     font-weight: 500;
-    color: oklch(var(--foreground));
+    color: var(--foreground);
   }
 
   .dark & .tiptap-image-upload-header span {
-    color: oklch(var(--foreground));
+    color: var(--foreground);
   }
 
   /* === Individual File Preview Styles === */
@@ -186,17 +186,17 @@
   .tiptap-image-upload-progress {
     position: absolute;
     inset: 0;
-    background-color: oklch(var(--accent) / 0.1);
+    background-color: color-mix(in srgb, var(--accent), 10%);
     transition: all 300ms ease-out;
   }
 
   .dark & .tiptap-image-upload-progress {
-    background-color: oklch(var(--accent) / 0.1);
+    background-color: color-mix(in srgb, var(--accent), 10%);
   }
 
   .tiptap-image-upload-preview-content {
     position: relative;
-    border: 1px solid oklch(var(--border));
+    border: 1px solid var(--border);
     border-radius: 0.5rem;
     padding: 1rem;
     display: flex;
@@ -205,7 +205,7 @@
   }
 
   .dark & .tiptap-image-upload-preview-content {
-    border: 1px solid oklch(var(--border));
+    border: 1px solid var(--border);
   }
 
   .tiptap-image-upload-file-info {
@@ -217,22 +217,22 @@
 
   .tiptap-image-upload-file-icon {
     padding: 0.5rem;
-    background-color: oklch(var(--primary));
+    background-color: var(--primary);
     border-radius: 0.75rem;
   }
 
   .dark & .tiptap-image-upload-file-icon {
-    background-color: oklch(var(--primary));
+    background-color: var(--primary);
   }
 
   .tiptap-image-upload-file-icon svg {
     width: 0.875rem;
     height: 0.875rem;
-    color: oklch(var(--primary-foreground));
+    color: var(--primary-foreground);
   }
 
   .dark & .tiptap-image-upload-file-icon svg {
-    color: oklch(var(--primary-foreground));
+    color: var(--primary-foreground);
   }
 
   .tiptap-image-upload-details {
@@ -248,21 +248,21 @@
 
   .tiptap-image-upload-progress-text {
     font-size: 0.75rem;
-    color: oklch(var(--primary));
+    color: var(--primary);
     font-weight: 600;
   }
 
   .dark & .tiptap-image-upload-progress-text {
-    color: oklch(var(--primary));
+    color: var(--primary);
   }
 }
 
 .tiptap.ProseMirror.ProseMirror-focused .ProseMirror-selectednode .tiptap-image-upload-drag-area {
-  border-color: oklch(var(--primary));
+  border-color: var(--primary);
 }
 
 .dark .tiptap.ProseMirror.ProseMirror-focused .ProseMirror-selectednode .tiptap-image-upload-drag-area {
-  border-color: oklch(var(--primary));
+  border-color: var(--primary);
 }
 
 @media (max-width: 480px) {

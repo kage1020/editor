@@ -5,11 +5,11 @@
   hr {
     border: none;
     height: 1px;
-    background-color: oklch(var(--border));
+    background-color: var(--border);
   }
 
   .dark & hr {
-    background-color: oklch(var(--border));
+    background-color: var(--border);
   }
 
   [data-type="horizontalRule"] {

@@ -9,7 +9,7 @@
   "[typescript]": {
     "editor.defaultFormatter": "biomejs.biome"
   },
-  "cSpell.words": ["kage"],
+  "cSpell.words": ["kage", "Shiki"],
   "editor.codeActionsOnSave": {
     "source.organizeImports": "never"
   }

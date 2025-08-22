@@ -280,7 +280,7 @@ export const Toolbar = forwardRef<HTMLDivElement, ToolbarProps>(
           "tiptap-toolbar",
           "flex items-center justify-center w-fit gap-1",
           variant === "fixed" &&
-            "sticky top-0 z-10 min-h-11 bg-white dark:bg-black border-b border-solid border-neutral-100 dark:border-neutral-900 px-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-xs:fixed max-xs:top-auto max-xs:bottom-0 max-xs:h-11 max-xs:border-t max-xs:border-b-0 max-xs:pb-0 max-xs:flex-nowrap max-xs:justify-start",
+            "sticky top-0 z-10 min-h-11 border-b border-solid border-neutral-100 dark:border-neutral-900 px-2 overflow-x-auto overscroll-x-contain [scrollbar-width:none] [&::-webkit-scrollbar]:hidden max-xs:fixed max-xs:top-auto max-xs:bottom-4 max-xs:h-11 max-xs:border-t max-xs:border-b-0 max-xs:pb-0 max-xs:flex-nowrap max-xs:justify-start",
           variant === "floating" &&
             "p-[0.188rem] rounded-[calc(0.875rem+1px)] border border-solid border-neutral-100 dark:border-neutral-900 bg-white dark:bg-black shadow-xl shadow-neutral-800 dark:shadow-black outline-none overflow-hidden data-[plain=true]:p-0 data-[plain=true]:rounded-none data-[plain=true]:border-none data-[plain=true]:shadow-none data-[plain=true]:bg-transparent max-xs:w-full max-xs:rounded-none max-xs:border-none max-xs:shadow-none",
           className,
