@@ -67,6 +67,7 @@ export function Editor() {
       // InvisibleCharacters,
       MarkdownPaste.configure({
         enableTablePaste: true,
+        enableListPaste: true,
         enableMarkdownPaste: true,
       }),
       Mathematics,
@@ -107,7 +108,7 @@ Hello World
     <EditorContext value={{ editor }}>
       <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full py-4 flex flex-col items-center gap-4">
         <FlexibleToolbar />
-        <EditorContent editor={editor} className="w-full" />
+        <EditorContent editor={editor} className="w-full h-full" />
       </div>
     </EditorContext>
   )
