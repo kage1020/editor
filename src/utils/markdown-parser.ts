@@ -181,3 +181,40 @@ export function parseMarkdownImages(text: string) {
 
   return images
 }
+
+/**
+ * Check if text contains markdown headings
+ */
+export function hasMarkdownHeadings(text: string): boolean {
+  // Match markdown heading pattern: # Heading or ## Heading etc.
+  const headingPattern = /^#{1,6}\s+.+$/m
+  return headingPattern.test(text)
+}
+
+/**
+ * Parse markdown headings from text
+ */
+export function parseMarkdownHeadings(text: string) {
+  const headings: Array<{
+    level: number
+    content: string
+    fullMatch: string
+  }> = []
+
+  const lines = text.split("\n")
+
+  for (const line of lines) {
+    // Match heading pattern: 1-6 # followed by space and content
+    const headingMatch = line.match(/^(#{1,6})\s+(.+)$/)
+    if (headingMatch) {
+      const [fullMatch, hashes, content] = headingMatch
+      headings.push({
+        level: hashes.length,
+        content: content.trim(),
+        fullMatch,
+      })
+    }
+  }
+
+  return headings
+}

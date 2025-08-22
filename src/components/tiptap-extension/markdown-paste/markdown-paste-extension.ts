@@ -2,9 +2,11 @@ import { Extension } from "@tiptap/core"
 import type { Node, Schema } from "@tiptap/pm/model"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import {
+  hasMarkdownHeadings,
   hasMarkdownImages,
   isMarkdownList,
   isMarkdownTable,
+  parseMarkdownHeadings,
   parseMarkdownImages,
   parseMarkdownList,
   parseMarkdownTable,
@@ -23,6 +25,10 @@ export interface MarkdownPasteOptions {
    * Whether to enable markdown image paste
    */
   enableImagePaste: boolean
+  /**
+   * Whether to enable markdown heading paste
+   */
+  enableHeadingPaste: boolean
   /**
    * Whether to enable general markdown paste
    */
@@ -227,6 +233,77 @@ function createContentWithImages(
   return nodes
 }
 
+/**
+ * Create content with headings from parsed markdown headings
+ */
+function createContentWithHeadings(
+  text: string,
+  headings: ReturnType<typeof parseMarkdownHeadings>,
+  schema: Schema,
+): Node[] {
+  if (headings.length === 0) {
+    // No headings, return text as paragraph
+    return [schema.nodes.paragraph.create({}, schema.text(text))]
+  }
+
+  const nodes: Node[] = []
+  let lastIndex = 0
+
+  // Sort headings by their position in the text
+  const sortedHeadings = [...headings].sort(
+    (a, b) => text.indexOf(a.fullMatch) - text.indexOf(b.fullMatch),
+  )
+
+  for (const heading of sortedHeadings) {
+    const headingIndex = text.indexOf(heading.fullMatch, lastIndex)
+
+    if (headingIndex === -1) continue
+
+    // Add text before the heading
+    if (headingIndex > lastIndex) {
+      const beforeText = text.substring(lastIndex, headingIndex).trim()
+      if (beforeText) {
+        // Split by newlines to create separate paragraphs
+        const paragraphs = beforeText.split(/\n\n+/)
+        for (const para of paragraphs) {
+          if (para.trim()) {
+            nodes.push(
+              schema.nodes.paragraph.create({}, schema.text(para.trim())),
+            )
+          }
+        }
+      }
+    }
+
+    // Add the heading node
+    nodes.push(
+      schema.nodes.heading.create(
+        { level: heading.level },
+        heading.content ? schema.text(heading.content) : undefined,
+      ),
+    )
+
+    lastIndex = headingIndex + heading.fullMatch.length
+  }
+
+  // Add remaining text after the last heading
+  if (lastIndex < text.length) {
+    const remainingText = text.substring(lastIndex).trim()
+    if (remainingText) {
+      const paragraphs = remainingText.split(/\n\n+/)
+      for (const para of paragraphs) {
+        if (para.trim()) {
+          nodes.push(
+            schema.nodes.paragraph.create({}, schema.text(para.trim())),
+          )
+        }
+      }
+    }
+  }
+
+  return nodes
+}
+
 export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
   name: "markdownPaste",
 
@@ -235,6 +312,7 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
       enableTablePaste: true,
       enableListPaste: true,
       enableImagePaste: true,
+      enableHeadingPaste: true,
       enableMarkdownPaste: true,
     }
   },
@@ -250,6 +328,7 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
               !this.options.enableTablePaste &&
               !this.options.enableListPaste &&
               !this.options.enableImagePaste &&
+              !this.options.enableHeadingPaste &&
               !this.options.enableMarkdownPaste
             ) {
               return false
@@ -348,6 +427,39 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                 }
               } catch (error) {
                 console.error("Failed to parse markdown images:", error)
+                return false
+              }
+            }
+
+            // Handle markdown heading paste
+            if (this.options.enableHeadingPaste && hasMarkdownHeadings(text)) {
+              try {
+                const headings = parseMarkdownHeadings(text)
+                const contentNodes = createContentWithHeadings(
+                  text,
+                  headings,
+                  view.state.schema,
+                )
+
+                if (contentNodes.length > 0) {
+                  const { from, to } = view.state.selection
+                  let tr = view.state.tr
+
+                  // Replace selection with first node
+                  tr = tr.replaceWith(from, to, contentNodes[0])
+                  let insertPos = from + contentNodes[0].nodeSize
+
+                  // Insert remaining nodes
+                  for (let i = 1; i < contentNodes.length; i++) {
+                    tr = tr.insert(insertPos, contentNodes[i])
+                    insertPos += contentNodes[i].nodeSize
+                  }
+
+                  view.dispatch(tr)
+                  return true
+                }
+              } catch (error) {
+                console.error("Failed to parse markdown headings:", error)
                 return false
               }
             }

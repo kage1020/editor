@@ -69,6 +69,7 @@ export function Editor() {
         enableTablePaste: true,
         enableListPaste: true,
         enableImagePaste: true,
+        enableHeadingPaste: true,
         enableMarkdownPaste: true,
       }),
       Mathematics,
