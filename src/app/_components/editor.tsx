@@ -62,7 +62,11 @@ export function Editor() {
       Focus,
       Highlight.configure({ multicolor: true }),
       HorizontalRule,
-      Image,
+      Image.configure({
+        HTMLAttributes: {
+          class: 'editor-image',
+        },
+      }),
       ImageUploadNode,
       // InvisibleCharacters,
       MarkdownPaste.configure({
@@ -102,9 +106,7 @@ export function Editor() {
         class: "h-full outline-none prose",
       },
     },
-    content: `
-Hello World
-    `,
+    content: ``,
   })
 
   return (

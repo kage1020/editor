@@ -140,13 +140,15 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
 
   addInputRules() {
     return [
+      // スペースをトリガーとして使用
       nodeInputRule({
-        find: /```(\w+)?\n/g,
+        find: /(\n*```([a-zA-Z0-9]*) )$/,
         type: this.type,
         getAttributes: (match) => {
+          console.log(match)
           return {
-            language: match[1] || this.options.defaultLanguage,
-            theme: this.options.defaultTheme,
+            language: match[2] || this.options.defaultLanguage,
+            theme: this.options.defaultTheme || "light-plus",
           }
         },
       }),
@@ -161,7 +163,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
         getAttributes: (match) => {
           return {
             language: match[1] || this.options.defaultLanguage,
-            theme: this.options.defaultTheme,
+            theme: this.options.defaultTheme || "light-plus",
           }
         },
       }),

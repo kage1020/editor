@@ -4,7 +4,7 @@ import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 import { CheckIcon, CopyIcon } from "@/components/tiptap-icons"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
-import { tiptapMarkdownSerializer } from "@/utils/markdown-serializer"
+import { tiptapMarkdownSerializer } from "./markdown-serializer"
 
 export type CopyFormat = "html" | "text" | "markdown"
 

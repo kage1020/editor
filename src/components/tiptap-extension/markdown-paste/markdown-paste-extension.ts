@@ -1,5 +1,6 @@
 import { Extension } from "@tiptap/core"
 import type { Node, Schema } from "@tiptap/pm/model"
+import { Fragment, Slice } from "@tiptap/pm/model"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import {
   hasMarkdownHeadings,
@@ -10,7 +11,7 @@ import {
   parseMarkdownImages,
   parseMarkdownList,
   parseMarkdownTable,
-} from "@/utils/markdown-parser"
+} from "./markdown-parser"
 
 export interface MarkdownPasteOptions {
   /**
@@ -117,21 +118,20 @@ function createListFromMarkdown(
 
     // Create list item
     let listItem: Node
+    const itemContent = item.content ? item.content.trim() : ""
     if (item.type === "task") {
       listItem = schema.nodes.taskItem.create(
         { checked: item.checked || false },
-        schema.nodes.paragraph.create(
-          {},
-          item.content ? schema.text(item.content) : undefined,
-        ),
+        itemContent
+          ? schema.nodes.paragraph.create({}, schema.text(itemContent))
+          : schema.nodes.paragraph.create(),
       )
     } else {
       listItem = schema.nodes.listItem.create(
         {},
-        schema.nodes.paragraph.create(
-          {},
-          item.content ? schema.text(item.content) : undefined,
-        ),
+        itemContent
+          ? schema.nodes.paragraph.create({}, schema.text(itemContent))
+          : schema.nodes.paragraph.create(),
       )
     }
 
@@ -163,8 +163,12 @@ function createContentWithImages(
   schema: Schema,
 ): Node[] {
   if (images.length === 0) {
-    // No images, return text as paragraph
-    return [schema.nodes.paragraph.create({}, schema.text(text))]
+    // No images, return text as paragraph (handle empty text)
+    const trimmedText = text.trim()
+    if (!trimmedText) {
+      return [schema.nodes.paragraph.create()]
+    }
+    return [schema.nodes.paragraph.create({}, schema.text(trimmedText))]
   }
 
   const nodes: Node[] = []
@@ -187,9 +191,10 @@ function createContentWithImages(
         // Split by newlines to create separate paragraphs
         const paragraphs = beforeText.split(/\n\n+/)
         for (const para of paragraphs) {
-          if (para.trim()) {
+          const trimmedPara = para.trim()
+          if (trimmedPara) {
             nodes.push(
-              schema.nodes.paragraph.create({}, schema.text(para.trim())),
+              schema.nodes.paragraph.create({}, schema.text(trimmedPara)),
             )
           }
         }
@@ -205,12 +210,8 @@ function createContentWithImages(
       imageAttrs.title = image.title
     }
 
-    // Wrap image in a paragraph for better editing experience
-    nodes.push(
-      schema.nodes.paragraph.create({}, [
-        schema.nodes.image.create(imageAttrs),
-      ]),
-    )
+    // Create image node directly without paragraph wrapper to avoid content validation issues
+    nodes.push(schema.nodes.image.create(imageAttrs))
 
     lastIndex = imageIndex + image.fullMatch.length
   }
@@ -221,13 +222,22 @@ function createContentWithImages(
     if (remainingText) {
       const paragraphs = remainingText.split(/\n\n+/)
       for (const para of paragraphs) {
-        if (para.trim()) {
+        const trimmedPara = para.trim()
+        if (trimmedPara) {
           nodes.push(
-            schema.nodes.paragraph.create({}, schema.text(para.trim())),
+            schema.nodes.paragraph.create({}, schema.text(trimmedPara)),
           )
         }
       }
     }
+  }
+
+  // Ensure we always return at least one node, and add trailing paragraph for editing after images
+  if (nodes.length === 0) {
+    nodes.push(schema.nodes.paragraph.create())
+  } else {
+    // Always add an empty paragraph at the end for better editing experience after images
+    nodes.push(schema.nodes.paragraph.create())
   }
 
   return nodes
@@ -242,8 +252,12 @@ function createContentWithHeadings(
   schema: Schema,
 ): Node[] {
   if (headings.length === 0) {
-    // No headings, return text as paragraph
-    return [schema.nodes.paragraph.create({}, schema.text(text))]
+    // No headings, return text as paragraph (handle empty text)
+    const trimmedText = text.trim()
+    if (!trimmedText) {
+      return [schema.nodes.paragraph.create()]
+    }
+    return [schema.nodes.paragraph.create({}, schema.text(trimmedText))]
   }
 
   const nodes: Node[] = []
@@ -266,9 +280,10 @@ function createContentWithHeadings(
         // Split by newlines to create separate paragraphs
         const paragraphs = beforeText.split(/\n\n+/)
         for (const para of paragraphs) {
-          if (para.trim()) {
+          const trimmedPara = para.trim()
+          if (trimmedPara) {
             nodes.push(
-              schema.nodes.paragraph.create({}, schema.text(para.trim())),
+              schema.nodes.paragraph.create({}, schema.text(trimmedPara)),
             )
           }
         }
@@ -276,10 +291,11 @@ function createContentWithHeadings(
     }
 
     // Add the heading node
+    const headingContent = heading.content ? heading.content.trim() : ""
     nodes.push(
       schema.nodes.heading.create(
         { level: heading.level },
-        heading.content ? schema.text(heading.content) : undefined,
+        headingContent ? schema.text(headingContent) : undefined,
       ),
     )
 
@@ -292,13 +308,19 @@ function createContentWithHeadings(
     if (remainingText) {
       const paragraphs = remainingText.split(/\n\n+/)
       for (const para of paragraphs) {
-        if (para.trim()) {
+        const trimmedPara = para.trim()
+        if (trimmedPara) {
           nodes.push(
-            schema.nodes.paragraph.create({}, schema.text(para.trim())),
+            schema.nodes.paragraph.create({}, schema.text(trimmedPara)),
           )
         }
       }
     }
+  }
+
+  // Ensure we always return at least one node
+  if (nodes.length === 0) {
+    nodes.push(schema.nodes.paragraph.create())
   }
 
   return nodes
@@ -343,6 +365,7 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
 
             // Handle markdown table paste
             if (this.options.enableTablePaste && isMarkdownTable(text)) {
+              console.log("Processing as table")
               try {
                 const tableData = parseMarkdownTable(text)
                 const tableNode = createTableFromMarkdown(
@@ -350,9 +373,8 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                   view.state.schema,
                 )
 
-                // Insert the table at the current position
-                const { from } = view.state.selection
-                const tr = view.state.tr.replaceWith(from, from, tableNode)
+                // Replace the current selection with the table
+                const tr = view.state.tr.replaceSelectionWith(tableNode)
 
                 view.dispatch(tr)
                 return true
@@ -372,22 +394,14 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                 )
 
                 if (listNodes) {
-                  const { from, to } = view.state.selection
-                  let tr = view.state.tr
+                  // Create a fragment and use replaceSelection with slice
+                  const nodesArray = Array.isArray(listNodes)
+                    ? listNodes
+                    : [listNodes]
+                  const fragment = Fragment.from(nodesArray)
+                  const slice = new Slice(fragment, 0, 0)
 
-                  // Handle single list or multiple lists
-                  if (Array.isArray(listNodes)) {
-                    // Replace selection with first list, then insert others
-                    tr = tr.replaceWith(from, to, listNodes[0])
-                    let insertPos = from + listNodes[0].nodeSize
-
-                    for (let i = 1; i < listNodes.length; i++) {
-                      tr = tr.insert(insertPos, listNodes[i])
-                      insertPos += listNodes[i].nodeSize
-                    }
-                  } else {
-                    tr = tr.replaceWith(from, to, listNodes)
-                  }
+                  const tr = view.state.tr.replaceSelection(slice)
 
                   view.dispatch(tr)
                   return true
@@ -409,18 +423,11 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                 )
 
                 if (contentNodes.length > 0) {
-                  const { from, to } = view.state.selection
-                  let tr = view.state.tr
+                  // Create a fragment and use replaceSelection with slice
+                  const fragment = Fragment.from(contentNodes)
+                  const slice = new Slice(fragment, 0, 0)
 
-                  // Replace selection with first node
-                  tr = tr.replaceWith(from, to, contentNodes[0])
-                  let insertPos = from + contentNodes[0].nodeSize
-
-                  // Insert remaining nodes
-                  for (let i = 1; i < contentNodes.length; i++) {
-                    tr = tr.insert(insertPos, contentNodes[i])
-                    insertPos += contentNodes[i].nodeSize
-                  }
+                  const tr = view.state.tr.replaceSelection(slice)
 
                   view.dispatch(tr)
                   return true
@@ -442,18 +449,11 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
                 )
 
                 if (contentNodes.length > 0) {
-                  const { from, to } = view.state.selection
-                  let tr = view.state.tr
+                  // Create a fragment and use replaceSelection with slice
+                  const fragment = Fragment.from(contentNodes)
+                  const slice = new Slice(fragment, 0, 0)
 
-                  // Replace selection with first node
-                  tr = tr.replaceWith(from, to, contentNodes[0])
-                  let insertPos = from + contentNodes[0].nodeSize
-
-                  // Insert remaining nodes
-                  for (let i = 1; i < contentNodes.length; i++) {
-                    tr = tr.insert(insertPos, contentNodes[i])
-                    insertPos += contentNodes[i].nodeSize
-                  }
+                  const tr = view.state.tr.replaceSelection(slice)
 
                   view.dispatch(tr)
                   return true
@@ -464,8 +464,6 @@ export const MarkdownPaste = Extension.create<MarkdownPasteOptions>({
               }
             }
 
-            // For now, let other markdown content fall through to default handling
-            // In the future, we could add full markdown parsing here
             return false
           },
         },

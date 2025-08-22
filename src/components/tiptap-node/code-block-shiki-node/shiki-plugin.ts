@@ -247,8 +247,12 @@ export const createShikiPlugin = (
               pluginState.error = null
               pluginState.decorations = findCodeBlocks(state.doc, highlighter)
 
-              // Force view update
-              view.dispatch(state.tr)
+              // Force view update - defer to avoid React flushSync warning
+              setTimeout(() => {
+                if (mounted) {
+                  view.dispatch(state.tr)
+                }
+              }, 0)
             }
           }
         } catch (error) {
@@ -266,8 +270,12 @@ export const createShikiPlugin = (
                   ? error
                   : new Error("Failed to initialize Shiki")
 
-              // Force view update
-              view.dispatch(state.tr)
+              // Force view update - defer to avoid React flushSync warning
+              setTimeout(() => {
+                if (mounted) {
+                  view.dispatch(state.tr)
+                }
+              }, 0)
             }
           }
         }
