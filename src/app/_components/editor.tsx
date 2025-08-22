@@ -40,6 +40,7 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
@@ -64,6 +65,10 @@ export function Editor() {
       Image,
       ImageUploadNode,
       // InvisibleCharacters,
+      MarkdownPaste.configure({
+        enableTablePaste: true,
+        enableMarkdownPaste: true,
+      }),
       Mathematics,
       Mention,
       Placeholder,
@@ -74,7 +79,7 @@ export function Editor() {
       Subscript,
       Superscript,
       TableKit.configure({
-        table: { resizable: true },
+        table: { resizable: true, allowTableNodeSelection: true },
       }),
       TableOfContents,
       TaskItem.configure({
@@ -94,20 +99,7 @@ export function Editor() {
       },
     },
     content: `
-<p>Look at these details</p>
-      <details>
-        <summary>This is a summary</summary>
-        <p>Surprise!</p>
-      </details>
-      <p>Nested details are also supported</p>
-      <details open>
-        <summary>This is another summary</summary>
-        <p>And there is even more.</p>
-        <details>
-          <summary>We need to go deeper</summary>
-          <p>Booya!</p>
-        </details>
-      </details>
+Hello World
     `,
   })
 

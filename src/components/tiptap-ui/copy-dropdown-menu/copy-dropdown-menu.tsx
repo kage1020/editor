@@ -100,6 +100,20 @@ export const CopyDropdownMenu = forwardRef<
             </span>
           </CopyButton>
         </DropdownMenuItem>
+        <DropdownMenuItem asChild>
+          <CopyButton
+            format="markdown"
+            onCopied={() => handleCopied("markdown")}
+            onError={onError}
+            variant="ghost"
+            className="w-full justify-start"
+          >
+            <span className="flex items-center gap-2">
+              {copiedFormat === "markdown" ? <CheckIcon /> : <CopyIcon />}
+              Markdown
+            </span>
+          </CopyButton>
+        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   )

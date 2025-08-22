@@ -4,8 +4,9 @@ import type { Editor } from "@tiptap/react"
 import { useCallback, useState } from "react"
 import { CheckIcon, CopyIcon } from "@/components/tiptap-icons"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import { tiptapMarkdownSerializer } from "@/utils/markdown-serializer"
 
-export type CopyFormat = "html" | "text"
+export type CopyFormat = "html" | "text" | "markdown"
 
 /**
  * Configuration for the copy functionality
@@ -33,6 +34,9 @@ function getEditorContent(editor: Editor | null, format: CopyFormat): string {
 
   if (format === "html") {
     return editor.getHTML()
+  } else if (format === "markdown") {
+    const { state } = editor
+    return tiptapMarkdownSerializer.serialize(state.doc)
   } else {
     return editor.getText()
   }
@@ -69,7 +73,12 @@ export function useCopy(config: UseCopyConfig) {
     }
   }, [editor, format, onCopied, onError])
 
-  const label = format === "html" ? "Copy as HTML" : "Copy as Text"
+  const label =
+    format === "html"
+      ? "Copy as HTML"
+      : format === "markdown"
+        ? "Copy as Markdown"
+        : "Copy as Text"
   const Icon = isCopied ? CheckIcon : CopyIcon
 
   return {

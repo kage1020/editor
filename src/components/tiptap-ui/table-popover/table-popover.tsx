@@ -24,6 +24,7 @@ import {
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
+import { cn } from "@/lib/utils"
 
 interface TablePopoverContentProps {
   /**
@@ -112,20 +113,37 @@ const TableGridSelector = ({
 
   return (
     <div className="table-grid-selector flex flex-col items-center gap-2 p-2">
-      <div className="table-grid flex flex-col border border-neutral-100 dark:border-neutral-900 rounded-md overflow-hidden">
+      <div className="table-grid flex flex-col border border-neutral-100 dark:border-neutral-900 overflow-hidden">
         {Array.from({ length: maxRows }, (_, rowIndex) => (
           <div key={rowIndex} className="table-grid-row flex">
             {Array.from({ length: maxCols }, (_, colIndex) => (
               <button
                 key={`${rowIndex}-${colIndex}`}
                 type="button"
-                className={`table-grid-cell w-4 h-4 border border-neutral-100 dark:border-neutral-900 bg-white dark:bg-zinc-950 cursor-pointer transition-colors duration-150 ease-in-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-sky-100 dark:hover:bg-sky-900 ${
+                className={cn(
+                  "table-grid-cell w-4 h-4 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-zinc-950 cursor-pointer transition-colors duration-150 ease-in-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-neutral-100 dark:hover:bg-neutral-900",
                   hoveredCell &&
-                  rowIndex <= hoveredCell.row &&
-                  colIndex <= hoveredCell.col
-                    ? "bg-sky-100 dark:bg-sky-900"
-                    : ""
-                }`}
+                    rowIndex <= hoveredCell.row &&
+                    colIndex <= hoveredCell.col
+                    ? "bg-neutral-100 dark:bg-neutral-900"
+                    : "",
+                  hoveredCell &&
+                    rowIndex === hoveredCell.row &&
+                    colIndex <= hoveredCell.col &&
+                    "border-b-neutral-400 z-10",
+                  hoveredCell &&
+                    colIndex === hoveredCell.col &&
+                    rowIndex <= hoveredCell.row &&
+                    "border-r-neutral-400 z-10",
+                  hoveredCell &&
+                    rowIndex === 0 &&
+                    colIndex <= hoveredCell.col &&
+                    "border-t-neutral-400",
+                  hoveredCell &&
+                    colIndex === 0 &&
+                    rowIndex <= hoveredCell.row &&
+                    "border-l-neutral-400",
+                )}
                 onMouseEnter={() => handleCellHover(rowIndex, colIndex)}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
                 aria-label={`Insert ${rowIndex + 1}x${colIndex + 1} table`}
@@ -217,7 +235,7 @@ function TablePopoverContent({
             />
           </div>
 
-          <Separator />
+          <Separator orientation="horizontal" />
 
           {/* Manual Input */}
           <div className="table-popover-section flex flex-col gap-2 w-full">
