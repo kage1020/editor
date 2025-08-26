@@ -24,9 +24,7 @@ import { cn } from "@/lib/utils"
 const supportedLanguages = [
   { value: "", label: "Plain text" },
   { value: "javascript", label: "JavaScript" },
-  { value: "js", label: "JavaScript" },
   { value: "typescript", label: "TypeScript" },
-  { value: "ts", label: "TypeScript" },
   { value: "jsx", label: "JSX" },
   { value: "tsx", label: "TSX" },
   { value: "html", label: "HTML" },
@@ -35,34 +33,40 @@ const supportedLanguages = [
   { value: "sass", label: "Sass" },
   { value: "json", label: "JSON" },
   { value: "python", label: "Python" },
-  { value: "py", label: "Python" },
   { value: "bash", label: "Bash" },
-  { value: "sh", label: "Shell" },
   { value: "shell", label: "Shell" },
   { value: "sql", label: "SQL" },
   { value: "yaml", label: "YAML" },
-  { value: "yml", label: "YAML" },
   { value: "markdown", label: "Markdown" },
-  { value: "md", label: "Markdown" },
   { value: "java", label: "Java" },
   { value: "cpp", label: "C++" },
   { value: "c", label: "C" },
   { value: "php", label: "PHP" },
   { value: "ruby", label: "Ruby" },
-  { value: "rb", label: "Ruby" },
   { value: "go", label: "Go" },
   { value: "rust", label: "Rust" },
-  { value: "rs", label: "Rust" },
   { value: "swift", label: "Swift" },
   { value: "kotlin", label: "Kotlin" },
-  { value: "kt", label: "Kotlin" },
   { value: "scala", label: "Scala" },
   { value: "dockerfile", label: "Dockerfile" },
-  { value: "docker", label: "Dockerfile" },
   { value: "xml", label: "XML" },
   { value: "vue", label: "Vue" },
   { value: "svelte", label: "Svelte" },
 ]
+
+// Map of aliases to primary language values
+const languageAliases: Record<string, string> = {
+  js: "javascript",
+  ts: "typescript",
+  py: "python",
+  sh: "shell",
+  yml: "yaml",
+  md: "markdown",
+  rb: "ruby",
+  rs: "rust",
+  kt: "kotlin",
+  docker: "dockerfile",
+}
 
 export interface CodeBlockShikiNodeProps extends NodeViewProps {}
 
@@ -70,7 +74,9 @@ export const CodeBlockShikiNode: React.FC<CodeBlockShikiNodeProps> = ({
   node,
   updateAttributes,
 }) => {
-  const [language, setLanguage] = useState(node.attrs.language || "")
+  // Normalize the initial language to handle aliases
+  const initialLanguage = languageAliases[node.attrs.language] || node.attrs.language || ""
+  const [language, setLanguage] = useState(initialLanguage)
   const [open, setOpen] = useState(false)
   const { theme } = useTheme()
 

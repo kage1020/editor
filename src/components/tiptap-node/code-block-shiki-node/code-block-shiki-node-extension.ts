@@ -5,9 +5,29 @@ import {
   nodePasteRule,
   ReactNodeViewRenderer,
 } from "@tiptap/react"
-import type { BundledLanguage, BundledTheme } from "shiki"
+import type { LanguageInput, ThemeInput } from "shiki"
 import { CodeBlockShikiNode } from "./code-block-shiki-node"
 import { createShikiPlugin, type ShikiPluginOptions } from "./shiki-plugin"
+
+// Map of language aliases to their primary values
+const languageAliases: Record<string, string> = {
+  js: "javascript",
+  ts: "typescript",
+  py: "python",
+  sh: "shell",
+  yml: "yaml",
+  md: "markdown",
+  rb: "ruby",
+  rs: "rust",
+  kt: "kotlin",
+  docker: "dockerfile",
+}
+
+// Helper function to normalize language names
+const normalizeLanguage = (lang: string | null | undefined): string => {
+  if (!lang) return ""
+  return languageAliases[lang] || lang
+}
 
 declare module "@tiptap/react" {
   interface Commands<ReturnType> {
@@ -30,15 +50,16 @@ declare module "@tiptap/react" {
   }
 }
 
-export interface CodeBlockShikiOptions extends CodeBlockOptions {
+export interface CodeBlockShikiOptions
+  extends Omit<CodeBlockOptions, "defaultLanguage" | "defaultTheme"> {
   /**
    * Default language to use when no language is specified
    */
-  defaultLanguage: BundledLanguage | null
+  defaultLanguage: LanguageInput | null
   /**
    * Default theme to use when no theme is specified
    */
-  defaultTheme: BundledTheme | null
+  defaultTheme: ThemeInput | null
   /**
    * Shiki plugin options
    */
@@ -94,7 +115,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
           const code = element.querySelector("code")
           if (!code) return false
           return {
-            language: code.dataset.language || "plaintext",
+            language: normalizeLanguage(code.dataset.language) || "plaintext",
             theme: code.dataset.theme || "light-plus",
           }
         },
@@ -122,12 +143,18 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
       setCodeBlockShiki:
         (attributes = {}) =>
         ({ commands }) => {
-          return commands.setNode(this.name, attributes)
+          return commands.setNode(this.name, {
+            ...attributes,
+            language: normalizeLanguage(attributes.language),
+          })
         },
       toggleCodeBlockShiki:
         (attributes = {}) =>
         ({ commands }) => {
-          return commands.toggleNode(this.name, "paragraph", attributes)
+          return commands.toggleNode(this.name, "paragraph", {
+            ...attributes,
+            language: normalizeLanguage(attributes.language),
+          })
         },
     }
   },
@@ -145,9 +172,8 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
         find: /(\n*```([a-zA-Z0-9]*) )$/,
         type: this.type,
         getAttributes: (match) => {
-          console.log(match)
           return {
-            language: match[2] || this.options.defaultLanguage,
+            language: normalizeLanguage(match[2]) || "plaintext",
             theme: this.options.defaultTheme || "light-plus",
           }
         },
@@ -162,7 +188,7 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
         type: this.type,
         getAttributes: (match) => {
           return {
-            language: match[1] || this.options.defaultLanguage,
+            language: normalizeLanguage(match[1]) || "plaintext",
             theme: this.options.defaultTheme || "light-plus",
           }
         },

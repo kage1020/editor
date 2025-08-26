@@ -1,52 +1,54 @@
 import type { Node } from "@tiptap/pm/model"
 import { Plugin, PluginKey } from "@tiptap/pm/state"
 import { Decoration, DecorationSet } from "@tiptap/pm/view"
-import {
-  type BundledLanguage,
-  type BundledTheme,
-  createHighlighter,
-  type Highlighter,
-} from "shiki"
+import type { HighlighterCore, LanguageInput, ThemeInput } from "shiki"
+import { createHighlighterCore } from "shiki/core"
+import { createOnigurumaEngine } from "shiki/engine/oniguruma"
 
 export interface ShikiPluginOptions {
   /**
    * Languages to load
    */
-  languages: BundledLanguage[]
+  languages: LanguageInput[]
   /**
    * Themes to load
    */
-  themes: BundledTheme[]
+  themes: ThemeInput[]
 }
 
 const defaultOptions: ShikiPluginOptions = {
   languages: [
-    "javascript",
-    "typescript",
-    "html",
-    "css",
-    "json",
-    "python",
-    "bash",
-    "sql",
-    "yaml",
-    "markdown",
-    "java",
-    "cpp",
-    "c",
-    "php",
-    "ruby",
-    "go",
-    "rust",
-    "swift",
-    "kotlin",
-    "scala",
-    "dockerfile",
-    "xml",
-    "vue",
-    "svelte",
+    import("shiki/langs/javascript.mjs"),
+    import("shiki/langs/typescript.mjs"),
+    import("shiki/langs/html.mjs"),
+    import("shiki/langs/css.mjs"),
+    import("shiki/langs/scss.mjs"),
+    import("shiki/langs/sass.mjs"),
+    import("shiki/langs/json.mjs"),
+    import("shiki/langs/python.mjs"),
+    import("shiki/langs/bash.mjs"),
+    import("shiki/langs/sql.mjs"),
+    import("shiki/langs/yaml.mjs"),
+    import("shiki/langs/markdown.mjs"),
+    import("shiki/langs/java.mjs"),
+    import("shiki/langs/cpp.mjs"),
+    import("shiki/langs/c.mjs"),
+    import("shiki/langs/php.mjs"),
+    import("shiki/langs/ruby.mjs"),
+    import("shiki/langs/go.mjs"),
+    import("shiki/langs/rust.mjs"),
+    import("shiki/langs/swift.mjs"),
+    import("shiki/langs/kotlin.mjs"),
+    import("shiki/langs/scala.mjs"),
+    import("shiki/langs/dockerfile.mjs"),
+    import("shiki/langs/xml.mjs"),
+    import("shiki/langs/vue.mjs"),
+    import("shiki/langs/svelte.mjs"),
   ],
-  themes: ["light-plus", "dark-plus"],
+  themes: [
+    import("shiki/themes/light-plus.mjs"),
+    import("shiki/themes/dark-plus.mjs"),
+  ],
 }
 
 export const shikiPluginKey = new PluginKey("shiki")
@@ -97,7 +99,7 @@ const languageMapping: Record<string, string> = {
  */
 function findCodeBlocks(
   doc: Node,
-  highlighter: Highlighter | null,
+  highlighter: HighlighterCore | null,
 ): DecorationSet {
   const decorations: Decoration[] = []
 
@@ -155,7 +157,7 @@ function findCodeBlocks(
 }
 
 export interface ShikiPluginState {
-  highlighter: Highlighter | null
+  highlighter: HighlighterCore | null
   loading: boolean
   error: Error | null
   decorations: DecorationSet
@@ -230,9 +232,10 @@ export const createShikiPlugin = (
 
       const initHighlighter = async () => {
         try {
-          const highlighter = await createHighlighter({
+          const highlighter = await createHighlighterCore({
             themes: pluginOptions.themes,
             langs: pluginOptions.languages,
+            engine: createOnigurumaEngine(import("shiki/wasm")),
           })
 
           if (mounted) {
