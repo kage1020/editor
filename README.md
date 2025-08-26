@@ -1,36 +1,82 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# @kage1020/editor
+
+A modern rich text editor built with Next.js and Tiptap.
+
+## Features
+
+### Text Formatting
+
+- **Bold** (Cmd/Ctrl + B)
+- *Italic* (Cmd/Ctrl + I)
+- ~~Strikethrough~~ (Cmd/Ctrl + Shift + S)
+- Underline (Cmd/Ctrl + U)
+- Code inline (Cmd/Ctrl + E)
+- Subscript/Superscript
+
+### Highlighting
+
+- **Color Highlight**: Full background highlighting with multiple colors
+- **Underline Highlight**: Fluorescent marker-style highlighting that appears below text (Cmd/Ctrl + Shift + H)
+  - Yellow, Green, Blue, Orange, Pink, Purple color options
+  - 50% text overlap for authentic marker appearance
+
+### Block Elements
+
+- Headings (H1-H6)
+- Bullet Lists
+- Numbered Lists
+- Task Lists with checkboxes
+- Code Blocks with syntax highlighting
+- Blockquotes
+- Images with drag & drop support
+- Horizontal Rules
+
+### Advanced Features
+
+- Tables with row/column management
+- Links with preview
+- Text alignment (left, center, right, justify)
+- Font family selection
+- Font size adjustment
+- Text color customization
+- Undo/Redo support
+- Markdown paste support
 
 ## Getting Started
 
-First, run the development server:
+First, install dependencies:
+
+```bash
+npm install
+# or
+pnpm install
+# or
+bun install
+```
+
+Then run the development server:
 
 ```bash
 npm run dev
-# or
-yarn dev
 # or
 pnpm dev
 # or
 bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000) with your browser to see the editor.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Technology Stack
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Framework**: Next.js 15
+- **Editor**: Tiptap
+- **Styling**: Tailwind CSS
+- **UI Components**: shadcn
 
-## Learn More
+## License
 
-To learn more about Next.js, take a look at the following resources:
+Apache-2.0
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Contributing
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Contributions are welcome! Please feel free to submit a Pull Request.
