@@ -12,6 +12,7 @@ import "@/components/tiptap-node/image-upload-node/image-upload-node.css"
 import "@/components/tiptap-node/list-node/list-node.css"
 import "@/components/tiptap-node/mathematics-node/mathematics-node.css"
 import "@/components/tiptap-node/paragraph-node/paragraph-node.css"
+import "@/components/tiptap-extension/underline-highlight/underline-highlight.css"
 
 import {
   Details,
@@ -41,6 +42,7 @@ import {
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
+import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
@@ -96,6 +98,12 @@ export function Editor() {
       TaskList,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TextStyleKit,
+      UnderlineHighlight.configure({ 
+        multicolor: true,
+        HTMLAttributes: {
+          class: 'underline-highlight',
+        },
+      }),
       YouTube,
     ],
     immediatelyRender: false,

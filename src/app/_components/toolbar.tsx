@@ -10,6 +10,7 @@ import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { MarkButton } from "@/components/tiptap-ui/mark-button"
 import { TablePopover } from "@/components/tiptap-ui/table-popover"
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button"
+import { UnderlineHighlightPopover } from "@/components/tiptap-ui/underline-highlight-popover"
 import { UndoRedoButton } from "@/components/tiptap-ui/undo-redo-button"
 import {
   Toolbar,
@@ -33,6 +34,7 @@ export function FlexibleToolbar() {
       <ToolbarSeparator />
       <ToolbarGroup>
         <ColorHighlightPopover />
+        <UnderlineHighlightPopover />
         <MarkButton type="bold" />
         <MarkButton type="code" />
         <MarkButton type="italic" />
