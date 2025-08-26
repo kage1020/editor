@@ -32,7 +32,7 @@
     {
       "binding": "DB",
       "database_name": "editor",
-      "database_id": "d69e9768-b739-441a-bd13-bea8be357c6f",
+      "database_id": "087c490e-1502-47b1-9ee7-29f204041d1c",
       "preview_database_id": "DB",
       "migrations_dir": "src/drizzle"
     }
