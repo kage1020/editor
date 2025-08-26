@@ -1,13 +1,13 @@
 "use client"
 
 import { forwardRef } from "react"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { HighlighterIcon } from "@/components/tiptap-icons"
 import {
   Button,
-  IconButton,
   type ButtonProps,
+  IconButton,
 } from "@/components/tiptap-ui-primitive/button"
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { cn } from "@/lib/utils"
 
 export interface UnderlineHighlightColorButtonProps
@@ -49,11 +49,13 @@ export const UnderlineHighlightColorButton = forwardRef<
         "relative overflow-hidden",
         highlighted &&
           "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100",
-        className
+        className,
       )}
       variant={isActive ? "default" : "ghost"}
       onClick={handleClick}
-      disabled={!editor.can().chain().focus().toggleUnderlineHighlight({ color }).run()}
+      disabled={
+        !editor.can().chain().focus().toggleUnderlineHighlight({ color }).run()
+      }
       aria-pressed={isActive}
       {...props}
     >
@@ -70,3 +72,4 @@ export const UnderlineHighlightColorButton = forwardRef<
     </Button>
   )
 })
+UnderlineHighlightColorButton.displayName = "UnderlineHighlightColorButton"
