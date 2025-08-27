@@ -19,6 +19,7 @@ export const MAC_SYMBOLS: Record<string, string> = {
 export function isMac(): boolean {
   return (
     typeof navigator !== "undefined" &&
+    !!navigator.platform &&
     navigator.platform.toLowerCase().includes("mac")
   )
 }
