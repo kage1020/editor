@@ -1,10 +1,8 @@
 "use client"
 
 import { forwardRef, useMemo, useRef, useState } from "react"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { BanIcon, HighlighterIcon } from "@/components/tiptap-icons"
 import { UnderlineHighlightColorButton } from "@/components/tiptap-ui/underline-highlight-color-button"
-
 import {
   Button,
   ButtonGroup,
@@ -24,6 +22,7 @@ import {
 import { Separator } from "@/components/tiptap-ui-primitive/separator"
 import { useMenuNavigation } from "@/hooks/use-menu-navigation"
 import { useIsMobile } from "@/hooks/use-mobile"
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { cn } from "@/lib/utils"
 
 export interface UnderlineHighlightColor {
@@ -61,28 +60,29 @@ export interface UnderlineHighlightPopoverProps
   onApplied?: () => void
 }
 
-const UnderlineHighlightPopoverButton = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ className, children, ...props }, ref) => (
-    <Button
-      type="button"
-      className={className}
-      variant="ghost"
-      appearance="default"
-      role="button"
-      tabIndex={-1}
-      aria-label="Underline highlight text"
-      tooltip="Underline Highlight"
-      ref={ref}
-      {...props}
-    >
-      {children ?? (
-        <IconButton>
-          <HighlighterIcon />
-        </IconButton>
-      )}
-    </Button>
-  ),
-)
+const UnderlineHighlightPopoverButton = forwardRef<
+  HTMLButtonElement,
+  ButtonProps
+>(({ className, children, ...props }, ref) => (
+  <Button
+    type="button"
+    className={className}
+    variant="ghost"
+    appearance="default"
+    role="button"
+    tabIndex={-1}
+    aria-label="Underline highlight text"
+    tooltip="Underline Highlight"
+    ref={ref}
+    {...props}
+  >
+    {children ?? (
+      <IconButton>
+        <HighlighterIcon />
+      </IconButton>
+    )}
+  </Button>
+))
 
 UnderlineHighlightPopoverButton.displayName = "UnderlineHighlightPopoverButton"
 
@@ -177,7 +177,12 @@ export function UnderlineHighlightPopover({
 
   if (!editor) return null
 
-  const canUnderlineHighlight = editor.can().chain().focus().toggleUnderlineHighlight().run()
+  const canUnderlineHighlight = editor
+    .can()
+    .chain()
+    .focus()
+    .toggleUnderlineHighlight()
+    .run()
   const isActive = editor.isActive("underlineHighlight")
 
   return (

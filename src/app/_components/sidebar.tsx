@@ -1,6 +1,7 @@
 "use client"
 
 import { ChevronsRight } from "lucide-react"
+import { use } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -15,14 +16,21 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import type { LoadContentResult } from "../page"
 
-const histories = Array.from({ length: 30 }, (_, i) => ({
-  id: `${i}`,
-  title: `HistoryHistoryHistoryHistory ${i + 1}`,
-}))
+interface SidebarProps {
+  contentPromise: Promise<LoadContentResult>
+}
 
-export function DocumentSidebar() {
-  const id = "10"
+export function DocumentSidebar({ contentPromise }: SidebarProps) {
+  const { documents, currentDocument } = use(contentPromise)
+
+  const documentItems = documents.map((doc) => ({
+    id: doc.id,
+    title: doc.title || "Untitled",
+    isCurrent: currentDocument?.id === doc.id,
+    updatedAt: doc.updatedAt,
+  }))
 
   return (
     <>
@@ -51,16 +59,33 @@ export function DocumentSidebar() {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
-                {histories.map((history) => (
-                  <SidebarMenuItem key={history.id}>
-                    <SidebarMenuButton className="justify-between">
-                      <span className="text-ellipsis whitespace-nowrap overflow-hidden">
-                        {history.title}
-                      </span>
-                      {history.id === id && <Badge>Current</Badge>}
+                {documentItems.length > 0 ? (
+                  documentItems.map((doc) => (
+                    <SidebarMenuItem key={doc.id}>
+                      <SidebarMenuButton className="justify-between h-12">
+                        <div className="flex flex-col items-start min-w-0">
+                          <span className="text-ellipsis whitespace-nowrap overflow-hidden text-sm font-medium">
+                            {doc.title}
+                          </span>
+                          <span className="text-xs text-neutral-500">
+                            {doc.updatedAt.toLocaleDateString()}
+                          </span>
+                        </div>
+                        {doc.isCurrent && (
+                          <Badge variant="secondary" className="ml-2">
+                            Current
+                          </Badge>
+                        )}
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))
+                ) : (
+                  <SidebarMenuItem>
+                    <SidebarMenuButton disabled>
+                      <span className="text-neutral-400">No documents</span>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))}
+                )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>

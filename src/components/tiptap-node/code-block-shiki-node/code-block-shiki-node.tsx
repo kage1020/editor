@@ -75,7 +75,8 @@ export const CodeBlockShikiNode: React.FC<CodeBlockShikiNodeProps> = ({
   updateAttributes,
 }) => {
   // Normalize the initial language to handle aliases
-  const initialLanguage = languageAliases[node.attrs.language] || node.attrs.language || ""
+  const initialLanguage =
+    languageAliases[node.attrs.language] || node.attrs.language || ""
   const [language, setLanguage] = useState(initialLanguage)
   const [open, setOpen] = useState(false)
   const { theme } = useTheme()

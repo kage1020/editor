@@ -1,5 +1,7 @@
 "use client"
 
+import { use } from "react"
+
 // Import Tiptap node styles
 import "@/components/tiptap-node/blockquote-node/blockquote-node.css"
 import "@/components/tiptap-node/code-block-node/code-block-node.css"
@@ -46,10 +48,18 @@ import { UnderlineHighlight } from "@/components/tiptap-extension/underline-high
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
+import type { LoadContentResult } from "../page"
 // import InvisibleCharacters from "@tiptap/extension-invisible-characters"
 import { FlexibleToolbar } from "./toolbar"
 
-export function Editor() {
+interface EditorProps {
+  contentPromise: Promise<LoadContentResult>
+}
+
+export function Editor({ contentPromise }: EditorProps) {
+  // Use React's use hook to resolve the promise
+  const { currentDocument } = use(contentPromise)
+
   const editor = useEditor({
     extensions: [
       CharacterCount,
@@ -66,7 +76,7 @@ export function Editor() {
       HorizontalRule,
       Image.configure({
         HTMLAttributes: {
-          class: 'editor-image',
+          class: "editor-image",
         },
       }),
       ImageUploadNode,
@@ -98,10 +108,10 @@ export function Editor() {
       TaskList,
       TextAlign.configure({ types: ["heading", "paragraph"] }),
       TextStyleKit,
-      UnderlineHighlight.configure({ 
+      UnderlineHighlight.configure({
         multicolor: true,
         HTMLAttributes: {
-          class: 'underline-highlight',
+          class: "underline-highlight",
         },
       }),
       YouTube,
@@ -114,7 +124,7 @@ export function Editor() {
         class: "h-full outline-none prose",
       },
     },
-    content: ``,
+    content: currentDocument?.json || ``,
   })
 
   return (

@@ -1,8 +1,8 @@
 "use client"
 
 import { HighlighterIcon } from "@/components/tiptap-icons"
-import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { Button } from "@/components/tiptap-ui-primitive/button"
+import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 
 export interface UnderlineHighlightButtonProps {
   /**
@@ -24,7 +24,9 @@ export function UnderlineHighlightButton({
     <Button
       variant={isActive ? "default" : "ghost"}
       size="small"
-      onClick={() => editor.chain().focus().toggleUnderlineHighlight({ color }).run()}
+      onClick={() =>
+        editor.chain().focus().toggleUnderlineHighlight({ color }).run()
+      }
       disabled={!editor.can().chain().focus().toggleUnderlineHighlight().run()}
       aria-label={`Toggle underline highlight ${color}`}
       title={`Underline highlight (Cmd+Shift+H)`}

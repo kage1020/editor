@@ -4,7 +4,7 @@ export interface UnderlineHighlightOptions {
   /**
    * HTML attributes to add to the generated highlight mark.
    */
-  HTMLAttributes: Record<string, any>
+  HTMLAttributes: Record<string, string | number | boolean>
   /**
    * Whether to allow multicolor highlights
    */

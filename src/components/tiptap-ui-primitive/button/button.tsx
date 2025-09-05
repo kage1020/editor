@@ -11,7 +11,7 @@ import { parseShortcutKeys } from "@/lib/tiptap-utils"
 import { cn } from "@/lib/utils"
 
 const tiptapButtonVariants = cva(
-  "group/button text-sm font-medium [font-feature:'salt'_on,'cv01'_on] leading-[1.15] h-8 min-w-8 border-none p-2 gap-1 flex items-center justify-center rounded-lg transition-all duration-200 ease-in-out focus-visible:outline-none [&:has(>svg):not(:has(>:not(svg)))]:gap-0.5 [&_.tiptap-button-text]:px-0.5 [&_.tiptap-button-text]:flex-grow [&_.tiptap-button-text]:text-left [&_.tiptap-button-text]:leading-6 data-[text-trim=on]:[&_.tiptap-button-text]:text-ellipsis data-[text-trim=on]:[&_.tiptap-button-text]:overflow-hidden [&_.tiptap-button-emoji]:w-4 [&_.tiptap-button-emoji]:flex [&_.tiptap-button-emoji]:justify-center [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:gap-0 [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:pr-1",
+  "group/button text-sm font-medium [font-feature-settings:'salt'_on,'cv01'_on] leading-[1.15] h-8 min-w-8 border-none p-2 gap-1 flex items-center justify-center rounded-lg transition-all duration-200 ease-in-out focus-visible:outline-none [&:has(>svg):not(:has(>:not(svg)))]:gap-0.5 [&_.tiptap-button-text]:px-0.5 [&_.tiptap-button-text]:flex-grow [&_.tiptap-button-text]:text-left [&_.tiptap-button-text]:leading-6 data-[text-trim=on]:[&_.tiptap-button-text]:text-ellipsis data-[text-trim=on]:[&_.tiptap-button-text]:overflow-hidden [&_.tiptap-button-emoji]:w-4 [&_.tiptap-button-emoji]:flex [&_.tiptap-button-emoji]:justify-center [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:gap-0 [&:has(>svg:nth-of-type(2)):has(>.tiptap-button-dropdown-small):not(:has(>svg:nth-of-type(3))):not(:has(>.tiptap-button-text))]:pr-1",
   {
     variants: {
       size: {
@@ -267,12 +267,13 @@ const buttonIconVariants = cva("shrink-0", {
 interface ButtonIconProps
   extends React.ComponentPropsWithoutRef<"svg">,
     VariantProps<typeof buttonIconVariants> {
-  children: React.ReactElement<React.SVGProps<SVGSVGElement>>
+  children: React.ReactElement<React.SVGProps<SVGSVGElement>> | null | false
   className?: string
 }
 
 export const IconButton = forwardRef<SVGSVGElement, ButtonIconProps>(
   ({ className, variant, children, ...props }, ref) => {
+    if (!children) return null
     return cloneElement(children, {
       className: cn(
         variant === "default" && "tiptap-button-icon",

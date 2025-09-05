@@ -89,3 +89,19 @@ export const twoFactors = sqliteTable("two_factors", {
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
 })
+
+export const editorContents = sqliteTable("editor_contents", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+  content: text("content").notNull(),
+  json: text("json").notNull(),
+  title: text("title"),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .$defaultFn(() => new Date())
+    .notNull(),
+  updatedAt: integer("updated_at", { mode: "timestamp" })
+    .$defaultFn(() => new Date())
+    .notNull(),
+})

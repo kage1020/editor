@@ -8,6 +8,7 @@ import { ImageUploadButton } from "@/components/tiptap-ui/image-upload-button"
 import { LinkPopover } from "@/components/tiptap-ui/link-popover"
 import { ListDropdownMenu } from "@/components/tiptap-ui/list-dropdown-menu"
 import { MarkButton } from "@/components/tiptap-ui/mark-button"
+import { SaveButton } from "@/components/tiptap-ui/save-button"
 import { TablePopover } from "@/components/tiptap-ui/table-popover"
 import { TextAlignButton } from "@/components/tiptap-ui/text-align-button"
 import { UnderlineHighlightPopover } from "@/components/tiptap-ui/underline-highlight-popover"
@@ -52,6 +53,7 @@ export function FlexibleToolbar() {
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
         <CopyDropdownMenu />
+        <SaveButton />
       </ToolbarGroup>
     </Toolbar>
   )
