@@ -1,9 +1,10 @@
 "use client"
 
-import { useParams } from "next/navigation"
+import { useParams, useRouter } from "next/navigation"
 import { useCallback, useEffect, useRef, useState, useTransition } from "react"
+import { toast } from "sonner"
 import { z } from "zod"
-import { updateTitleAction } from "@/app/actions/content"
+import { updateTitleAction } from "@/actions/content"
 import { cn } from "@/lib/utils"
 
 interface TitleProps {
@@ -19,6 +20,7 @@ export function Title({ title, className, onChange }: TitleProps) {
   const [isPending, startTransition] = useTransition()
   const inputRef = useRef<HTMLInputElement>(null)
   const params = useParams()
+  const router = useRouter()
   const documentId = documentIdSchema.safeParse(params?.id).data
 
   useEffect(() => {
@@ -26,27 +28,34 @@ export function Title({ title, className, onChange }: TitleProps) {
   }, [isEditing])
 
   const handleSave = useCallback(async () => {
-    if (!documentId) return
-
     const newTitle = title.trim() || "Untitled"
+    const currentId = documentId || (params?.id as string)
 
     startTransition(async () => {
       try {
         const result = await updateTitleAction({
-          id: documentId,
+          id: currentId,
           title: newTitle,
         })
 
         if (!result.success) {
           console.error("Failed to save title:", result.error)
+          toast.error(`タイトルの保存に失敗しました: ${result.error}`)
           onChange(title)
+        } else {
+          toast.success("タイトルを保存しました")
+          // If this was a new document creation and we got a valid ID back, navigate to it
+          if (!documentId && result.id !== currentId) {
+            router.replace(`/${result.id}`)
+          }
         }
       } catch (error) {
         console.error("Error saving title:", error)
+        toast.error("タイトルの保存中にエラーが発生しました")
         onChange(title)
       }
     })
-  }, [documentId, title, onChange])
+  }, [documentId, title, onChange, router, params])
 
   const handleBlur = useCallback(() => {
     setIsEditing(false)

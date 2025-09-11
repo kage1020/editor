@@ -5,6 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { use, useMemo, useTransition } from "react"
 import { z } from "zod"
+import { deleteContentAction, type LoadContentResult } from "@/actions/content"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -25,7 +26,6 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { deleteContentAction, type LoadContentResult } from "../actions/content"
 
 interface SidebarProps {
   contentPromise: Promise<LoadContentResult>

@@ -3,8 +3,9 @@
 import { useCurrentEditor } from "@tiptap/react"
 import { useParams, useRouter } from "next/navigation"
 import { useCallback, useTransition } from "react"
+import { toast } from "sonner"
 import { z } from "zod"
-import { saveContentAction } from "@/app/actions/content"
+import { saveContentAction } from "@/actions/content"
 
 interface UseSaveContentConfig {
   onSaved?: () => void
@@ -38,15 +39,18 @@ export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
           })
 
           if (result.success) {
+            toast.success("保存しました")
             onSaved?.()
             router.replace(`/${result.id}`)
             resolve(true)
           } else {
             console.error("Failed to save:", result.error)
+            toast.error(`保存に失敗しました: ${result.error}`)
             resolve(false)
           }
         } catch (error) {
           console.error("Error saving content:", error)
+          toast.error("保存中にエラーが発生しました")
           resolve(false)
         }
       })

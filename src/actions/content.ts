@@ -56,7 +56,7 @@ export type SaveContentResult =
   | { success: false; error: string; details?: unknown }
 
 const updateTitleSchema = z.object({
-  id: z.string().uuid("Invalid document ID"),
+  id: z.string(),
   title: z
     .string()
     .max(255, "Title must not exceed 255 characters")
@@ -65,7 +65,7 @@ const updateTitleSchema = z.object({
 
 export type UpdateTitleInput = z.input<typeof updateTitleSchema>
 export type UpdateTitleResult =
-  | { success: true; message: string }
+  | { success: true; message: string; id: string }
   | { success: false; error: string; details?: unknown }
 
 // Delete content types and schema
@@ -294,9 +294,30 @@ export async function updateTitleAction(
       .limit(1)
 
     if (existing.length === 0) {
+      const newResult = await db
+        .insert(editorContents)
+        .values({
+          content: "",
+          json: JSON.stringify({}),
+          title,
+          userId,
+        })
+        .returning()
+
+      if (!newResult || newResult.length === 0) {
+        return {
+          success: false,
+          error: "Failed to create document",
+        }
+      }
+
+      revalidatePath("/")
+      revalidatePath(`/${newResult[0].id}`)
+
       return {
-        success: false,
-        error: "Document not found",
+        success: true,
+        message: "Document created successfully",
+        id: newResult[0].id,
       }
     }
 
@@ -329,6 +350,7 @@ export async function updateTitleAction(
     return {
       success: true,
       message: "Title updated successfully",
+      id,
     }
   } catch (error) {
     console.error("Error updating title:", error)

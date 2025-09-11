@@ -43,7 +43,7 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
-import type { LoadContentResult } from "@/app/actions/content"
+import type { LoadContentResult } from "@/actions/content"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"

@@ -1,7 +1,18 @@
 import { Loader2 } from "lucide-react"
+import type { Metadata } from "next"
 import { Suspense } from "react"
-import { loadContentAction } from "@/app/actions/content"
+import { loadContentAction } from "@/actions/content"
 import { Editor } from "./_components/editor"
+
+export async function generateMetadata({
+  params,
+}: PageProps<"/[id]">): Promise<Metadata> {
+  const content = await loadContentAction((await params).id)
+  const title = content.currentDocument?.title || "Untitled"
+  return {
+    title,
+  }
+}
 
 export default async function DocumentPage({ params }: PageProps<"/[id]">) {
   const contentPromise = loadContentAction((await params).id)
