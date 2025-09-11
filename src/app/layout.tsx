@@ -1,8 +1,15 @@
+import { Loader2 } from "lucide-react"
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
+import { Suspense } from "react"
+import { ClientOnly } from "@/components/client-only"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { AuthButton } from "./_components/auth-button"
+import { DocumentSidebar } from "./_components/sidebar"
+import { ThemeToggle } from "./_components/theme-toggle"
+import { loadContentAction } from "./actions/content"
 import "./globals.css"
 
 export const metadata: Metadata = {
@@ -10,11 +17,9 @@ export const metadata: Metadata = {
   description: "A simple text editor built with Next.js and React",
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: LayoutProps<"/">) {
+  const contentPromise = loadContentAction()
+
   return (
     <html
       lang="ja"
@@ -26,6 +31,27 @@ export default function RootLayout({
           <SidebarProvider defaultOpen={false}>
             <TooltipProvider>
               <Toaster />
+              <Suspense
+                fallback={
+                  <div className="fixed top-4 left-4">
+                    <div className="h-12 w-12 flex items-center justify-center bg-transparent rounded-full">
+                      <Loader2 className="size-6 animate-spin text-gray-500" />
+                    </div>
+                  </div>
+                }
+              >
+                <DocumentSidebar contentPromise={contentPromise} />
+              </Suspense>
+              <AuthButton />
+              <ClientOnly
+                fallback={
+                  <div className="fixed top-20 left-4 w-12 h-12 flex items-center justify-center">
+                    <Loader2 className="size-6 animate-spin text-gray-500" />
+                  </div>
+                }
+              >
+                <ThemeToggle />
+              </ClientOnly>
               {children}
             </TooltipProvider>
           </SidebarProvider>

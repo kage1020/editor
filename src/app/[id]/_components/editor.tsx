@@ -1,6 +1,6 @@
 "use client"
 
-import { use } from "react"
+import { use, useState } from "react"
 
 // Import Tiptap node styles
 import "@/components/tiptap-node/blockquote-node/blockquote-node.css"
@@ -43,12 +43,13 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import type { LoadContentResult } from "@/app/actions/content"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
-import type { LoadContentResult } from "../page"
+import { Title } from "./title"
 // import InvisibleCharacters from "@tiptap/extension-invisible-characters"
 import { FlexibleToolbar } from "./toolbar"
 
@@ -59,6 +60,7 @@ interface EditorProps {
 export function Editor({ contentPromise }: EditorProps) {
   // Use React's use hook to resolve the promise
   const { currentDocument } = use(contentPromise)
+  const [title, setTitle] = useState(currentDocument?.title || "Untitled")
 
   const editor = useEditor({
     extensions: [
@@ -130,7 +132,8 @@ export function Editor({ contentPromise }: EditorProps) {
   return (
     <EditorContext value={{ editor }}>
       <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full py-4 flex flex-col items-center gap-4">
-        <FlexibleToolbar />
+        <FlexibleToolbar title={title} />
+        <Title title={title} onChange={setTitle} className="mb-4" />
         <EditorContent editor={editor} className="w-full h-full" />
       </div>
     </EditorContext>

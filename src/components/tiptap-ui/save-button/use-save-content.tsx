@@ -1,16 +1,25 @@
 "use client"
 
 import { useCurrentEditor } from "@tiptap/react"
+import { useParams, useRouter } from "next/navigation"
 import { useCallback, useTransition } from "react"
-import { saveContentAction } from "@/app/actions/save-content"
+import { z } from "zod"
+import { saveContentAction } from "@/app/actions/content"
 
 interface UseSaveContentConfig {
   onSaved?: () => void
+  title?: string | null
 }
 
-export function useSaveContent({ onSaved }: UseSaveContentConfig = {}) {
+const documentIdSchema = z.uuid().optional()
+
+export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
   const { editor } = useCurrentEditor()
   const [isPending, startTransition] = useTransition()
+  const router = useRouter()
+  const params = useParams()
+
+  const documentId = documentIdSchema.safeParse(params?.id).data
 
   const handleSave = useCallback(async () => {
     if (!editor) return false
@@ -22,13 +31,15 @@ export function useSaveContent({ onSaved }: UseSaveContentConfig = {}) {
           const json = editor.getJSON()
 
           const result = await saveContentAction({
+            id: documentId,
             content,
             json,
-            title: undefined, // You can add title from editor if needed
+            title,
           })
 
           if (result.success) {
             onSaved?.()
+            router.replace(`/${result.id}`)
             resolve(true)
           } else {
             console.error("Failed to save:", result.error)
@@ -40,7 +51,7 @@ export function useSaveContent({ onSaved }: UseSaveContentConfig = {}) {
         }
       })
     })
-  }, [editor, onSaved])
+  }, [editor, onSaved, router, documentId, title])
 
   return {
     handleSave,

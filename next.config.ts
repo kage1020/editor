@@ -7,6 +7,7 @@ const withBundleAnalyzer = BundleAnalyzer({
 
 const nextConfig: NextConfig = {
   /* config options here */
+  typedRoutes: true,
 }
 
 export default withBundleAnalyzer(nextConfig)

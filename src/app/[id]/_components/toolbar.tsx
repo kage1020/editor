@@ -19,7 +19,11 @@ import {
   ToolbarSeparator,
 } from "@/components/tiptap-ui-primitive/toolbar"
 
-export function FlexibleToolbar() {
+interface FlexibleToolbarProps {
+  title?: string | null
+}
+
+export function FlexibleToolbar({ title }: FlexibleToolbarProps = {}) {
   return (
     <Toolbar>
       <ToolbarGroup>
@@ -53,7 +57,7 @@ export function FlexibleToolbar() {
         <UndoRedoButton action="undo" />
         <UndoRedoButton action="redo" />
         <CopyDropdownMenu />
-        <SaveButton />
+        <SaveButton currentTitle={title} />
       </ToolbarGroup>
     </Toolbar>
   )

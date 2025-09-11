@@ -97,7 +97,7 @@ export const editorContents = sqliteTable("editor_contents", {
   userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
   content: text("content").notNull(),
   json: text("json").notNull(),
-  title: text("title"),
+  title: text("title").notNull(),
   createdAt: integer("created_at", { mode: "timestamp" })
     .$defaultFn(() => new Date())
     .notNull(),

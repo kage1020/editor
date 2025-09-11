@@ -18,14 +18,21 @@ interface SaveButtonProps extends Omit<ButtonProps, "type"> {
    * Callback when save is completed
    */
   onSaved?: () => void
+  /**
+   * Current title to save
+   */
+  currentTitle?: string | null
 }
 
 /**
  * Button component for saving editor content to D1 database.
  */
 export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
-  ({ text, onSaved, onClick, children, ...buttonProps }, ref) => {
-    const { handleSave, isSaving } = useSaveContent({ onSaved })
+  ({ text, onSaved, currentTitle, onClick, children, ...buttonProps }, ref) => {
+    const { handleSave, isSaving } = useSaveContent({
+      onSaved,
+      title: currentTitle,
+    })
     const [showSuccess, setShowSuccess] = useState(false)
 
     const handleClick = useCallback(
