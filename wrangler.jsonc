@@ -38,7 +38,7 @@
     {
       "binding": "DB",
       "database_name": "editor",
-      "database_id": "087c490e-1502-47b1-9ee7-29f204041d1c",
+      "database_id": "8037b9e6-9241-423b-9e85-8a44ac3feb00",
       "preview_database_id": "DB",
       "migrations_dir": "src/drizzle"
     }
