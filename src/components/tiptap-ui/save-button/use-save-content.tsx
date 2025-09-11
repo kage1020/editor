@@ -6,6 +6,7 @@ import { useCallback, useTransition } from "react"
 import { toast } from "sonner"
 import { z } from "zod"
 import { saveContentAction } from "@/actions/content"
+import { authClient } from "@/auth/client"
 
 interface UseSaveContentConfig {
   onSaved?: () => void
@@ -19,11 +20,18 @@ export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
   const params = useParams()
+  const { data: session } = authClient.useSession()
 
   const documentId = documentIdSchema.safeParse(params?.id).data
 
   const handleSave = useCallback(async () => {
     if (!editor) return false
+    
+    // Check authentication
+    if (!session?.user) {
+      toast.error("ログインが必要です")
+      return false
+    }
 
     return new Promise<boolean>((resolve) => {
       startTransition(async () => {
@@ -55,7 +63,7 @@ export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
         }
       })
     })
-  }, [editor, onSaved, router, documentId, title])
+  }, [editor, onSaved, router, documentId, title, session])
 
   return {
     handleSave,

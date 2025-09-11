@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef, useState, useTransition } from "react"
 import { toast } from "sonner"
 import { z } from "zod"
 import { updateTitleAction } from "@/actions/content"
+import { authClient } from "@/auth/client"
 import { cn } from "@/lib/utils"
 
 interface TitleProps {
@@ -21,6 +22,7 @@ export function Title({ title, className, onChange }: TitleProps) {
   const inputRef = useRef<HTMLInputElement>(null)
   const params = useParams()
   const router = useRouter()
+  const { data: session } = authClient.useSession()
   const documentId = documentIdSchema.safeParse(params?.id).data
 
   useEffect(() => {
@@ -28,6 +30,12 @@ export function Title({ title, className, onChange }: TitleProps) {
   }, [isEditing])
 
   const handleSave = useCallback(async () => {
+    // Check authentication
+    if (!session?.user) {
+      toast.error("ログインが必要です")
+      return
+    }
+    
     const newTitle = title.trim() || "Untitled"
     const currentId = documentId || (params?.id as string)
 
@@ -55,7 +63,7 @@ export function Title({ title, className, onChange }: TitleProps) {
         onChange(title)
       }
     })
-  }, [documentId, title, onChange, router, params])
+  }, [documentId, title, onChange, router, params, session])
 
   const handleBlur = useCallback(() => {
     setIsEditing(false)
