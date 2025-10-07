@@ -79,7 +79,17 @@ export const UnderlineHighlight = Mark.create<UnderlineHighlightOptions>({
             element instanceof HTMLElement &&
             element.classList.contains("underline-highlight")
 
-          return hasUnderlineHighlight ? {} : false
+          if (!hasUnderlineHighlight) return false
+
+          // When multicolor is enabled, extract the color attribute
+          if (this.options.multicolor && element instanceof HTMLElement) {
+            const color =
+              element.getAttribute("data-color") ||
+              element.style.borderBottomColor
+            return color ? { color } : {}
+          }
+
+          return {}
         },
       },
     ]
