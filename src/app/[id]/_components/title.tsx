@@ -35,7 +35,7 @@ export function Title({ title, className, onChange }: TitleProps) {
       toast.error("ログインが必要です")
       return
     }
-    
+
     const newTitle = title.trim() || "Untitled"
     const currentId = documentId || (params?.id as string)
 

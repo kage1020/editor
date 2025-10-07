@@ -26,7 +26,7 @@ export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
 
   const handleSave = useCallback(async () => {
     if (!editor) return false
-    
+
     // Check authentication
     if (!session?.user) {
       toast.error("ログインが必要です")
