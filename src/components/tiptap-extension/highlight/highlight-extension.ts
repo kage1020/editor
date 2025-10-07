@@ -36,6 +36,9 @@ export const Highlight = HighlightBase.extend({
         getAttrs: (element) => {
           if (!(element instanceof HTMLElement)) return false
 
+          // Exclude underline-highlight marks to avoid conflicts
+          if (element.classList.contains("underline-highlight")) return false
+
           // Check if this is a highlight mark (has data-color attribute or backgroundColor style)
           const hasHighlight =
             element.hasAttribute("data-color") || element.style.backgroundColor
@@ -60,7 +63,9 @@ export const Highlight = HighlightBase.extend({
   renderHTML({ HTMLAttributes }) {
     return [
       "mark",
-      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes),
+      mergeAttributes(this.options.HTMLAttributes, HTMLAttributes, {
+        class: "highlight",
+      }),
       0,
     ]
   },
