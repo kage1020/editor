@@ -10,6 +10,7 @@
   box-decoration-break: clone;
   -webkit-box-decoration-break: clone;
   position: relative;
+  color: inherit;
 }
 
 /* Different highlight colors for multicolor mode */
@@ -40,6 +41,7 @@
 /* Darker theme adjustments */
 .dark .tiptap.ProseMirror mark.underline-highlight {
   background: linear-gradient(to top, var(--accent) 0%, rgba(var(--accent-rgb, 255, 235, 59), 0.4) 50%, transparent 50%);
+  color: inherit;
 }
 
 /* Animation for selection highlight */
