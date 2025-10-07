@@ -23,7 +23,6 @@ import {
 } from "@tiptap/extension-details"
 import Emoji from "@tiptap/extension-emoji"
 import FileHandler from "@tiptap/extension-file-handler"
-import Highlight from "@tiptap/extension-highlight"
 import Image from "@tiptap/extension-image"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
 import Mathematics from "@tiptap/extension-mathematics"
@@ -44,6 +43,7 @@ import {
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import type { LoadContentResult } from "@/actions/content"
+import { HighlightExtension } from "@/components/tiptap-extension/highlight"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
@@ -74,7 +74,7 @@ export function Editor({ contentPromise }: EditorProps) {
       Emoji,
       FileHandler,
       Focus,
-      Highlight.configure({ multicolor: true }),
+      HighlightExtension.configure({ multicolor: true }),
       HorizontalRule,
       Image.configure({
         HTMLAttributes: {
