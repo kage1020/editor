@@ -1,15 +1,9 @@
-import Highlight from "@tiptap/extension-highlight"
+import HighlightBase from "@tiptap/extension-highlight"
 
 /**
- * Custom Highlight extension that fixes the color persistence issue.
- *
- * This extension extends the built-in TipTap Highlight extension and fixes
- * the bug where highlight colors are not persisted after saving and reloading.
- *
- * The fix ensures that when HTML with color attributes is parsed, the color
- * is properly extracted and stored in the document's JSON representation.
+ * Custom Highlight extension that persists the color attributes.
  */
-export const HighlightExtension = Highlight.extend({
+export const Highlight = HighlightBase.extend({
   parseHTML() {
     return [
       {
@@ -39,4 +33,4 @@ export const HighlightExtension = Highlight.extend({
   },
 })
 
-export default HighlightExtension
+export default Highlight

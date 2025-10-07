@@ -1,1 +1,1 @@
-export { HighlightExtension } from "./highlight-extension"
+export { Highlight } from "./highlight-extension"

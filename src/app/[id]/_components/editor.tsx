@@ -43,7 +43,7 @@ import {
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
 import type { LoadContentResult } from "@/actions/content"
-import { HighlightExtension } from "@/components/tiptap-extension/highlight"
+import { Highlight } from "@/components/tiptap-extension/highlight"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
@@ -74,7 +74,7 @@ export function Editor({ contentPromise }: EditorProps) {
       Emoji,
       FileHandler,
       Focus,
-      HighlightExtension.configure({ multicolor: true }),
+      Highlight.configure({ multicolor: true }),
       HorizontalRule,
       Image.configure({
         HTMLAttributes: {
