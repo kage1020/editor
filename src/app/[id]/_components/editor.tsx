@@ -126,7 +126,7 @@ export function Editor({ contentPromise }: EditorProps) {
         class: "h-full outline-none prose",
       },
     },
-    content: currentDocument?.json || ``,
+    content: currentDocument?.content || ``,
   })
 
   return (
