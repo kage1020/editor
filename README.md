@@ -44,34 +44,30 @@ A modern rich text editor built with Next.js and Tiptap.
 
 ## Getting Started
 
-First, install dependencies:
+This project uses pnpm. Install dependencies:
 
 ```bash
-npm install
-# or
 pnpm install
-# or
-bun install
 ```
 
 Then run the development server:
 
 ```bash
-npm run dev
-# or
 pnpm dev
-# or
-bun dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the editor.
 
 ## Technology Stack
 
-- **Framework**: Next.js 15
-- **Editor**: Tiptap
-- **Styling**: Tailwind CSS
-- **UI Components**: shadcn
+- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Editor**: Tiptap 3
+- **Styling**: Tailwind CSS 4
+- **UI Components**: shadcn/ui
+- **Database**: Cloudflare D1 via Drizzle ORM
+- **Auth**: Better Auth
+- **Hosting**: Cloudflare Workers via OpenNext
+- **Tooling**: Biome, TypeScript 7, pnpm
 
 ## License
 
