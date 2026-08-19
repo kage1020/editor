@@ -1,7 +1,7 @@
+import { passkey } from "@better-auth/passkey"
 import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { oneTap, twoFactor } from "better-auth/plugins"
-import { passkey } from "better-auth/plugins/passkey"
 import { headers } from "next/headers"
 import { db } from "@/db"
 import * as schema from "@/db/schema"

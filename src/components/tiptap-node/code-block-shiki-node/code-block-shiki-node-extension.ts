@@ -83,6 +83,9 @@ export const CodeBlockShiki = CodeBlock.extend<CodeBlockShikiOptions>({
       languageClassPrefix: "language-",
       exitOnTripleEnter: true,
       exitOnArrowDown: true,
+      exitOnArrowUp: true,
+      enableTabIndentation: false,
+      tabSize: 4,
       HTMLAttributes: {},
       shikiOptions: {},
     }
