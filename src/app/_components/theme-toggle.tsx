@@ -9,7 +9,7 @@ export function ThemeToggle() {
   const { resolvedTheme, setTheme } = useTheme()
 
   return (
-    <div className="fixed top-4 md:top-20 left-16 md:left-4">
+    <div className="fixed top-4 md:top-20 left-16 md:left-4 z-[15] rounded-full bg-background">
       <Button
         size="icon"
         variant="ghost"

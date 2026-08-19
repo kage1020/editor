@@ -67,7 +67,7 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
 
   return (
     <>
-      <div className="fixed top-4 left-4">
+      <div className="fixed top-4 left-4 z-[15] rounded-full bg-background">
         <SidebarTrigger asChild>
           <Button
             size="icon"
@@ -77,7 +77,7 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
           </Button>
         </SidebarTrigger>
       </div>
-      <Sidebar className="ease-in-out absolute" variant="floating">
+      <Sidebar className="ease-in-out" variant="floating">
         <SidebarHeader className="items-end">
           <SidebarTrigger asChild>
             <Button

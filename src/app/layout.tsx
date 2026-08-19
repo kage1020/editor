@@ -33,7 +33,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <Toaster />
               <Suspense
                 fallback={
-                  <div className="fixed top-4 left-4">
+                  <div className="fixed top-4 left-4 z-[15] rounded-full bg-background">
                     <div className="h-12 w-12 flex items-center justify-center bg-transparent rounded-full">
                       <Loader2 className="size-6 animate-spin text-gray-500" />
                     </div>
@@ -45,7 +45,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <AuthButton />
               <ClientOnly
                 fallback={
-                  <div className="fixed top-20 left-4 w-12 h-12 flex items-center justify-center">
+                  <div className="fixed top-20 left-4 z-[15] w-12 h-12 flex items-center justify-center rounded-full bg-background">
                     <Loader2 className="size-6 animate-spin text-gray-500" />
                   </div>
                 }
