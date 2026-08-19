@@ -4,6 +4,7 @@ import { getCloudflareContext } from "@opennextjs/cloudflare"
 import { and, desc, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
+import { unstable_rethrow } from "next/navigation"
 import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
@@ -134,6 +135,7 @@ export async function loadContentAction(
       currentDocument,
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error loading content:", error)
     return { documents: [], currentDocument: null }
   }
@@ -247,6 +249,7 @@ export async function saveContentAction(
       message: "Content saved successfully",
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error saving content:", error)
     return {
       success: false,
@@ -353,6 +356,7 @@ export async function updateTitleAction(
       id,
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error updating title:", error)
     return {
       success: false,
@@ -412,6 +416,7 @@ export async function deleteContentAction(
       message: "Document deleted successfully",
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error deleting content:", error)
     return {
       success: false,
