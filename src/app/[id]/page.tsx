@@ -2,7 +2,7 @@ import { Loader2 } from "lucide-react"
 import type { Metadata } from "next"
 import { Suspense } from "react"
 import { getDocument } from "@/db/queries"
-import { Editor } from "./_components/editor"
+import { EditorLoader } from "./_components/editor-loader"
 
 export async function generateMetadata({
   params,
@@ -24,7 +24,7 @@ export default async function DocumentPage({ params }: PageProps<"/[id]">) {
         </div>
       }
     >
-      <Editor documentPromise={documentPromise} />
+      <EditorLoader documentPromise={documentPromise} />
     </Suspense>
   )
 }
