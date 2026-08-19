@@ -24,7 +24,7 @@ export interface UseImageUploadConfig {
  * Checks if image can be inserted in the current editor state
  */
 function canInsertImage(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isExtensionAvailable(editor, "imageUpload") ||
     isNodeTypeSelected(editor, ["image"])
@@ -38,7 +38,7 @@ function canInsertImage(editor: Editor | null): boolean {
  * Checks if image is currently active
  */
 function isImageActive(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   return editor.isActive("imageUpload")
 }
 
@@ -46,7 +46,7 @@ function isImageActive(editor: Editor | null): boolean {
  * Inserts an image in the editor
  */
 function insertImage(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canInsertImage(editor)) return false
 
   try {

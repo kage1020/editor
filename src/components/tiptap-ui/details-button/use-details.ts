@@ -33,7 +33,7 @@ function canToggleDetails(
   editor: Editor | null,
   turnInto: boolean = true,
 ): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isNodeInSchema("details", editor) ||
     isNodeTypeSelected(editor, ["image"])
@@ -67,7 +67,7 @@ function canToggleDetails(
  * Toggles details formatting for a specific node or the current selection
  */
 function toggleDetails(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canToggleDetails(editor)) return false
 
   try {

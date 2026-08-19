@@ -167,7 +167,7 @@ export function findNodePosition(props: {
 }): { pos: number; node: TiptapNode } | null {
   const { editor, node, nodePos } = props
 
-  if (!editor || !editor.state?.doc) return null
+  if (!editor?.state?.doc) return null
 
   // Zero is valid position
   const hasValidNode = node !== undefined && node !== null
@@ -219,7 +219,7 @@ export function isNodeTypeSelected(
   editor: Editor,
   types: string[] = [],
 ): boolean {
-  if (!editor || !editor.state.selection) return false
+  if (!editor?.state.selection) return false
 
   const { state } = editor
   const { doc, selection } = state

@@ -54,7 +54,7 @@ const textAlignLabels: Record<TextAlign, string> = {
  * Checks if text alignment can be performed in the current editor state
  */
 function canSetTextAlign(editor: Editor | null, align: TextAlign): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isExtensionAvailable(editor, "textAlign") ||
     isNodeTypeSelected(editor, ["image"])
@@ -76,7 +76,7 @@ function hasSetTextAlign(
  * Checks if the text alignment is currently active
  */
 function isTextAlignActive(editor: Editor | null, align: TextAlign): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   return editor.isActive({ textAlign: align })
 }
 
@@ -84,7 +84,7 @@ function isTextAlignActive(editor: Editor | null, align: TextAlign): boolean {
  * Sets text alignment in the editor
  */
 function setTextAlign(editor: Editor | null, align: TextAlign): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canSetTextAlign(editor, align)) return false
 
   const chain = editor.chain().focus()

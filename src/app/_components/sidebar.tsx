@@ -5,7 +5,7 @@ import Link from "next/link"
 import { usePathname } from "next/navigation"
 import { use, useMemo, useTransition } from "react"
 import { z } from "zod"
-import { deleteContentAction, type LoadContentResult } from "@/actions/content"
+import { deleteContentAction } from "@/actions/content"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -26,15 +26,16 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import type { DocumentSummary } from "@/db/queries"
 
 interface SidebarProps {
-  contentPromise: Promise<LoadContentResult>
+  documentsPromise: Promise<DocumentSummary[]>
 }
 
 const documentIdSchema = z.uuid()
 
-export function DocumentSidebar({ contentPromise }: SidebarProps) {
-  const { documents } = use(contentPromise)
+export function DocumentSidebar({ documentsPromise }: SidebarProps) {
+  const documents = use(documentsPromise)
   const [isPending, startTransition] = useTransition()
   const pathname = usePathname()
 
@@ -66,7 +67,7 @@ export function DocumentSidebar({ contentPromise }: SidebarProps) {
 
   return (
     <>
-      <div className="fixed top-4 left-4">
+      <div className="fixed top-4 left-4 z-[15] rounded-full bg-background">
         <SidebarTrigger asChild>
           <Button
             size="icon"
@@ -76,7 +77,7 @@ export function DocumentSidebar({ contentPromise }: SidebarProps) {
           </Button>
         </SidebarTrigger>
       </div>
-      <Sidebar className="ease-in-out absolute" variant="floating">
+      <Sidebar className="ease-in-out" variant="floating">
         <SidebarHeader className="items-end">
           <SidebarTrigger asChild>
             <Button

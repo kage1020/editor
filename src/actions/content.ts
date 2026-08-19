@@ -1,26 +1,28 @@
 "use server"
 
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { desc, eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
+import { unstable_rethrow } from "next/navigation"
 import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
 
-// Types
-export type Document = {
-  id: string
-  content: string
-  json: Record<string, unknown> | null
-  title: string
-  updatedAt: Date
+const MAX_CONTENT_BYTES = 10 * 1024 * 1024
+
+const contentEncoder = new TextEncoder()
+
+function byteLength(value: string): number {
+  return contentEncoder.encode(value).length
 }
 
-export type LoadContentResult = {
-  documents: Document[]
-  currentDocument: Document | null
-}
+/**
+ * The `json` column is NOT NULL but nothing reads it: the editor loads from
+ * the stored HTML, and every export format is produced from the live editor.
+ * A placeholder keeps writes valid until the column is dropped by a migration.
+ */
+const UNUSED_JSON_COLUMN = "{}"
 
 // Save content types and schema
 const saveContentSchema = z.object({
@@ -31,17 +33,6 @@ const saveContentSchema = z.object({
     .refine((val) => val.trim().length > 0, {
       message: "Content cannot be only whitespace",
     }),
-  json: z.record(z.string(), z.unknown()).refine(
-    (val) => {
-      try {
-        JSON.stringify(val)
-        return true
-      } catch {
-        return false
-      }
-    },
-    { message: "Invalid JSON object that cannot be stringified" },
-  ),
   title: z
     .string()
     .max(255, "Title must not exceed 255 characters")
@@ -78,67 +69,6 @@ export type DeleteContentResult =
   | { success: true; message: string }
   | { success: false; error: string; details?: unknown }
 
-export async function loadContentAction(
-  selectedDocumentId?: string,
-): Promise<LoadContentResult> {
-  try {
-    const session = await getSession()
-    const userId = session?.user?.id || null
-
-    if (!userId) {
-      return { documents: [], currentDocument: null }
-    }
-
-    const { env } = await getCloudflareContext({ async: true })
-    const db = drizzle(env.DB)
-
-    // Fetch all documents for the user
-    const results = await db
-      .select()
-      .from(editorContents)
-      .where(eq(editorContents.userId, userId))
-      .orderBy(desc(editorContents.updatedAt))
-
-    if (results.length === 0) {
-      return { documents: [], currentDocument: null }
-    }
-
-    const documents: Document[] = results.map((item) => {
-      let parsedJson: Record<string, unknown> | null
-      try {
-        parsedJson = JSON.parse(item.json)
-      } catch (error) {
-        console.error(`Failed to parse JSON for document ${item.id}:`, error)
-        parsedJson = null
-      }
-
-      return {
-        id: item.id,
-        content: item.content,
-        json: parsedJson,
-        title: item.title,
-        updatedAt: item.updatedAt,
-      }
-    })
-
-    let currentDocument: Document | null
-    if (selectedDocumentId) {
-      currentDocument =
-        documents.find((doc) => doc.id === selectedDocumentId) || null
-    } else {
-      currentDocument = documents[0] || null
-    }
-
-    return {
-      documents,
-      currentDocument,
-    }
-  } catch (error) {
-    console.error("Error loading content:", error)
-    return { documents: [], currentDocument: null }
-  }
-}
-
 export async function saveContentAction(
   input: SaveContentInput,
 ): Promise<SaveContentResult> {
@@ -156,10 +86,9 @@ export async function saveContentAction(
       }
     }
 
-    const { id, content, json, title } = validationResult.data
+    const { id, content, title } = validationResult.data
 
-    const contentSize = new Blob([content]).size
-    if (contentSize > 10 * 1024 * 1024) {
+    if (byteLength(content) > MAX_CONTENT_BYTES) {
       return {
         success: false,
         error: "Content size exceeds 10MB limit",
@@ -172,21 +101,11 @@ export async function saveContentAction(
     const { env } = await getCloudflareContext({ async: true })
     const db = drizzle(env.DB)
 
-    let result:
-      | {
-          id: string
-          userId: string | null
-          content: string
-          json: string
-          title: string | null
-          createdAt: Date
-          updatedAt: Date
-        }[]
-      | undefined
+    let result: { id: string }[] | undefined
 
     if (id && userId) {
       const existing = await db
-        .select()
+        .select({ userId: editorContents.userId })
         .from(editorContents)
         .where(eq(editorContents.id, id))
         .limit(1)
@@ -196,12 +115,12 @@ export async function saveContentAction(
           .update(editorContents)
           .set({
             content,
-            json: JSON.stringify(json),
+            json: UNUSED_JSON_COLUMN,
             title,
             updatedAt: new Date(),
           })
           .where(eq(editorContents.id, id))
-          .returning()
+          .returning({ id: editorContents.id })
       } else if (existing.length > 0) {
         return {
           success: false,
@@ -212,22 +131,22 @@ export async function saveContentAction(
           .insert(editorContents)
           .values({
             content,
-            json: JSON.stringify(json),
+            json: UNUSED_JSON_COLUMN,
             title,
             userId,
           })
-          .returning()
+          .returning({ id: editorContents.id })
       }
     } else {
       result = await db
         .insert(editorContents)
         .values({
           content,
-          json: JSON.stringify(json),
+          json: UNUSED_JSON_COLUMN,
           title,
           userId,
         })
-        .returning()
+        .returning({ id: editorContents.id })
     }
 
     if (!result || result.length === 0) {
@@ -247,6 +166,7 @@ export async function saveContentAction(
       message: "Content saved successfully",
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error saving content:", error)
     return {
       success: false,
@@ -288,7 +208,7 @@ export async function updateTitleAction(
     const db = drizzle(env.DB)
 
     const existing = await db
-      .select()
+      .select({ userId: editorContents.userId })
       .from(editorContents)
       .where(eq(editorContents.id, id))
       .limit(1)
@@ -298,11 +218,11 @@ export async function updateTitleAction(
         .insert(editorContents)
         .values({
           content: "",
-          json: JSON.stringify({}),
+          json: UNUSED_JSON_COLUMN,
           title,
           userId,
         })
-        .returning()
+        .returning({ id: editorContents.id })
 
       if (!newResult || newResult.length === 0) {
         return {
@@ -335,7 +255,7 @@ export async function updateTitleAction(
         updatedAt: new Date(),
       })
       .where(eq(editorContents.id, id))
-      .returning()
+      .returning({ id: editorContents.id })
 
     if (!result || result.length === 0) {
       return {
@@ -353,6 +273,7 @@ export async function updateTitleAction(
       id,
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error updating title:", error)
     return {
       success: false,
@@ -395,8 +316,8 @@ export async function deleteContentAction(
 
     const result = await db
       .delete(editorContents)
-      .where(eq(editorContents.id, id) && eq(editorContents.userId, userId))
-      .returning()
+      .where(and(eq(editorContents.id, id), eq(editorContents.userId, userId)))
+      .returning({ id: editorContents.id })
 
     if (!result || result.length === 0) {
       return {
@@ -412,6 +333,7 @@ export async function deleteContentAction(
       message: "Document deleted successfully",
     }
   } catch (error) {
+    unstable_rethrow(error)
     console.error("Error deleting content:", error)
     return {
       success: false,

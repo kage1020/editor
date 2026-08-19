@@ -44,7 +44,7 @@ export function AuthButton() {
   }, [])
 
   return (
-    <div className="fixed top-4 right-4 z-20 bg-background rounded-full transition-all duration-300">
+    <div className="fixed top-4 right-4 z-[15] bg-background rounded-full transition-all duration-300">
       <motion.div
         ref={containerRef}
         className={cn(

@@ -6,9 +6,18 @@
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "editor",
   "main": ".open-next/worker.js",
-  "compatibility_date": "2025-03-01",
+  "compatibility_date": "2026-08-19",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "keep_names": false,
+
+  /**
+   * Preview URLs are served from the workers.dev subdomain, so both flags are
+   * needed for pull request builds to publish a version at
+   * <version>-editor.<subdomain>.workers.dev. Without them a build uploads a
+   * version but there is nothing to open.
+   */
+  "workers_dev": true,
+  "preview_urls": true,
   "assets": {
     "binding": "ASSETS",
     "directory": ".open-next/assets"

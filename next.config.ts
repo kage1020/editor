@@ -6,13 +6,9 @@ const withBundleAnalyzer = BundleAnalyzer({
 })
 
 const nextConfig: NextConfig = {
-  /* config options here */
   typedRoutes: true,
+  // The Worker runtime cannot load sharp, and no route uses next/image.
+  images: { unoptimized: true },
 }
 
 export default withBundleAnalyzer(nextConfig)
-
-// added by create cloudflare to enable calling `getCloudflareContext()` in `next dev`
-import { initOpenNextCloudflareForDev } from "@opennextjs/cloudflare"
-
-initOpenNextCloudflareForDev()

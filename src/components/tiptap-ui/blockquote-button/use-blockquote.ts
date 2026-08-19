@@ -33,7 +33,7 @@ function canToggleBlockquote(
   editor: Editor | null,
   turnInto: boolean = true,
 ): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isNodeInSchema("blockquote", editor) ||
     isNodeTypeSelected(editor, ["image"])
@@ -67,7 +67,7 @@ function canToggleBlockquote(
  * Toggles blockquote formatting for a specific node or the current selection
  */
 function toggleBlockquote(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canToggleBlockquote(editor)) return false
 
   try {
