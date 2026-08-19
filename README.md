@@ -58,6 +58,32 @@ pnpm dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the editor.
 
+### Local configuration
+
+Secrets are read from `.dev.vars` (gitignored). Authentication needs at least:
+
+```
+BETTER_AUTH_SECRET=<any random string>
+BETTER_AUTH_URL=http://localhost:3000
+GITHUB_CLIENT_ID=...
+GITHUB_CLIENT_SECRET=...
+NEXT_PUBLIC_GOOGLE_CLIENT_ID=...
+GOOGLE_CLIENT_SECRET=...
+```
+
+The editor itself runs without them; saving a document requires a signed-in
+user. The local D1 database is created by `pnpm dev`; apply migrations with
+`pnpm migrate`.
+
+### Checks
+
+```bash
+pnpm typecheck   # tsc --noEmit
+pnpm lint        # biome check src
+pnpm build       # next build
+pnpm preview     # build the Worker and run it locally
+```
+
 ## Technology Stack
 
 - **Framework**: Next.js 16 (App Router, Turbopack)
