@@ -2,11 +2,11 @@ import { Loader2 } from "lucide-react"
 import type { Metadata } from "next"
 import { ThemeProvider } from "next-themes"
 import { Suspense } from "react"
-import { loadContentAction } from "@/actions/content"
 import { ClientOnly } from "@/components/client-only"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
+import { listDocuments } from "@/db/queries"
 import { AuthButton } from "./_components/auth-button"
 import { DocumentSidebar } from "./_components/sidebar"
 import { ThemeToggle } from "./_components/theme-toggle"
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
-  const contentPromise = loadContentAction()
+  const documentsPromise = listDocuments()
 
   return (
     <html
@@ -40,7 +40,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   </div>
                 }
               >
-                <DocumentSidebar contentPromise={contentPromise} />
+                <DocumentSidebar documentsPromise={documentsPromise} />
               </Suspense>
               <AuthButton />
               <ClientOnly

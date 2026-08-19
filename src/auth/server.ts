@@ -3,6 +3,7 @@ import { betterAuth } from "better-auth"
 import { drizzleAdapter } from "better-auth/adapters/drizzle"
 import { oneTap, twoFactor } from "better-auth/plugins"
 import { headers } from "next/headers"
+import { cache } from "react"
 import { db } from "@/db"
 import * as schema from "@/db/schema"
 import "server-only"
@@ -14,6 +15,6 @@ export const auth = betterAuth({
   plugins: [passkey(), twoFactor(), oneTap()],
 })
 
-export async function getSession() {
-  return auth.api.getSession({ headers: await headers() })
-}
+export const getSession = cache(async () =>
+  auth.api.getSession({ headers: await headers() }),
+)

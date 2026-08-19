@@ -1,27 +1,13 @@
 "use server"
 
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { and, desc, eq } from "drizzle-orm"
+import { and, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
 import { unstable_rethrow } from "next/navigation"
 import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
-
-// Types
-export type Document = {
-  id: string
-  content: string
-  json: Record<string, unknown> | null
-  title: string
-  updatedAt: Date
-}
-
-export type LoadContentResult = {
-  documents: Document[]
-  currentDocument: Document | null
-}
 
 // Save content types and schema
 const saveContentSchema = z.object({
@@ -78,68 +64,6 @@ export type DeleteContentInput = z.input<typeof deleteContentSchema>
 export type DeleteContentResult =
   | { success: true; message: string }
   | { success: false; error: string; details?: unknown }
-
-export async function loadContentAction(
-  selectedDocumentId?: string,
-): Promise<LoadContentResult> {
-  try {
-    const session = await getSession()
-    const userId = session?.user?.id || null
-
-    if (!userId) {
-      return { documents: [], currentDocument: null }
-    }
-
-    const { env } = await getCloudflareContext({ async: true })
-    const db = drizzle(env.DB)
-
-    // Fetch all documents for the user
-    const results = await db
-      .select()
-      .from(editorContents)
-      .where(eq(editorContents.userId, userId))
-      .orderBy(desc(editorContents.updatedAt))
-
-    if (results.length === 0) {
-      return { documents: [], currentDocument: null }
-    }
-
-    const documents: Document[] = results.map((item) => {
-      let parsedJson: Record<string, unknown> | null
-      try {
-        parsedJson = JSON.parse(item.json)
-      } catch (error) {
-        console.error(`Failed to parse JSON for document ${item.id}:`, error)
-        parsedJson = null
-      }
-
-      return {
-        id: item.id,
-        content: item.content,
-        json: parsedJson,
-        title: item.title,
-        updatedAt: item.updatedAt,
-      }
-    })
-
-    let currentDocument: Document | null
-    if (selectedDocumentId) {
-      currentDocument =
-        documents.find((doc) => doc.id === selectedDocumentId) || null
-    } else {
-      currentDocument = documents[0] || null
-    }
-
-    return {
-      documents,
-      currentDocument,
-    }
-  } catch (error) {
-    unstable_rethrow(error)
-    console.error("Error loading content:", error)
-    return { documents: [], currentDocument: null }
-  }
-}
 
 export async function saveContentAction(
   input: SaveContentInput,
