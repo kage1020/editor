@@ -30,7 +30,7 @@ export interface UseCodeBlockConfig {
  * Checks if code block can be toggled in the current editor state
  */
 function canToggle(editor: Editor | null, turnInto: boolean = true): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isNodeInSchema("codeBlockShiki", editor) ||
     isNodeTypeSelected(editor, ["image"])
@@ -64,7 +64,7 @@ function canToggle(editor: Editor | null, turnInto: boolean = true): boolean {
  * Toggles code block in the editor
  */
 function toggleCodeBlock(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canToggle(editor)) return false
 
   try {

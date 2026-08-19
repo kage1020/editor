@@ -91,7 +91,7 @@ export function pickHighlightColorsByValue(values: string[]) {
 }
 
 function canColorHighlight(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (
     !isMarkInSchema("highlight", editor) ||
     isNodeTypeSelected(editor, ["image"])
@@ -105,14 +105,14 @@ function isColorHighlightActive(
   editor: Editor | null,
   highlightColor?: string,
 ): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   return highlightColor
     ? editor.isActive("highlight", { color: highlightColor })
     : editor.isActive("highlight")
 }
 
 function removeHighlight(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   if (!canColorHighlight(editor)) return false
 
   return editor.chain().focus().unsetMark("highlight").run()

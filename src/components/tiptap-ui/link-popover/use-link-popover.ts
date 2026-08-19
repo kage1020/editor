@@ -34,7 +34,7 @@ interface LinkHandlerProps {
  * Checks if a link can be set in the current editor state
  */
 function canSetLink(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   return editor.can().setMark("link")
 }
 
@@ -42,7 +42,7 @@ function canSetLink(editor: Editor | null): boolean {
  * Checks if a link is currently active in the editor
  */
 function isLinkActive(editor: Editor | null): boolean {
-  if (!editor || !editor.isEditable) return false
+  if (!editor?.isEditable) return false
   return editor.isActive("link")
 }
 
