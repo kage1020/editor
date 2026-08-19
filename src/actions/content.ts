@@ -1,7 +1,7 @@
 "use server"
 
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { desc, eq } from "drizzle-orm"
+import { and, desc, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
 import { z } from "zod"
@@ -395,7 +395,7 @@ export async function deleteContentAction(
 
     const result = await db
       .delete(editorContents)
-      .where(eq(editorContents.id, id) && eq(editorContents.userId, userId))
+      .where(and(eq(editorContents.id, id), eq(editorContents.userId, userId)))
       .returning()
 
     if (!result || result.length === 0) {
