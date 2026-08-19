@@ -12,7 +12,8 @@ export async function generateMetadata({
 }
 
 export default async function DocumentPage({ params }: PageProps<"/[id]">) {
-  const documentPromise = getDocument((await params).id)
+  const { id } = await params
+  const documentPromise = getDocument(id)
 
   return (
     <Suspense
@@ -23,7 +24,10 @@ export default async function DocumentPage({ params }: PageProps<"/[id]">) {
           </div>
         </div>
       }
+      key={id}
     >
+      {/* useEditor only reads `content` when it creates the editor, so the
+          editor has to be remounted to show a different document. */}
       <EditorLoader documentPromise={documentPromise} />
     </Suspense>
   )

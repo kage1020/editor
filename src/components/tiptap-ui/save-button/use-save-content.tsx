@@ -37,12 +37,10 @@ export function useSaveContent({ onSaved, title }: UseSaveContentConfig = {}) {
       startTransition(async () => {
         try {
           const content = editor.getHTML()
-          const json = editor.getJSON()
 
           const result = await saveContentAction({
             id: documentId,
             content,
-            json,
             title,
           })
 

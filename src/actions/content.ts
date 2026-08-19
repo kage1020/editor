@@ -9,6 +9,21 @@ import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
 
+const MAX_CONTENT_BYTES = 10 * 1024 * 1024
+
+const contentEncoder = new TextEncoder()
+
+function byteLength(value: string): number {
+  return contentEncoder.encode(value).length
+}
+
+/**
+ * The `json` column is NOT NULL but nothing reads it: the editor loads from
+ * the stored HTML, and every export format is produced from the live editor.
+ * A placeholder keeps writes valid until the column is dropped by a migration.
+ */
+const UNUSED_JSON_COLUMN = "{}"
+
 // Save content types and schema
 const saveContentSchema = z.object({
   id: z.string().optional(),
@@ -18,17 +33,6 @@ const saveContentSchema = z.object({
     .refine((val) => val.trim().length > 0, {
       message: "Content cannot be only whitespace",
     }),
-  json: z.record(z.string(), z.unknown()).refine(
-    (val) => {
-      try {
-        JSON.stringify(val)
-        return true
-      } catch {
-        return false
-      }
-    },
-    { message: "Invalid JSON object that cannot be stringified" },
-  ),
   title: z
     .string()
     .max(255, "Title must not exceed 255 characters")
@@ -82,10 +86,9 @@ export async function saveContentAction(
       }
     }
 
-    const { id, content, json, title } = validationResult.data
+    const { id, content, title } = validationResult.data
 
-    const contentSize = new Blob([content]).size
-    if (contentSize > 10 * 1024 * 1024) {
+    if (byteLength(content) > MAX_CONTENT_BYTES) {
       return {
         success: false,
         error: "Content size exceeds 10MB limit",
@@ -98,21 +101,11 @@ export async function saveContentAction(
     const { env } = await getCloudflareContext({ async: true })
     const db = drizzle(env.DB)
 
-    let result:
-      | {
-          id: string
-          userId: string | null
-          content: string
-          json: string
-          title: string | null
-          createdAt: Date
-          updatedAt: Date
-        }[]
-      | undefined
+    let result: { id: string }[] | undefined
 
     if (id && userId) {
       const existing = await db
-        .select()
+        .select({ userId: editorContents.userId })
         .from(editorContents)
         .where(eq(editorContents.id, id))
         .limit(1)
@@ -122,12 +115,12 @@ export async function saveContentAction(
           .update(editorContents)
           .set({
             content,
-            json: JSON.stringify(json),
+            json: UNUSED_JSON_COLUMN,
             title,
             updatedAt: new Date(),
           })
           .where(eq(editorContents.id, id))
-          .returning()
+          .returning({ id: editorContents.id })
       } else if (existing.length > 0) {
         return {
           success: false,
@@ -138,22 +131,22 @@ export async function saveContentAction(
           .insert(editorContents)
           .values({
             content,
-            json: JSON.stringify(json),
+            json: UNUSED_JSON_COLUMN,
             title,
             userId,
           })
-          .returning()
+          .returning({ id: editorContents.id })
       }
     } else {
       result = await db
         .insert(editorContents)
         .values({
           content,
-          json: JSON.stringify(json),
+          json: UNUSED_JSON_COLUMN,
           title,
           userId,
         })
-        .returning()
+        .returning({ id: editorContents.id })
     }
 
     if (!result || result.length === 0) {
@@ -215,7 +208,7 @@ export async function updateTitleAction(
     const db = drizzle(env.DB)
 
     const existing = await db
-      .select()
+      .select({ userId: editorContents.userId })
       .from(editorContents)
       .where(eq(editorContents.id, id))
       .limit(1)
@@ -225,11 +218,11 @@ export async function updateTitleAction(
         .insert(editorContents)
         .values({
           content: "",
-          json: JSON.stringify({}),
+          json: UNUSED_JSON_COLUMN,
           title,
           userId,
         })
-        .returning()
+        .returning({ id: editorContents.id })
 
       if (!newResult || newResult.length === 0) {
         return {
@@ -262,7 +255,7 @@ export async function updateTitleAction(
         updatedAt: new Date(),
       })
       .where(eq(editorContents.id, id))
-      .returning()
+      .returning({ id: editorContents.id })
 
     if (!result || result.length === 0) {
       return {
@@ -324,7 +317,7 @@ export async function deleteContentAction(
     const result = await db
       .delete(editorContents)
       .where(and(eq(editorContents.id, id), eq(editorContents.userId, userId)))
-      .returning()
+      .returning({ id: editorContents.id })
 
     if (!result || result.length === 0) {
       return {
