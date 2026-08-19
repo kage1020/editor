@@ -15,6 +15,7 @@ import "@/components/tiptap-node/list-node/list-node.css"
 import "@/components/tiptap-node/mathematics-node/mathematics-node.css"
 import "@/components/tiptap-node/paragraph-node/paragraph-node.css"
 import "@/components/tiptap-extension/underline-highlight/underline-highlight.css"
+import "katex/dist/katex.min.css"
 
 import {
   Details,
