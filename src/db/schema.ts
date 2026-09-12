@@ -88,6 +88,9 @@ export const twoFactors = sqliteTable("two_factors", {
   userId: text("user_id")
     .notNull()
     .references(() => users.id, { onDelete: "cascade" }),
+  verified: integer("verified", { mode: "boolean" }),
+  failedVerificationCount: integer("failed_verification_count"),
+  lockedUntil: integer("locked_until", { mode: "timestamp" }),
 })
 
 export const editorContents = sqliteTable("editor_contents", {
