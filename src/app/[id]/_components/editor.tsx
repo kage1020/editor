@@ -132,7 +132,7 @@ export function Editor({ documentPromise }: EditorProps) {
 
   return (
     <EditorContext value={{ editor }}>
-      <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full pt-4 md:py-4 flex flex-col items-center gap-4">
+      <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full pt-4 pb-11 md:pb-4 flex flex-col items-center gap-4">
         <FlexibleToolbar title={title} />
         <Title title={title} onChange={setTitle} className="mb-4" />
         <EditorContent editor={editor} className="w-full h-full" />
