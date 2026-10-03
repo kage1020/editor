@@ -5,7 +5,7 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "editor",
-  "main": "worker.ts",
+  "main": "src/worker.ts",
   // Wraps the OpenNext worker to add the cron handler below.
   "alias": {
     "open-next-worker": "./.open-next/worker.js"
