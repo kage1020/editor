@@ -1,19 +1,19 @@
 "use client"
 
-import { ChevronsRight, Plus, Trash2 } from "lucide-react"
+import { ChevronsRight, FolderPlus, Plus } from "lucide-react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { use, useMemo, useTransition } from "react"
+import { use, useMemo, useOptimistic, useState, useTransition } from "react"
+import { toast } from "sonner"
 import { z } from "zod"
 import { deleteContentAction } from "@/actions/content"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
 import {
-  ContextMenu,
-  ContextMenuContent,
-  ContextMenuItem,
-  ContextMenuTrigger,
-} from "@/components/ui/context-menu"
+  createGroupAction,
+  deleteGroupAction,
+  moveDocumentAction,
+  renameGroupAction,
+} from "@/actions/group"
+import { Button } from "@/components/ui/button"
 import {
   Sidebar,
   SidebarContent,
@@ -26,17 +26,60 @@ import {
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip"
 import type { DocumentSummary } from "@/db/queries"
+import {
+  applySidebarChange,
+  type GroupSummary,
+  groupDocuments,
+  type SidebarChange,
+} from "@/lib/document-groups"
+import { cn } from "@/lib/utils"
+import { GroupNameDialog } from "./group-name-dialog"
+import { SidebarDocumentItem } from "./sidebar-document-item"
+import { SidebarGroupSection } from "./sidebar-group-section"
+import { useDocumentDropTarget } from "./use-document-drop-target"
 
 interface SidebarProps {
   documentsPromise: Promise<DocumentSummary[]>
+  groupsPromise: Promise<GroupSummary[]>
 }
+
+type GroupDialog =
+  | { mode: "create"; documentIdToMove?: string }
+  | { mode: "rename"; group: GroupSummary }
 
 const documentIdSchema = z.uuid()
 
-export function DocumentSidebar({ documentsPromise }: SidebarProps) {
+export function DocumentSidebar({
+  documentsPromise,
+  groupsPromise,
+}: SidebarProps) {
   const documents = use(documentsPromise)
+  const groups = use(groupsPromise)
+  const serverState = useMemo(
+    () => ({ documents, groups }),
+    [documents, groups],
+  )
+  const [state, applyOptimisticChange] = useOptimistic(
+    serverState,
+    applySidebarChange<DocumentSummary>,
+  )
   const [isPending, startTransition] = useTransition()
+  const [collapsedGroupIds, setCollapsedGroupIds] = useState<
+    ReadonlySet<string>
+  >(() => new Set())
+  // The last dialog stays in state while closing so its contents do not
+  // change during the exit animation.
+  const [dialog, setDialog] = useState<GroupDialog>({ mode: "create" })
+  const [isDialogOpen, setIsDialogOpen] = useState(false)
+  const [draggedDocumentId, setDraggedDocumentId] = useState<string | null>(
+    null,
+  )
   const pathname = usePathname()
 
   const currentDocumentId = useMemo(() => {
@@ -45,25 +88,117 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
     return documentIdSchema.safeParse(potentialId).success ? potentialId : null
   }, [pathname])
 
-  const documentItems = documents.map((doc) => ({
-    id: doc.id,
-    title: doc.title || "Untitled",
-    isCurrent: doc.id === currentDocumentId,
-    updatedAt: doc.updatedAt,
-  }))
+  const sections = groupDocuments(state.documents, state.groups)
 
-  const handleDelete = (documentId: string) => {
+  const mutate = (
+    change: SidebarChange,
+    action: () => Promise<
+      { success: true } | { success: false; error: string }
+    >,
+    failureMessage: string,
+  ) => {
     startTransition(async () => {
+      applyOptimisticChange(change)
       try {
-        const result = await deleteContentAction({ id: documentId })
+        const result = await action()
         if (!result.success) {
-          console.error("Failed to delete:", result.error)
+          toast.error(`${failureMessage}: ${result.error}`)
         }
       } catch (error) {
-        console.error("Error deleting document:", error)
+        console.error(failureMessage, error)
+        toast.error(failureMessage)
       }
     })
   }
+
+  const handleMove = (documentId: string, groupId: string | null) => {
+    const document = state.documents.find(({ id }) => id === documentId)
+    if (!document || document.groupId === groupId) return
+
+    mutate(
+      { type: "move-document", documentId, groupId },
+      () => moveDocumentAction({ documentId, groupId }),
+      "ドキュメントの移動に失敗しました",
+    )
+  }
+
+  const handleDeleteDocument = (documentId: string) => {
+    mutate(
+      { type: "delete-document", documentId },
+      () => deleteContentAction({ id: documentId }),
+      "ドキュメントの削除に失敗しました",
+    )
+  }
+
+  const handleDeleteGroup = (groupId: string) => {
+    mutate(
+      { type: "delete-group", groupId },
+      () => deleteGroupAction({ id: groupId }),
+      "グループの削除に失敗しました",
+    )
+  }
+
+  const openDialog = (next: GroupDialog) => {
+    setDialog(next)
+    setIsDialogOpen(true)
+  }
+
+  const toggleGroup = (groupId: string) => {
+    setCollapsedGroupIds((current) => {
+      const next = new Set(current)
+      if (!next.delete(groupId)) next.add(groupId)
+      return next
+    })
+  }
+
+  const createGroup = async (name: string, documentIdToMove?: string) => {
+    const result = await createGroupAction({ name })
+    if (result.success && documentIdToMove) {
+      const moved = await moveDocumentAction({
+        documentId: documentIdToMove,
+        groupId: result.id,
+      })
+      if (!moved.success) {
+        toast.error(`ドキュメントの移動に失敗しました: ${moved.error}`)
+      }
+    }
+    return result
+  }
+
+  const renameGroup = async (groupId: string, name: string) => {
+    // Runs inside the dialog's transition, which keeps the prediction alive
+    // until the refreshed sidebar arrives.
+    applyOptimisticChange({ type: "rename-group", groupId, name: name.trim() })
+    return renameGroupAction({ id: groupId, name })
+  }
+
+  const { isOver: isOverUngrouped, dropHandlers: ungroupedDropHandlers } =
+    useDocumentDropTarget<HTMLUListElement>((documentId) =>
+      handleMove(documentId, null),
+    )
+  const isDraggingGroupedDocument = state.documents.some(
+    (document) =>
+      document.id === draggedDocumentId && document.groupId !== null,
+  )
+
+  const renderDocument = (document: DocumentSummary) => (
+    <SidebarDocumentItem
+      key={document.id}
+      document={document}
+      isCurrent={document.id === currentDocumentId}
+      groups={sections.groups}
+      disabled={isPending}
+      onMove={(groupId) => handleMove(document.id, groupId)}
+      onMoveToNewGroup={() =>
+        openDialog({ mode: "create", documentIdToMove: document.id })
+      }
+      onDelete={() => handleDeleteDocument(document.id)}
+      onDragStart={() => setDraggedDocumentId(document.id)}
+      onDragEnd={() => setDraggedDocumentId(null)}
+    />
+  )
+
+  const isEmpty = state.documents.length === 0 && state.groups.length === 0
 
   return (
     <>
@@ -92,9 +227,9 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
           <SidebarGroup>
             <SidebarGroupContent>
               <SidebarMenu>
-                <SidebarMenuItem>
+                <SidebarMenuItem className="flex gap-2 mb-2">
                   <Button
-                    className="w-full justify-start h-12 mb-2"
+                    className="flex-1 justify-start h-12"
                     variant="outline"
                     asChild
                   >
@@ -103,47 +238,54 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
                       New Document
                     </Link>
                   </Button>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <Button
+                        variant="outline"
+                        className="h-12 w-12"
+                        aria-label="New group"
+                        onClick={() => openDialog({ mode: "create" })}
+                      >
+                        <FolderPlus className="size-4" />
+                      </Button>
+                    </TooltipTrigger>
+                    <TooltipContent side="bottom">New group</TooltipContent>
+                  </Tooltip>
                 </SidebarMenuItem>
-                {documentItems.length > 0 ? (
-                  documentItems.map((doc) => (
-                    <SidebarMenuItem key={doc.id}>
-                      <ContextMenu>
-                        <ContextMenuTrigger asChild>
-                          <SidebarMenuButton
-                            className="justify-between h-12"
-                            asChild
-                          >
-                            <Link href={`/${doc.id}`}>
-                              <div className="flex flex-col items-start min-w-0">
-                                <span className="text-ellipsis whitespace-nowrap overflow-hidden text-sm font-medium">
-                                  {doc.title}
-                                </span>
-                                <span className="text-xs text-neutral-500">
-                                  {doc.updatedAt.toLocaleDateString()}
-                                </span>
-                              </div>
-                              {doc.isCurrent && (
-                                <Badge variant="secondary" className="ml-2">
-                                  Current
-                                </Badge>
-                              )}
-                            </Link>
-                          </SidebarMenuButton>
-                        </ContextMenuTrigger>
-                        <ContextMenuContent>
-                          <ContextMenuItem
-                            variant="destructive"
-                            disabled={isPending}
-                            onClick={() => handleDelete(doc.id)}
-                          >
-                            <Trash2 />
-                            Delete
-                          </ContextMenuItem>
-                        </ContextMenuContent>
-                      </ContextMenu>
-                    </SidebarMenuItem>
-                  ))
-                ) : (
+                {sections.groups.map((group) => (
+                  <SidebarGroupSection
+                    key={group.id}
+                    name={group.name}
+                    documentCount={group.documents.length}
+                    isOpen={!collapsedGroupIds.has(group.id)}
+                    disabled={isPending}
+                    onToggle={() => toggleGroup(group.id)}
+                    onRename={() => openDialog({ mode: "rename", group })}
+                    onDelete={() => handleDeleteGroup(group.id)}
+                    onDropDocument={(documentId) =>
+                      handleMove(documentId, group.id)
+                    }
+                  >
+                    {group.documents.map(renderDocument)}
+                  </SidebarGroupSection>
+                ))}
+              </SidebarMenu>
+              <SidebarMenu
+                {...ungroupedDropHandlers}
+                className={cn(
+                  "mt-1 rounded-md transition-colors",
+                  isOverUngrouped &&
+                    "bg-sidebar-accent ring-2 ring-orange-500/60",
+                )}
+              >
+                {sections.ungrouped.map(renderDocument)}
+                {isDraggingGroupedDocument &&
+                  sections.ungrouped.length === 0 && (
+                    <li className="rounded-md border border-dashed px-2 py-3 text-center text-xs text-neutral-500">
+                      Drop here to remove from group
+                    </li>
+                  )}
+                {isEmpty && (
                   <SidebarMenuItem>
                     <SidebarMenuButton disabled>
                       <span className="text-neutral-400">No documents</span>
@@ -168,6 +310,22 @@ export function DocumentSidebar({ documentsPromise }: SidebarProps) {
           </p>
         </SidebarFooter>
       </Sidebar>
+      <GroupNameDialog
+        open={isDialogOpen}
+        onOpenChange={setIsDialogOpen}
+        {...(dialog.mode === "rename"
+          ? {
+              title: "Rename group",
+              submitLabel: "Save",
+              defaultName: dialog.group.name,
+              onSubmit: (name) => renameGroup(dialog.group.id, name),
+            }
+          : {
+              title: "New group",
+              submitLabel: "Create",
+              onSubmit: (name) => createGroup(name, dialog.documentIdToMove),
+            })}
+      />
     </>
   )
 }

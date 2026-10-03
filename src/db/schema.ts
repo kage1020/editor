@@ -93,11 +93,28 @@ export const twoFactors = sqliteTable("two_factors", {
   lockedUntil: integer("locked_until", { mode: "timestamp" }),
 })
 
+export const documentGroups = sqliteTable("document_groups", {
+  id: text("id")
+    .primaryKey()
+    .$defaultFn(() => crypto.randomUUID()),
+  userId: text("user_id")
+    .notNull()
+    .references(() => users.id, { onDelete: "cascade" }),
+  name: text("name").notNull(),
+  createdAt: integer("created_at", { mode: "timestamp" })
+    .$defaultFn(() => new Date())
+    .notNull(),
+})
+
 export const editorContents = sqliteTable("editor_contents", {
   id: text("id")
     .primaryKey()
     .$defaultFn(() => crypto.randomUUID()),
   userId: text("user_id").references(() => users.id, { onDelete: "cascade" }),
+  // Deleting a group keeps its documents; they fall back to ungrouped.
+  groupId: text("group_id").references(() => documentGroups.id, {
+    onDelete: "set null",
+  }),
   content: text("content").notNull(),
   json: text("json").notNull(),
   title: text("title").notNull(),

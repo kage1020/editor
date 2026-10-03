@@ -6,7 +6,7 @@ import { ClientOnly } from "@/components/client-only"
 import { SidebarProvider } from "@/components/ui/sidebar"
 import { Toaster } from "@/components/ui/sonner"
 import { TooltipProvider } from "@/components/ui/tooltip"
-import { listDocuments } from "@/db/queries"
+import { listDocuments, listGroups } from "@/db/queries"
 import { AuthButton } from "./_components/auth-button"
 import { DocumentSidebar } from "./_components/sidebar"
 import { ThemeToggle } from "./_components/theme-toggle"
@@ -19,6 +19,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   const documentsPromise = listDocuments()
+  const groupsPromise = listGroups()
 
   return (
     <html
@@ -40,7 +41,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
                   </div>
                 }
               >
-                <DocumentSidebar documentsPromise={documentsPromise} />
+                <DocumentSidebar
+                  documentsPromise={documentsPromise}
+                  groupsPromise={groupsPromise}
+                />
               </Suspense>
               <AuthButton />
               <ClientOnly
