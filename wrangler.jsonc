@@ -5,7 +5,11 @@
 {
   "$schema": "node_modules/wrangler/config-schema.json",
   "name": "editor",
-  "main": ".open-next/worker.js",
+  "main": "src/worker.ts",
+  // Wraps the OpenNext worker to add the cron handler below.
+  "alias": {
+    "open-next-worker": "./.open-next/worker.js"
+  },
   "compatibility_date": "2026-08-19",
   "compatibility_flags": ["nodejs_compat", "global_fetch_strictly_public"],
   "keep_names": false,
@@ -52,6 +56,10 @@
       "migrations_dir": "src/drizzle"
     }
   ],
+  // Daily sweep of uploaded images no document shows any more.
+  "triggers": {
+    "crons": ["0 18 * * *"]
+  },
   "r2_buckets": [
     {
       "binding": "UPLOADS",

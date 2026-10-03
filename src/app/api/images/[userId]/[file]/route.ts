@@ -1,12 +1,12 @@
 import { getCloudflareContext } from "@opennextjs/cloudflare"
-import { isImageFileName } from "@/lib/image-file"
+import { IMAGE_OWNER_ID, isImageFileName } from "@/lib/image-file"
 
 export async function GET(
   _request: Request,
   { params }: RouteContext<"/api/images/[userId]/[file]">,
 ) {
   const { userId, file } = await params
-  if (!/^[\w-]+$/.test(userId) || !isImageFileName(file))
+  if (!IMAGE_OWNER_ID.test(userId) || !isImageFileName(file))
     return new Response(null, { status: 404 })
 
   const { env } = await getCloudflareContext({ async: true })

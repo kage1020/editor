@@ -5,9 +5,15 @@ import { and, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
 import { unstable_rethrow } from "next/navigation"
+import { after } from "next/server"
 import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
+import {
+  deleteUnreferencedImages,
+  MAX_IMAGES_CLEANED_ON_DELETE,
+} from "@/lib/image-cleanup"
+import { imageKeysIn } from "@/lib/image-file"
 
 const MAX_CONTENT_BYTES = 10 * 1024 * 1024
 
@@ -317,13 +323,22 @@ export async function deleteContentAction(
     const result = await db
       .delete(editorContents)
       .where(and(eq(editorContents.id, id), eq(editorContents.userId, userId)))
-      .returning({ id: editorContents.id })
+      .returning({ id: editorContents.id, content: editorContents.content })
 
     if (!result || result.length === 0) {
       return {
         success: false,
         error: "Document not found or access denied",
       }
+    }
+
+    // Only the deleting user's own uploads are candidates; images copied in
+    // from other users' documents are left to their owners.
+    const ownImages = imageKeysIn(result[0].content)
+      .filter((key) => key.startsWith(`${userId}/`))
+      .slice(0, MAX_IMAGES_CLEANED_ON_DELETE)
+    if (ownImages.length > 0) {
+      after(() => deleteUnreferencedImages(env, ownImages))
     }
 
     revalidatePath("/")

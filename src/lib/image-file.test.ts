@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest"
-import { detectImageType, isImageFileName } from "./image-file"
+import { detectImageType, imageKeysIn, isImageFileName } from "./image-file"
 
 const bytes = (...values: (number | string)[]) =>
   new Uint8Array(
@@ -54,5 +54,22 @@ describe("isImageFileName", () => {
     `${id.toUpperCase()}.png`,
   ])("rejects %s", (name) => {
     expect(isImageFileName(name)).toBe(false)
+  })
+})
+
+describe("imageKeysIn", () => {
+  const a = "user-1/0f8fad5b-d9cb-469f-a165-70867728950e.png"
+  const b = "user_2/7c9e6679-7425-40de-944b-e07fc1f90ae7.webp"
+
+  it("collects each stored image key once, from relative and absolute URLs", () => {
+    const html = `<p>x</p><img src="/api/images/${a}"><img src="https://editor.kage1020.com/api/images/${b}" alt="b"><img src="/api/images/${a}">`
+
+    expect(imageKeysIn(html)).toEqual([a, b])
+  })
+
+  it("ignores images that were not stored by the upload route", () => {
+    const html = `<img src="https://example.com/x.png"><img src="/api/images/user-1/not-a-uuid.png"><img src="/api/images/user-1/0f8fad5b-d9cb-469f-a165-70867728950e.svg">`
+
+    expect(imageKeysIn(html)).toEqual([])
   })
 })
