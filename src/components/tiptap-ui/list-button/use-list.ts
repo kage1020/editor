@@ -3,13 +3,11 @@
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import {
   ListIcon,
   ListOrderedIcon,
   ListTodoIcon,
 } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {
   findNodePosition,
@@ -196,7 +194,6 @@ export function useList(config: UseListConfig) {
   const { type, onToggled } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canToggle = canToggleList(editor, type)
   const isActive = isListActive(editor, type)
 
@@ -209,19 +206,6 @@ export function useList(config: UseListConfig) {
     }
     return success
   }, [editor, type, onToggled])
-
-  useHotkeys(
-    LIST_SHORTCUT_KEYS[type],
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: canToggle,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

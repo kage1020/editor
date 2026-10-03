@@ -3,9 +3,7 @@
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { BlockquoteIcon } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {
   findNodePosition,
@@ -129,7 +127,6 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
   const { onToggled } = config || {}
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canToggle = canToggleBlockquote(editor)
   const isActive = editor?.isActive("blockquote") || false
 
@@ -142,19 +139,6 @@ export function useBlockquote(config?: UseBlockquoteConfig) {
     }
     return success
   }, [editor, onToggled])
-
-  useHotkeys(
-    BLOCKQUOTE_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: canToggle,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

@@ -60,6 +60,11 @@ export const Highlight = HighlightBase.extend({
     ]
   },
 
+  // Mod-Shift-h belongs to UnderlineHighlight
+  addKeyboardShortcuts() {
+    return {}
+  },
+
   renderHTML({ HTMLAttributes }) {
     return [
       "mark",

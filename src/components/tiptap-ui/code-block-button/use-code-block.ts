@@ -3,9 +3,7 @@
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { CodeBlockIcon } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {
   findNodePosition,
@@ -126,7 +124,6 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
   const { onToggled } = config || {}
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canToggleState = canToggle(editor)
   const isActive = editor?.isActive("codeBlockShiki") || false
 
@@ -139,19 +136,6 @@ export function useCodeBlock(config?: UseCodeBlockConfig) {
     }
     return success
   }, [editor, onToggled])
-
-  useHotkeys(
-    CODE_BLOCK_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: canToggleState,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

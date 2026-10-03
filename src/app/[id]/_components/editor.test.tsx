@@ -1,6 +1,7 @@
 // @vitest-environment happy-dom
-import type { Editor as TiptapEditor } from "@tiptap/core"
+
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
+import type { Editor as TiptapEditor } from "@tiptap/core"
 import { Suspense } from "react"
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest"
 import { Editor } from "./editor"
@@ -100,7 +101,7 @@ describe("editor keyboard shortcuts", () => {
     expect(editor.getHTML()).toBe("<p><strong>hello</strong></p>")
   })
 
-  it("turns the paragraph into a bullet list with Ctrl+Shift+8 and nothing else", async () => {
+  it("turns the paragraph into a bullet list with Ctrl+Shift+8 as one undoable step", async () => {
     const { dom, editor } = await renderEditor("<p>hello</p>")
     selectAllText(editor)
 
@@ -112,7 +113,14 @@ describe("editor keyboard shortcuts", () => {
       shift: true,
     })
 
-    expect(editor.getHTML()).toBe("<ul><li><p>hello</p></li></ul>")
+    expect(editor.getJSON().content?.[0]).toMatchObject({
+      type: "bulletList",
+      content: [{ type: "listItem" }],
+    })
+    act(() => {
+      editor.commands.undo()
+    })
+    expect(editor.getHTML()).toBe("<p>hello</p>")
   })
 
   it("reverts only the latest change with Ctrl+Z", async () => {
@@ -126,7 +134,7 @@ describe("editor keyboard shortcuts", () => {
     expect(editor.getHTML()).toBe("<p><strong>hello</strong></p>")
   })
 
-  it("turns the paragraph into a heading with Ctrl+Alt+1", async () => {
+  it("turns the paragraph into a heading with Ctrl+Alt+1 as one undoable step", async () => {
     const { dom, editor } = await renderEditor("<p>hello</p>")
     selectAllText(editor)
 
@@ -138,13 +146,15 @@ describe("editor keyboard shortcuts", () => {
       alt: true,
     })
 
-    const blocks = editor.getJSON().content
-    expect(blocks).toHaveLength(1)
-    expect(blocks?.[0]).toMatchObject({
+    expect(editor.getJSON().content?.[0]).toMatchObject({
       type: "heading",
       attrs: { level: 1 },
       content: [{ type: "text", text: "hello" }],
     })
+    act(() => {
+      editor.commands.undo()
+    })
+    expect(editor.getHTML()).toBe("<p>hello</p>")
   })
 
   it("wraps the current block in details with Ctrl+Shift+D", async () => {
@@ -158,6 +168,15 @@ describe("editor keyboard shortcuts", () => {
       ctrl: true,
       shift: true,
     })
+
+    expect(editor.getJSON().content?.[0]?.type).toBe("details")
+  })
+
+  it("wraps the current block in details from the toolbar button", async () => {
+    const { editor } = await renderEditor("<p>hello</p>")
+    selectAllText(editor)
+
+    fireEvent.click(screen.getByRole("button", { name: "Details" }))
 
     expect(editor.getJSON().content?.[0]?.type).toBe("details")
   })

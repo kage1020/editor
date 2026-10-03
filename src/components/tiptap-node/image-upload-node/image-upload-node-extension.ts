@@ -1,4 +1,9 @@
-import { mergeAttributes, Node, ReactNodeViewRenderer } from "@tiptap/react"
+import {
+  Extension,
+  mergeAttributes,
+  Node,
+  ReactNodeViewRenderer,
+} from "@tiptap/react"
 import { ImageUploadNode as ImageUploadNodeComponent } from "./image-upload-node"
 
 export type UploadFunction = (
@@ -46,11 +51,32 @@ declare module "@tiptap/react" {
 }
 
 /**
+ * Italic binds Mod-I, which also matches Mod-Shift-i, so the shortcut lives in
+ * its own keymap that runs before Italic's. Raising the node's priority instead
+ * would reorder the schema and make imageUpload the default block.
+ */
+const ImageUploadShortcut = Extension.create({
+  name: "imageUploadShortcut",
+
+  priority: 1000,
+
+  addKeyboardShortcuts() {
+    return {
+      "Mod-Shift-i": () => this.editor.commands.setImageUploadNode(),
+    }
+  },
+})
+
+/**
  * A Tiptap node extension that creates an image upload component.
  * @see registry/tiptap-node/image-upload-node/image-upload-node
  */
 export const ImageUploadNode = Node.create<ImageUploadNodeOptions>({
   name: "imageUpload",
+
+  addExtensions() {
+    return [ImageUploadShortcut]
+  },
 
   group: "block",
 

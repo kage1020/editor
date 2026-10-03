@@ -2,9 +2,7 @@
 
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { Redo2Icon, Undo2Icon } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isNodeTypeSelected } from "@/lib/tiptap-utils"
 
@@ -73,7 +71,6 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
   const { action, onExecuted } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canExecute = canExecuteUndoRedoAction(editor, action)
 
   const handleAction = useCallback(() => {
@@ -85,19 +82,6 @@ export function useUndoRedo(config: UseUndoRedoConfig) {
     }
     return success
   }, [editor, action, onExecuted])
-
-  useHotkeys(
-    UNDO_REDO_SHORTCUT_KEYS[action],
-    (event) => {
-      event.preventDefault()
-      handleAction()
-    },
-    {
-      enabled: canExecute,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     handleAction,
