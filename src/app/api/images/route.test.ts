@@ -4,7 +4,7 @@ import { MAX_IMAGE_BYTES } from "@/lib/image-file"
 const USER = "user-1"
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0])
 
-type StoredObject = { body: Uint8Array; contentType?: string }
+type StoredObject = { body: Uint8Array<ArrayBuffer>; contentType?: string }
 
 /** Stands in for the R2 binding with an in-memory map. */
 function createFakeR2() {
@@ -14,7 +14,7 @@ function createFakeR2() {
     put: vi.fn(
       async (
         key: string,
-        value: ArrayBuffer | Uint8Array,
+        value: ArrayBuffer,
         options?: { httpMetadata?: { contentType?: string } },
       ) => {
         objects.set(key, {
@@ -43,7 +43,7 @@ const mocks = vi.hoisted(() => ({
 }))
 
 vi.mock("@opennextjs/cloudflare", () => ({
-  getCloudflareContext: async () => ({ env: { IMAGES: mocks.bucket } }),
+  getCloudflareContext: async () => ({ env: { UPLOADS: mocks.bucket } }),
 }))
 vi.mock("@/auth/server", () => ({
   getSession: async () => mocks.session,
@@ -117,9 +117,7 @@ describe("POST /api/images", () => {
 
     expect(response.status).toBe(201)
     const { url } = (await response.json()) as { url: string }
-    expect(url).toMatch(
-      new RegExp(`^/api/images/${USER}/[0-9a-f-]{36}\\.png$`),
-    )
+    expect(url).toMatch(new RegExp(`^/api/images/${USER}/[0-9a-f-]{36}\\.png$`))
 
     const key = url.replace("/api/images/", "")
     const stored = bucket.objects.get(key)
