@@ -49,6 +49,60 @@ export function groupDocuments<TDocument extends GroupableDocument>(
   return { groups: sections, ungrouped }
 }
 
+export type SidebarState<TDocument> = {
+  documents: TDocument[]
+  groups: GroupSummary[]
+}
+
+export type SidebarChange =
+  | { type: "move-document"; documentId: string; groupId: string | null }
+  | { type: "delete-document"; documentId: string }
+  | { type: "rename-group"; groupId: string; name: string }
+  | { type: "delete-group"; groupId: string }
+
+/** Predicts the sidebar after a mutation, ahead of the server's answer. */
+export function applySidebarChange<
+  TDocument extends GroupableDocument & { id: string },
+>(
+  state: SidebarState<TDocument>,
+  change: SidebarChange,
+): SidebarState<TDocument> {
+  switch (change.type) {
+    case "move-document":
+      return {
+        ...state,
+        documents: state.documents.map((document) =>
+          document.id === change.documentId
+            ? { ...document, groupId: change.groupId }
+            : document,
+        ),
+      }
+    case "delete-document":
+      return {
+        ...state,
+        documents: state.documents.filter(
+          (document) => document.id !== change.documentId,
+        ),
+      }
+    case "rename-group":
+      return {
+        ...state,
+        groups: state.groups.map((group) =>
+          group.id === change.groupId ? { ...group, name: change.name } : group,
+        ),
+      }
+    case "delete-group":
+      return {
+        groups: state.groups.filter((group) => group.id !== change.groupId),
+        documents: state.documents.map((document) =>
+          document.groupId === change.groupId
+            ? { ...document, groupId: null }
+            : document,
+        ),
+      }
+  }
+}
+
 const groupNameSchema = z
   .string()
   .trim()

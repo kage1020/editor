@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest"
 import {
+  applySidebarChange,
   createGroupSchema,
   GROUP_NAME_MAX_LENGTH,
   groupDocuments,
@@ -117,5 +118,66 @@ describe("moveDocumentSchema", () => {
     expect(
       moveDocumentSchema.safeParse({ documentId: DOC, groupId: "x" }).success,
     ).toBe(false)
+  })
+})
+
+describe("applySidebarChange", () => {
+  const state = {
+    groups: [
+      { id: WORK, name: "Work" },
+      { id: HOBBY, name: "Hobby" },
+    ],
+    documents: [doc("a", WORK), doc("b", HOBBY), doc("c", WORK)],
+  }
+
+  it("moves only the given document", () => {
+    const next = applySidebarChange(state, {
+      type: "move-document",
+      documentId: "a",
+      groupId: null,
+    })
+
+    expect(next.documents).toEqual([
+      doc("a", null),
+      doc("b", HOBBY),
+      doc("c", WORK),
+    ])
+    expect(next.groups).toBe(state.groups)
+  })
+
+  it("renames a group", () => {
+    const next = applySidebarChange(state, {
+      type: "rename-group",
+      groupId: HOBBY,
+      name: "Play",
+    })
+
+    expect(next.groups).toEqual([
+      { id: WORK, name: "Work" },
+      { id: HOBBY, name: "Play" },
+    ])
+  })
+
+  it("removes a group and ungroups its documents", () => {
+    const next = applySidebarChange(state, {
+      type: "delete-group",
+      groupId: WORK,
+    })
+
+    expect(next.groups).toEqual([{ id: HOBBY, name: "Hobby" }])
+    expect(next.documents).toEqual([
+      doc("a", null),
+      doc("b", HOBBY),
+      doc("c", null),
+    ])
+  })
+
+  it("removes a deleted document", () => {
+    const next = applySidebarChange(state, {
+      type: "delete-document",
+      documentId: "b",
+    })
+
+    expect(next.documents.map((document) => document.id)).toEqual(["a", "c"])
   })
 })

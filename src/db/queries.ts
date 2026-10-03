@@ -2,7 +2,8 @@ import { desc, eq } from "drizzle-orm"
 import { cache } from "react"
 import { getSession } from "@/auth/server"
 import { db } from "@/db"
-import { editorContents } from "@/db/schema"
+import { documentGroups, editorContents } from "@/db/schema"
+import type { GroupSummary } from "@/lib/document-groups"
 import "server-only"
 
 /**
@@ -14,6 +15,7 @@ export type DocumentSummary = {
   id: string
   title: string
   updatedAt: Date
+  groupId: string | null
 }
 
 /** The document actually open in the editor. */
@@ -42,10 +44,21 @@ export const listDocuments = cache(async (): Promise<DocumentSummary[]> => {
       id: editorContents.id,
       title: editorContents.title,
       updatedAt: editorContents.updatedAt,
+      groupId: editorContents.groupId,
     })
     .from(editorContents)
     .where(eq(editorContents.userId, userId))
     .orderBy(desc(editorContents.updatedAt))
+})
+
+export const listGroups = cache(async (): Promise<GroupSummary[]> => {
+  const userId = await getCurrentUserId()
+  if (!userId) return []
+
+  return db
+    .select({ id: documentGroups.id, name: documentGroups.name })
+    .from(documentGroups)
+    .where(eq(documentGroups.userId, userId))
 })
 
 export const getDocument = cache(

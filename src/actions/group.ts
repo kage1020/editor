@@ -20,9 +20,11 @@ export type RenameGroupInput = z.input<typeof renameGroupSchema>
 export type DeleteGroupInput = z.input<typeof deleteGroupSchema>
 export type MoveDocumentInput = z.input<typeof moveDocumentSchema>
 
+export type ValidationIssue = { path: string; message: string }
+
 export type GroupActionResult =
   | { success: true; id: string }
-  | { success: false; error: string; details?: unknown }
+  | { success: false; error: string; details?: ValidationIssue[] }
 
 type ActionContext = {
   userId: string
