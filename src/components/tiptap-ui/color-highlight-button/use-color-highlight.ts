@@ -2,13 +2,10 @@
 
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { HighlighterIcon } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
 
-const COLOR_HIGHLIGHT_SHORTCUT_KEY = "mod+shift+h"
 const HIGHLIGHT_COLORS = [
   {
     label: "Default background",
@@ -122,7 +119,6 @@ export function useColorHighlight(config: UseColorHighlightConfig) {
   const { label, highlightColor, onApplied } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canColorHighlightState = canColorHighlight(editor)
   const isActive = isColorHighlightActive(editor, highlightColor)
 
@@ -149,26 +145,12 @@ export function useColorHighlight(config: UseColorHighlightConfig) {
     return success
   }, [editor, onApplied])
 
-  useHotkeys(
-    COLOR_HIGHLIGHT_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleColorHighlight()
-    },
-    {
-      enabled: canColorHighlightState,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
-
   return {
     isActive,
     handleColorHighlight,
     handleRemoveHighlight,
     canColorHighlight: canColorHighlightState,
     label: label || `Highlight`,
-    shortcutKeys: COLOR_HIGHLIGHT_SHORTCUT_KEY,
     Icon: HighlighterIcon,
   }
 }

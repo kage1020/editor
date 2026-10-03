@@ -2,9 +2,7 @@
 
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import { ImagePlusIcon } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"
 
@@ -69,7 +67,6 @@ export function useImageUpload(config?: UseImageUploadConfig) {
   const { onInserted } = config || {}
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canInsert = canInsertImage(editor)
   const isActive = isImageActive(editor)
 
@@ -82,19 +79,6 @@ export function useImageUpload(config?: UseImageUploadConfig) {
     }
     return success
   }, [editor, onInserted])
-
-  useHotkeys(
-    IMAGE_UPLOAD_SHORTCUT_KEY,
-    (event) => {
-      event.preventDefault()
-      handleImage()
-    },
-    {
-      enabled: canInsert,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

@@ -2,14 +2,12 @@
 
 import type { ChainedCommands, Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import {
   AlignCenterIcon,
   AlignJustifyIcon,
   AlignLeftIcon,
   AlignRightIcon,
 } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isExtensionAvailable, isNodeTypeSelected } from "@/lib/tiptap-utils"
 
@@ -102,7 +100,6 @@ export function useTextAlign(config: UseTextAlignConfig) {
   const { align, onAligned } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canAlign = canSetTextAlign(editor, align)
   const isActive = isTextAlignActive(editor, align)
 
@@ -115,19 +112,6 @@ export function useTextAlign(config: UseTextAlignConfig) {
     }
     return success
   }, [editor, align, onAligned])
-
-  useHotkeys(
-    TEXT_ALIGN_SHORTCUT_KEYS[align],
-    (event) => {
-      event.preventDefault()
-      handleTextAlign()
-    },
-    {
-      enabled: canAlign,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

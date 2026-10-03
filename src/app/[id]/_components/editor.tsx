@@ -17,11 +17,7 @@ import "@/components/tiptap-node/paragraph-node/paragraph-node.css"
 import "@/components/tiptap-extension/underline-highlight/underline-highlight.css"
 import "katex/dist/katex.min.css"
 
-import {
-  Details,
-  DetailsContent,
-  DetailsSummary,
-} from "@tiptap/extension-details"
+import { DetailsContent, DetailsSummary } from "@tiptap/extension-details"
 import Emoji from "@tiptap/extension-emoji"
 import Image from "@tiptap/extension-image"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
@@ -48,6 +44,7 @@ import { ImagePaste } from "@/components/tiptap-extension/image-paste"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
+import { Details } from "@/components/tiptap-node/details-node/details-node-extension"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
 import type { DocumentBody } from "@/db/queries"

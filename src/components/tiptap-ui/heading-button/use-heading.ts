@@ -3,7 +3,6 @@
 import { NodeSelection, TextSelection } from "@tiptap/pm/state"
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import {
   HeadingFiveIcon,
   HeadingFourIcon,
@@ -12,7 +11,6 @@ import {
   HeadingThreeIcon,
   HeadingTwoIcon,
 } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import {
   findNodePosition,
@@ -47,12 +45,12 @@ export const headingIcons = {
 }
 
 const HEADING_SHORTCUT_KEYS: Record<Level, string> = {
-  1: "ctrl+alt+1",
-  2: "ctrl+alt+2",
-  3: "ctrl+alt+3",
-  4: "ctrl+alt+4",
-  5: "ctrl+alt+5",
-  6: "ctrl+alt+6",
+  1: "mod+alt+1",
+  2: "mod+alt+2",
+  3: "mod+alt+3",
+  4: "mod+alt+4",
+  5: "mod+alt+5",
+  6: "mod+alt+6",
 }
 
 /**
@@ -186,7 +184,6 @@ export function useHeading(config: UseHeadingConfig) {
   const { level, onToggled } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canToggleState = canToggle(editor, level)
   const isActive = isHeadingActive(editor, level)
 
@@ -199,19 +196,6 @@ export function useHeading(config: UseHeadingConfig) {
     }
     return success
   }, [editor, level, onToggled])
-
-  useHotkeys(
-    HEADING_SHORTCUT_KEYS[level],
-    (event) => {
-      event.preventDefault()
-      handleToggle()
-    },
-    {
-      enabled: canToggleState,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

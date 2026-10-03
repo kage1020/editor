@@ -2,7 +2,6 @@
 
 import type { Editor } from "@tiptap/react"
 import { useCallback } from "react"
-import { useHotkeys } from "react-hotkeys-hook"
 import {
   BoldIcon,
   Code2Icon,
@@ -12,7 +11,6 @@ import {
   SuperscriptIcon,
   UnderlineIcon,
 } from "@/components/tiptap-icons"
-import { useIsMobile } from "@/hooks/use-mobile"
 import { useTiptapEditor } from "@/hooks/use-tiptap-editor"
 import { isMarkInSchema, isNodeTypeSelected } from "@/lib/tiptap-utils"
 
@@ -102,7 +100,6 @@ export function useMark(config: UseMarkConfig) {
   const { type, onToggled } = config
 
   const { editor } = useTiptapEditor()
-  const isMobile = useIsMobile()
   const canToggle = canToggleMark(editor, type)
   const isActive = isMarkActive(editor, type)
 
@@ -115,19 +112,6 @@ export function useMark(config: UseMarkConfig) {
     }
     return success
   }, [editor, type, onToggled])
-
-  useHotkeys(
-    MARK_SHORTCUT_KEYS[type],
-    (event) => {
-      event.preventDefault()
-      handleMark()
-    },
-    {
-      enabled: canToggle,
-      enableOnContentEditable: !isMobile,
-      enableOnFormTags: true,
-    },
-  )
 
   return {
     isActive,

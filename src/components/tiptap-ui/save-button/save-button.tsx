@@ -2,12 +2,15 @@
 
 import { Check, Loader2, Save } from "lucide-react"
 import { forwardRef, useCallback, useState } from "react"
+import { useHotkeys } from "react-hotkeys-hook"
 import {
   Button,
   type ButtonProps,
   IconButton,
 } from "@/components/tiptap-ui-primitive/button"
 import { useSaveContent } from "./use-save-content"
+
+const SAVE_SHORTCUT_KEY = "mod+s"
 
 interface SaveButtonProps extends Omit<ButtonProps, "type"> {
   /**
@@ -35,18 +38,33 @@ export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
     })
     const [showSuccess, setShowSuccess] = useState(false)
 
+    const save = useCallback(async () => {
+      const success = await handleSave()
+      if (success) {
+        setShowSuccess(true)
+        setTimeout(() => setShowSuccess(false), 2000)
+      }
+    }, [handleSave])
+
     const handleClick = useCallback(
-      async (event: React.MouseEvent<HTMLButtonElement>) => {
+      (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
-
-        const success = await handleSave()
-        if (success) {
-          setShowSuccess(true)
-          setTimeout(() => setShowSuccess(false), 2000)
-        }
+        save()
       },
-      [handleSave, onClick],
+      [save, onClick],
+    )
+
+    useHotkeys(
+      SAVE_SHORTCUT_KEY,
+      () => {
+        if (!isSaving) save()
+      },
+      {
+        preventDefault: true,
+        enableOnContentEditable: true,
+        enableOnFormTags: true,
+      },
     )
 
     return (
@@ -57,8 +75,8 @@ export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
         role="button"
         tabIndex={-1}
         aria-label="Save content"
-        tooltip="Save (Ctrl+S)"
-        shortcutKeys="Ctrl+S"
+        tooltip="Save"
+        shortcutKeys={SAVE_SHORTCUT_KEY}
         onClick={handleClick}
         {...buttonProps}
         ref={ref}
