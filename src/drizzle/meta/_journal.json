@@ -15,6 +15,13 @@
       "when": 1789203026002,
       "tag": "0001_goofy_namor",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791002097013,
+      "tag": "0002_sturdy_zeigeist",
+      "breakpoints": true
     }
   ]
 }
