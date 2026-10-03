@@ -11,6 +11,12 @@ export const ORPHAN_GRACE_MS = 24 * 60 * 60 * 1000
 
 export const DOCUMENT_PAGE_SIZE = 50
 
+/**
+ * Each image costs a query over every document, so a deletion checks only
+ * this many and leaves the rest to `deleteOrphanImages`.
+ */
+export const MAX_IMAGES_CLEANED_ON_DELETE = 100
+
 /** R2 accepts at most this many keys per delete call. */
 const DELETE_BATCH_SIZE = 1000
 

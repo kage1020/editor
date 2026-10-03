@@ -36,11 +36,13 @@ vi.mock("next/cache", () => ({ revalidatePath: vi.fn() }))
 vi.mock("next/server", () => ({
   after: (task: () => Promise<unknown>) => mocks.scheduled.push(task),
 }))
-vi.mock("@/lib/image-cleanup", () => ({
+vi.mock("@/lib/image-cleanup", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/lib/image-cleanup")>()),
   deleteUnreferencedImages: mocks.deleteUnreferencedImages,
 }))
 
 const { deleteContentAction } = await import("./content")
+const { MAX_IMAGES_CLEANED_ON_DELETE } = await import("@/lib/image-cleanup")
 
 beforeEach(() => {
   mocks.session = { user: { id: USER } }
@@ -60,6 +62,25 @@ describe("deleteContentAction", () => {
     expect(mocks.scheduled).toHaveLength(1)
     await mocks.scheduled[0]()
     expect(mocks.deleteUnreferencedImages).toHaveBeenCalledWith(env, [OWN])
+  })
+
+  it("checks at most a bounded number of images, leaving the rest to the daily sweep", async () => {
+    const keys = Array.from(
+      { length: MAX_IMAGES_CLEANED_ON_DELETE + 5 },
+      (_, i) =>
+        `${USER}/00000000-0000-4000-8000-${String(i).padStart(12, "0")}.png`,
+    )
+    mocks.deletedRows = [
+      [DOC, keys.map((key) => `<img src="/api/images/${key}">`).join("")],
+    ]
+
+    await deleteContentAction({ id: DOC })
+    await mocks.scheduled[0]()
+
+    expect(mocks.deleteUnreferencedImages).toHaveBeenCalledWith(
+      env,
+      keys.slice(0, MAX_IMAGES_CLEANED_ON_DELETE),
+    )
   })
 
   it("schedules no cleanup when nothing was deleted", async () => {

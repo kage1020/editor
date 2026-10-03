@@ -9,7 +9,10 @@ import { after } from "next/server"
 import { z } from "zod"
 import { getSession } from "@/auth/server"
 import { editorContents } from "@/db/schema"
-import { deleteUnreferencedImages } from "@/lib/image-cleanup"
+import {
+  deleteUnreferencedImages,
+  MAX_IMAGES_CLEANED_ON_DELETE,
+} from "@/lib/image-cleanup"
 import { imageKeysIn } from "@/lib/image-file"
 
 const MAX_CONTENT_BYTES = 10 * 1024 * 1024
@@ -331,9 +334,9 @@ export async function deleteContentAction(
 
     // Only the deleting user's own uploads are candidates; images copied in
     // from other users' documents are left to their owners.
-    const ownImages = imageKeysIn(result[0].content).filter((key) =>
-      key.startsWith(`${userId}/`),
-    )
+    const ownImages = imageKeysIn(result[0].content)
+      .filter((key) => key.startsWith(`${userId}/`))
+      .slice(0, MAX_IMAGES_CLEANED_ON_DELETE)
     if (ownImages.length > 0) {
       after(() => deleteUnreferencedImages(env, ownImages))
     }
