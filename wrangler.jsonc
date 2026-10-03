@@ -55,7 +55,7 @@
   "r2_buckets": [
     {
       "binding": "UPLOADS",
-      "bucket_name": "editor-images"
+      "bucket_name": "editor"
     }
   ]
 
