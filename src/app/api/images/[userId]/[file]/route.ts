@@ -6,7 +6,8 @@ export async function GET(
   { params }: RouteContext<"/api/images/[userId]/[file]">,
 ) {
   const { userId, file } = await params
-  if (!isImageFileName(file)) return new Response(null, { status: 404 })
+  if (!/^[\w-]+$/.test(userId) || !isImageFileName(file))
+    return new Response(null, { status: 404 })
 
   const { env } = await getCloudflareContext({ async: true })
   const object = await env.UPLOADS.get(`${userId}/${file}`)

@@ -34,12 +34,16 @@ function insertUploadingImages(editor: Editor, files: File[], pos?: number) {
   for (const { file, preview } of uploads) {
     uploadImage(file)
       .then((url) => {
+        // The editor is torn down when another document is opened.
+        if (editor.isDestroyed) return
         const tr = replaceImageSource(editor.state, preview, url)
         if (tr) editor.view.dispatch(tr)
       })
       .catch((error: Error) => {
-        const tr = removeImagesWithSource(editor.state, preview)
-        if (tr) editor.view.dispatch(tr)
+        if (!editor.isDestroyed) {
+          const tr = removeImagesWithSource(editor.state, preview)
+          if (tr) editor.view.dispatch(tr)
+        }
         toast.error(`Failed to upload ${file.name}`, {
           description: error.message,
         })
