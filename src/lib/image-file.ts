@@ -45,13 +45,25 @@ export function detectImageType(data: Uint8Array): ImageType | null {
   return null
 }
 
-const IMAGE_FILE_NAME = new RegExp(
-  `^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\\.(${Object.values(
-    IMAGE_EXTENSIONS,
-  ).join("|")})$`,
-)
+const UUID = "[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}"
+const EXTENSION = `(?:${Object.values(IMAGE_EXTENSIONS).join("|")})`
+
+/** Characters allowed in the owner segment of a stored image key. */
+export const IMAGE_OWNER_ID = /^[\w-]+$/
+
+const IMAGE_FILE_NAME = new RegExp(`^${UUID}\\.${EXTENSION}$`)
 
 /** Whether `name` has the shape the upload route gives stored images. */
 export function isImageFileName(name: string): boolean {
   return IMAGE_FILE_NAME.test(name)
+}
+
+const IMAGE_URL = new RegExp(
+  `/api/images/([\\w-]+/${UUID}\\.${EXTENSION})(?![\\w.])`,
+  "g",
+)
+
+/** Keys of the stored images that `html` refers to, each listed once. */
+export function imageKeysIn(html: string): string[] {
+  return [...new Set(Array.from(html.matchAll(IMAGE_URL), (match) => match[1]))]
 }
