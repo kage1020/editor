@@ -51,6 +51,12 @@
       "preview_database_id": "DB",
       "migrations_dir": "src/drizzle"
     }
+  ],
+  "r2_buckets": [
+    {
+      "binding": "IMAGES",
+      "bucket_name": "editor-images"
+    }
   ]
 
   /**
