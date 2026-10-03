@@ -7,7 +7,12 @@ export default defineConfig({
       "@": fileURLToPath(new URL("./src", import.meta.url)),
     },
   },
+  // Stylesheets imported by components are irrelevant to tests; an inline
+  // config keeps Vite from loading the Next.js PostCSS pipeline.
+  css: {
+    postcss: {},
+  },
   test: {
-    include: ["src/**/*.test.ts"],
+    include: ["src/**/*.test.{ts,tsx}"],
   },
 })
