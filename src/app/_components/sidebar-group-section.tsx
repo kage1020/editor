@@ -58,7 +58,7 @@ export function SidebarGroupSection({
           <SidebarMenuButton
             onClick={onToggle}
             aria-expanded={isOpen}
-            className="h-10 pr-8 font-medium"
+            className="pr-8 font-medium"
           >
             <ChevronRight
               className={cn("transition-transform", isOpen && "rotate-90")}
@@ -83,7 +83,7 @@ export function SidebarGroupSection({
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-      <SidebarMenuBadge className="top-2.5">{documentCount}</SidebarMenuBadge>
+      <SidebarMenuBadge>{documentCount}</SidebarMenuBadge>
       {isOpen && (
         <SidebarMenuSub className="mr-0 pr-0">
           {documentCount > 0 ? (
