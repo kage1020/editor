@@ -23,7 +23,6 @@ import {
   DetailsSummary,
 } from "@tiptap/extension-details"
 import Emoji from "@tiptap/extension-emoji"
-import FileHandler from "@tiptap/extension-file-handler"
 import Image from "@tiptap/extension-image"
 import { TaskItem, TaskList } from "@tiptap/extension-list"
 import Mathematics from "@tiptap/extension-mathematics"
@@ -43,13 +42,17 @@ import {
 } from "@tiptap/extensions"
 import { EditorContent, EditorContext, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import { toast } from "sonner"
 import { Highlight } from "@/components/tiptap-extension/highlight"
+import { ImagePaste } from "@/components/tiptap-extension/image-paste"
 import { MarkdownPaste } from "@/components/tiptap-extension/markdown-paste"
 import { UnderlineHighlight } from "@/components/tiptap-extension/underline-highlight"
 import { CodeBlockShiki } from "@/components/tiptap-node/code-block-shiki-node"
 import HorizontalRule from "@/components/tiptap-node/horizontal-rule-node/horizontal-rule-node-extension"
 import { ImageUploadNode } from "@/components/tiptap-node/image-upload-node"
 import type { DocumentBody } from "@/db/queries"
+import { IMAGE_TYPES, MAX_IMAGE_BYTES } from "@/lib/image-file"
+import { uploadImage } from "@/lib/upload-image"
 import { Title } from "./title"
 // import InvisibleCharacters from "@tiptap/extension-invisible-characters"
 import { FlexibleToolbar } from "./toolbar"
@@ -73,7 +76,6 @@ export function Editor({ documentPromise }: EditorProps) {
       DetailsContent,
       DetailsSummary,
       Emoji,
-      FileHandler,
       Focus,
       Highlight.configure({ multicolor: true }),
       HorizontalRule,
@@ -82,7 +84,13 @@ export function Editor({ documentPromise }: EditorProps) {
           class: "editor-image",
         },
       }),
-      ImageUploadNode,
+      ImagePaste,
+      ImageUploadNode.configure({
+        accept: IMAGE_TYPES.join(","),
+        maxSize: MAX_IMAGE_BYTES,
+        upload: uploadImage,
+        onError: (error) => toast.error(error.message),
+      }),
       // InvisibleCharacters,
       MarkdownPaste.configure({
         enableTablePaste: true,
