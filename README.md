@@ -77,9 +77,8 @@ user. The local D1 database is created by `pnpm dev`; apply migrations with
 
 `next dev` gets its bindings from `wrangler.jsonc`, the only file Wrangler's
 `getPlatformProxy` reads. Keep its compatibility settings and bindings in step
-with `cloudflare.config.ts`; `src/cloudflare-config.test.ts` fails when they
-differ. Local data lives in `.wrangler/state`, shared by `pnpm dev`,
-`pnpm preview` and `pnpm migrate`.
+with `cloudflare.config.ts`. Local data lives in `.wrangler/state`, shared by
+`pnpm dev`, `pnpm preview` and `pnpm migrate`.
 
 Binding types are generated from `cloudflare.config.ts` into
 `.cloudflare/types` by `pnpm cf-typegen`; `pnpm build` and `pnpm typecheck`
