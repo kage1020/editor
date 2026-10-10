@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { env } from "cloudflare:workers"
 import { IMAGE_OWNER_ID, isImageFileName } from "@/lib/image-file"
 
 export async function GET(
@@ -9,7 +9,6 @@ export async function GET(
   if (!IMAGE_OWNER_ID.test(userId) || !isImageFileName(file))
     return new Response(null, { status: 404 })
 
-  const { env } = await getCloudflareContext({ async: true })
   const object = await env.UPLOADS.get(`${userId}/${file}`)
   if (!object) return new Response(null, { status: 404 })
 

@@ -26,9 +26,7 @@ const env = {
   UPLOADS: {},
 }
 
-vi.mock("@opennextjs/cloudflare", () => ({
-  getCloudflareContext: async () => ({ env }),
-}))
+vi.mock("cloudflare:workers", () => ({ env }))
 vi.mock("@/auth/server", () => ({
   getSession: async () => mocks.session,
 }))

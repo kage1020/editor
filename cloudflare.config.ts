@@ -7,6 +7,8 @@ export default defineConfig({
     compatibilityDate: "2026-08-19",
     compatibilityFlags: ["nodejs_compat", "global_fetch_strictly_public"],
     entrypoint: "src/worker.ts",
+    // vinext renders its own not-found pages.
+    assets: { notFoundHandling: "none" },
     /**
      * Preview URLs are served from the workers.dev subdomain, so both flags are
      * needed for pull request builds to publish a version at

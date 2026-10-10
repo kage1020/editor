@@ -1,4 +1,4 @@
-import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { env } from "cloudflare:workers"
 import { getSession } from "@/auth/server"
 import {
   detectImageType,
@@ -36,7 +36,6 @@ export async function POST(request: Request) {
   if (!type) return error(415, "Unsupported image format")
 
   const key = `${userId}/${crypto.randomUUID()}.${IMAGE_EXTENSIONS[type]}`
-  const { env } = await getCloudflareContext({ async: true })
   await env.UPLOADS.put(key, data, { httpMetadata: { contentType: type } })
 
   return Response.json({ url: `/api/images/${key}` }, { status: 201 })

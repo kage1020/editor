@@ -79,7 +79,7 @@ function environment(docs: Doc[], objects: Map<string, Date>) {
     env: {
       DB: createFakeD1(docs),
       UPLOADS: bucket,
-    } as unknown as Pick<CloudflareEnv, "DB" | "UPLOADS">,
+    } as unknown as Pick<Env, "DB" | "UPLOADS">,
   }
 }
 

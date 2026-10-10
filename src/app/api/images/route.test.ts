@@ -42,8 +42,12 @@ const mocks = vi.hoisted(() => ({
   bucket: null as unknown,
 }))
 
-vi.mock("@opennextjs/cloudflare", () => ({
-  getCloudflareContext: async () => ({ env: { UPLOADS: mocks.bucket } }),
+vi.mock("cloudflare:workers", () => ({
+  env: {
+    get UPLOADS() {
+      return mocks.bucket
+    },
+  },
 }))
 vi.mock("@/auth/server", () => ({
   getSession: async () => mocks.session,
