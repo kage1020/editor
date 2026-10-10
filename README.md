@@ -107,7 +107,10 @@ pnpm run migrate:remote   # apply D1 migrations to the production database
 ```
 
 On Workers Builds, set the deploy command to `pnpm run deploy` and the preview
-command to `pnpm run upload`, and leave the build command empty.
+command to `pnpm run upload`, and leave the build command empty. cf reads
+`CLOUDFLARE_API_TOKEN`, which Workers Builds does not document among the
+variables it injects; if a build cannot authenticate, add the token as a build
+secret.
 
 `cf build` cannot build this project: it detects Next.js and runs `next build`,
 which writes no Build Output. `pnpm build:worker` runs the steps instead:
