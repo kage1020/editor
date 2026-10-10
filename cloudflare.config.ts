@@ -1,6 +1,7 @@
 import { bindings, defineConfig, triggers } from "cf/config"
 
 export default defineConfig({
+  accountId: "c7e4b52c35486cab775a555e9f1b5abc",
   worker: {
     name: "editor",
     compatibilityDate: "2026-08-19",

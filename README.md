@@ -75,14 +75,53 @@ The editor itself runs without them; saving a document requires a signed-in
 user. The local D1 database is created by `pnpm dev`; apply migrations with
 `pnpm migrate`.
 
+`next dev` gets its bindings from `wrangler.jsonc`, the only file Wrangler's
+`getPlatformProxy` reads. Keep its compatibility settings and bindings in step
+with `cloudflare.config.ts`; `src/cloudflare-config.test.ts` fails when they
+differ. Local data lives in `.wrangler/state`, shared by `pnpm dev`,
+`pnpm preview` and `pnpm migrate`.
+
+Binding types are generated from `cloudflare.config.ts` into
+`.cloudflare/types` by `pnpm cf-typegen`; `pnpm build` and `pnpm typecheck`
+regenerate them.
+
 ### Checks
 
 ```bash
-pnpm typecheck   # tsc --noEmit
+pnpm typecheck   # cf workers types && tsc --noEmit
 pnpm lint        # biome check src
-pnpm build       # next build
+pnpm build       # cf workers types && next build
 pnpm preview     # build the Worker and run it locally
 ```
+
+## Deployment
+
+The Worker is described by `cloudflare.config.ts` and deployed with
+[cf](https://developers.cloudflare.com/cf/), the Cloudflare CLI. Sign in with
+`pnpm exec cf auth login`, or set `CLOUDFLARE_API_TOKEN`.
+
+```bash
+pnpm run deploy           # build and deploy to production
+pnpm run upload           # build and upload a version without deploying it
+pnpm run migrate:remote   # apply D1 migrations to the production database
+```
+
+On Workers Builds, set the deploy command to `pnpm run deploy` and the preview
+command to `pnpm run upload`, and leave the build command empty.
+
+`cf build` cannot build this project: it detects Next.js and runs `next build`,
+which writes no Build Output. `pnpm build:worker` runs the steps instead:
+`opennextjs-cloudflare build` bundles the app into `.open-next/`, then
+`cf-wrangler build`, the Wrangler delegate `cf build` runs for projects bundled
+by Wrangler, wraps it with `src/worker.ts` and writes Build Output to
+`.cloudflare/output/` for `cf deploy --prebuilt`. Its bundler settings are in
+`wrangler.config.ts`. `opennextjs-cloudflare deploy` is not used, so enabling
+an OpenNext incremental cache also needs `opennextjs-cloudflare populateCache
+remote` before deploying.
+
+cf cannot stream logs or set a single secret yet. Use
+`pnpm exec wrangler tail editor` and
+`pnpm exec wrangler secret put <NAME> --name editor`.
 
 ## Technology Stack
 
@@ -93,7 +132,7 @@ pnpm preview     # build the Worker and run it locally
 - **Database**: Cloudflare D1 via Drizzle ORM
 - **Auth**: Better Auth
 - **Hosting**: Cloudflare Workers via OpenNext
-- **Tooling**: Biome, TypeScript 7, pnpm
+- **Tooling**: cf (Cloudflare CLI), Biome, TypeScript 7, pnpm
 
 ## License
 
