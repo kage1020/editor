@@ -1,6 +1,7 @@
 # @kage1020/editor
 
-A modern rich text editor built with Next.js and Tiptap.
+A modern rich text editor built with Tiptap on the Next.js App Router API,
+served by [vinext](https://github.com/cloudflare/vinext) on Cloudflare Workers.
 
 ## Features
 
@@ -75,21 +76,21 @@ The editor itself runs without them; saving a document requires a signed-in
 user. The local D1 database is created by `pnpm dev`; apply migrations with
 `pnpm migrate`.
 
-`next dev` gets its bindings from `wrangler.jsonc`, the only file Wrangler's
-`getPlatformProxy` reads. Keep its compatibility settings and bindings in step
-with `cloudflare.config.ts`. Local data lives in `.wrangler/state`, shared by
-`pnpm dev`, `pnpm preview` and `pnpm migrate`.
+`pnpm dev` runs the app in workerd with the bindings declared in
+`cloudflare.config.ts`; server code reads them with
+`import { env } from "cloudflare:workers"`. Local data lives in
+`.cloudflare/state`, shared by `pnpm dev`, `pnpm preview` and `pnpm migrate`.
 
 Binding types are generated from `cloudflare.config.ts` into
-`.cloudflare/types` by `pnpm cf-typegen`; `pnpm build` and `pnpm typecheck`
-regenerate them.
+`.cloudflare/types` by `pnpm cf-typegen`, and route types such as `PageProps`
+into `.next/types` by `pnpm typegen`. `pnpm typecheck` regenerates both.
 
 ### Checks
 
 ```bash
-pnpm typecheck   # cf workers types && tsc --noEmit
+pnpm typecheck   # cf workers types && vinext typegen && tsc --noEmit
 pnpm lint        # biome check src
-pnpm build       # cf workers types && next build
+pnpm build       # cf build
 pnpm preview     # build the Worker and run it locally
 ```
 
@@ -111,29 +112,23 @@ command to `pnpm run upload`, and leave the build command empty. cf reads
 variables it injects; if a build cannot authenticate, add the token as a build
 secret.
 
-`cf build` cannot build this project: it detects Next.js and runs `next build`,
-which writes no Build Output. `pnpm build:worker` runs the steps instead:
-`opennextjs-cloudflare build` bundles the app into `.open-next/`, then
-`cf-wrangler build`, the Wrangler delegate `cf build` runs for projects bundled
-by Wrangler, wraps it with `src/worker.ts` and writes Build Output to
-`.cloudflare/output/` for `cf deploy --prebuilt`. Its bundler settings are in
-`wrangler.config.ts`. `opennextjs-cloudflare deploy` is not used, so enabling
-an OpenNext incremental cache also needs `opennextjs-cloudflare populateCache
-remote` before deploying.
+cf builds with Vite, where vinext and the Cloudflare Vite plugin write Build
+Output to `.cloudflare/output/`. The Worker entry, `src/worker.ts`, wraps
+vinext's fetch handler to add the cron handler.
 
 cf cannot stream logs or set a single secret yet. Use
-`pnpm exec wrangler tail editor` and
-`pnpm exec wrangler secret put <NAME> --name editor`.
+`pnpm dlx wrangler tail editor` and
+`pnpm dlx wrangler secret put <NAME> --name editor`.
 
 ## Technology Stack
 
-- **Framework**: Next.js 16 (App Router, Turbopack)
+- **Framework**: vinext (Next.js App Router API on Vite)
 - **Editor**: Tiptap 3
 - **Styling**: Tailwind CSS 4
 - **UI Components**: shadcn/ui
 - **Database**: Cloudflare D1 via Drizzle ORM
 - **Auth**: Better Auth
-- **Hosting**: Cloudflare Workers via OpenNext
+- **Hosting**: Cloudflare Workers
 - **Tooling**: cf (Cloudflare CLI), Biome, TypeScript 7, pnpm
 
 ## License
