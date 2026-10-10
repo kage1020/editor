@@ -55,7 +55,6 @@
     "@tiptap/react": "^3.30.2",
     "@tiptap/starter-kit": "^3.30.2",
     "@tiptap/suggestion": "3.30.2",
-    "@vinext/cloudflare": "^1.1.0",
     "better-auth": "^1.7.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
@@ -107,9 +106,6 @@
       "esbuild",
       "sharp",
       "workerd"
-    ],
-    "ignoredOptionalDependencies": [
-      "sharp"
     ]
   }
 }
