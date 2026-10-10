@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs"
 import { fileURLToPath } from "node:url"
 import { describe, expect, it } from "vitest"
 import { unstable_readConfig } from "wrangler"
@@ -46,5 +47,25 @@ describe("local development configuration", () => {
     expect(local.main).toBeUndefined()
     expect(local.routes).toBeUndefined()
     expect(local.triggers.crons).toBeUndefined()
+  })
+})
+
+describe("D1 migration scripts", () => {
+  const { scripts } = JSON.parse(
+    readFileSync(new URL("../package.json", import.meta.url), "utf8"),
+  ) as { scripts: Record<string, string> }
+  const appliedDatabase = (script: string) =>
+    script.match(/d1 migrations apply (\S+)/)?.[1]
+
+  it("apply the Drizzle migrations to the deployed database", () => {
+    for (const name of ["migrate", "migrate:remote"]) {
+      expect(appliedDatabase(scripts[name])).toBe(worker.env.DB.id)
+      expect(scripts[name]).toContain("--dir src/drizzle")
+    }
+  })
+
+  it("migrate locally into the state next dev reads", () => {
+    expect(scripts.migrate).toContain("--local --persist-to .wrangler/state")
+    expect(scripts["migrate:remote"]).not.toContain("--local")
   })
 })
