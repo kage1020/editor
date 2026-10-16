@@ -125,7 +125,7 @@ export function Title({ title, className, onChange }: TitleProps) {
           className={cn(
             "cursor-text rounded-sm text-foreground",
             "text-[26px] sm:text-[32px] leading-[1.3] font-bold tracking-[-0.01em]",
-            "border-b border-transparent hover:border-kg-line transition-colors duration-100",
+            "border-b border-transparent hover:border-kg-line transition-colors duration-(--kg-dur-1)",
           )}
         >
           {title}

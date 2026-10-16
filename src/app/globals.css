@@ -7,27 +7,7 @@
 
 @theme inline {
   --breakpoint-xs: 480px;
-  --ease-fast: cubic-bezier(0.16,1,0.3,1);
 
-  --animate-fadeIn: fadeIn var(--tw-duration) var(--tw-ease) var(--tw-animation-iteration-count);
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-    }
-    to {
-      opacity: 1;
-    }
-  }
-
-  --animate-fadeOut: fadeOut var(--tw-duration) var(--tw-ease) var(--tw-animation-iteration-count);
-  @keyframes fadeOut {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
 }
 
 :root {
@@ -36,14 +16,4 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-@media (prefers-reduced-motion: reduce) {
-  *,
-  ::before,
-  ::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
 }

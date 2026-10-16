@@ -48,14 +48,14 @@ export function AuthButton() {
       <motion.div
         ref={containerRef}
         className={cn(
-          "h-12 border transition-colors duration-100 overflow-hidden hover:bg-accent group",
+          "h-12 border transition-colors duration-(--kg-dur-1) overflow-hidden hover:bg-accent group",
           open
             ? "rounded-lg border-border px-3 hover:bg-background"
             : "rounded-full border-transparent px-2 cursor-pointer",
         )}
         initial={{ width: 48 }}
         animate={{ width: open ? (session ? 280 : 128) : 48 }}
-        transition={{ duration: 0.12, ease: "easeOut" }}
+        transition={{ duration: 0.2, ease: [0.16, 1, 0.3, 1] }}
       >
         <div className="flex items-center justify-between h-full">
           <div className="shrink-0 flex items-center justify-center space-x-4">

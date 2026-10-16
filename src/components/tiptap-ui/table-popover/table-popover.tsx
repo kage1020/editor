@@ -121,7 +121,7 @@ const TableGridSelector = ({
                 key={`${rowIndex}-${colIndex}`}
                 type="button"
                 className={cn(
-                  "table-grid-cell w-4 h-4 border border-kg-line bg-kg-bg cursor-pointer transition-colors duration-100 ease-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-kg-fill",
+                  "table-grid-cell w-4 h-4 border border-kg-line bg-kg-bg cursor-pointer transition-colors duration-(--kg-dur-1) ease-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-kg-fill",
                   hoveredCell &&
                     rowIndex <= hoveredCell.row &&
                     colIndex <= hoveredCell.col

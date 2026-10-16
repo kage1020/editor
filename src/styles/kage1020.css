@@ -32,6 +32,17 @@
   --kg-z-dialog: 40;
 }
 
+:root {
+  --kg-dur-1: 120ms;
+  --kg-dur-2: 200ms;
+  --kg-dur-3: 320ms;
+  --kg-dur-4: 600ms;
+  --kg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --kg-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --kg-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --kg-stagger: 40ms;
+}
+
 /* 値が切り替わる要素ごとに引き直す */
 :root,
 .dark,
@@ -148,6 +159,9 @@
   --spacing-control-height: 36px;
   --spacing-touch-target: 44px;
   --spacing-control-height-lg: 48px;
+  --ease-out: var(--kg-ease-out);
+  --ease-in: var(--kg-ease-in);
+  --ease-in-out: var(--kg-ease-move);
   --shadow-xs: none;
   --shadow-sm: none;
   --shadow: none;
@@ -161,6 +175,9 @@
   :focus-visible { outline: 2px solid var(--kg-focus); outline-offset: 2px; }
   a { text-decoration-color: var(--kg-border); text-underline-offset: 3px; }
   a:hover { text-decoration-color: currentColor; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
 }
 @media (pointer: coarse) {
   input, textarea, select { font-size: 16px; }

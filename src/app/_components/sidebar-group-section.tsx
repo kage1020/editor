@@ -59,7 +59,10 @@ export function SidebarGroupSection({
             className="pr-8 font-medium"
           >
             <ChevronRight
-              className={cn("transition-transform", isOpen && "rotate-90")}
+              className={cn(
+                "transition-transform duration-(--kg-dur-2) ease-out",
+                isOpen && "rotate-90",
+              )}
             />
             <FolderIcon />
             <span>{name}</span>

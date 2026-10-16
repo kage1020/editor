@@ -52,8 +52,8 @@ export function PopoverContent({
         sideOffset={sideOffset}
         className={cn(
           "tiptap-popover",
-          "z-50 outline-none duration-100 ease-fast repeat-1 max-h-[var(--radix-popover-content-available-height)] [&>*]:max-h-[var(--radix-popover-content-available-height)]",
-          "data-[state=open]:animate-fadeIn data-[state=closed]:animate-fadeOut",
+          "z-50 outline-none repeat-1 max-h-[var(--radix-popover-content-available-height)] [&>*]:max-h-[var(--radix-popover-content-available-height)]",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-(--kg-dur-2) data-[state=open]:ease-out data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-(--kg-dur-1) data-[state=closed]:ease-in data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1",
           popoverVariants({ side }),
           className,
         )}
