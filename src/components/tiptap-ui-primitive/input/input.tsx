@@ -5,7 +5,7 @@ import { forwardRef } from "react"
 import { cn } from "@/lib/utils"
 
 const tiptapInputVariants = cva(
-  "tiptap-input block w-full h-8 text-sm font-normal leading-[1.5] py-1.5 px-2 rounded-md bg-transparent appearance-none outline-none placeholder:text-neutral-400 dark:placeholder:text-neutral-600",
+  "tiptap-input block w-full h-8 text-sm font-normal leading-[1.5] py-1.5 px-2 rounded-md bg-transparent text-kg-ink appearance-none placeholder:text-kg-ink-muted",
   {
     variants: {
       variant: {

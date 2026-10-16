@@ -16,7 +16,7 @@ const Editor = dynamic(() => import("./editor").then((mod) => mod.Editor), {
   ssr: false,
   loading: () => (
     <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full py-4 flex items-center justify-center">
-      <Loader2 className="size-8 animate-spin text-gray-500" />
+      <Loader2 className="size-6 animate-spin text-muted-foreground" />
     </div>
   ),
 })

@@ -19,18 +19,18 @@ export function PopoverTrigger({
 export const popoverVariants = cva("", {
   variants: {
     side: {
-      top: "animate-slideFromBottom",
-      "top-start": "animate-slideFromBottom",
-      "top-end": "animate-slideFromBottom",
-      right: "animate-slideFromLeft",
-      "right-start": "animate-slideFromLeft",
-      "right-end": "animate-slideFromLeft",
-      bottom: "animate-slideFromTop",
-      "bottom-start": "animate-slideFromTop",
-      "bottom-end": "animate-slideFromTop",
-      left: "animate-slideFromRight",
-      "left-start": "animate-slideFromRight",
-      "left-end": "animate-slideFromRight",
+      top: "",
+      "top-start": "",
+      "top-end": "",
+      right: "",
+      "right-start": "",
+      "right-end": "",
+      bottom: "",
+      "bottom-start": "",
+      "bottom-end": "",
+      left: "",
+      "left-start": "",
+      "left-end": "",
     },
   },
   defaultVariants: {
@@ -52,8 +52,8 @@ export function PopoverContent({
         sideOffset={sideOffset}
         className={cn(
           "tiptap-popover",
-          "z-50 outline-none duration-150 ease-fast repeat-1 max-h-[var(--radix-popover-content-available-height)] [&>*]:max-h-[var(--radix-popover-content-available-height)]",
-          "data-[state=open]:animate-fadeInZoomIn data-[state=closed]:animate-fadeOutZoomOut",
+          "z-50 outline-none repeat-1 max-h-[var(--radix-popover-content-available-height)] [&>*]:max-h-[var(--radix-popover-content-available-height)]",
+          "data-[state=open]:animate-in data-[state=open]:fade-in-0 data-[state=open]:duration-(--kg-dur-2) data-[state=open]:ease-out data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:duration-(--kg-dur-1) data-[state=closed]:ease-in data-[side=bottom]:slide-in-from-top-1 data-[side=top]:slide-in-from-bottom-1 data-[side=left]:slide-in-from-right-1 data-[side=right]:slide-in-from-left-1",
           popoverVariants({ side }),
           className,
         )}

@@ -22,7 +22,6 @@ interface SidebarGroupSectionProps {
   name: string
   documentCount: number
   isOpen: boolean
-  disabled: boolean
   onToggle: () => void
   onRename: () => void
   onDelete: () => void
@@ -34,7 +33,6 @@ export function SidebarGroupSection({
   name,
   documentCount,
   isOpen,
-  disabled,
   onToggle,
   onRename,
   onDelete,
@@ -50,7 +48,7 @@ export function SidebarGroupSection({
       {...dropHandlers}
       className={cn(
         "rounded-md transition-colors",
-        isOver && "bg-sidebar-accent ring-2 ring-orange-500/60",
+        isOver && "bg-sidebar-accent outline-2 outline-kg-accent",
       )}
     >
       <ContextMenu>
@@ -61,35 +59,38 @@ export function SidebarGroupSection({
             className="pr-8 font-medium"
           >
             <ChevronRight
-              className={cn("transition-transform", isOpen && "rotate-90")}
+              className={cn(
+                "transition-transform duration-(--kg-dur-2) ease-out",
+                isOpen && "rotate-90",
+              )}
             />
             <FolderIcon />
             <span>{name}</span>
           </SidebarMenuButton>
         </ContextMenuTrigger>
         <ContextMenuContent>
-          <ContextMenuItem disabled={disabled} onSelect={onRename}>
+          <ContextMenuItem onSelect={onRename}>
             <Pencil />
             Rename
           </ContextMenuItem>
           <ContextMenuSeparator />
-          <ContextMenuItem
-            variant="destructive"
-            disabled={disabled}
-            onSelect={onDelete}
-          >
+          <ContextMenuItem variant="destructive" onSelect={onDelete}>
             <Trash2 />
             Delete group
           </ContextMenuItem>
         </ContextMenuContent>
       </ContextMenu>
-      <SidebarMenuBadge>{documentCount}</SidebarMenuBadge>
+      <SidebarMenuBadge className="font-mono text-muted-foreground">
+        {documentCount}
+      </SidebarMenuBadge>
       {isOpen && (
         <SidebarMenuSub className="mr-0 pr-0">
           {documentCount > 0 ? (
             children
           ) : (
-            <li className="px-2 py-2 text-xs text-neutral-400">No documents</li>
+            <li className="px-2 py-2 text-xs text-muted-foreground">
+              No documents
+            </li>
           )}
         </SidebarMenuSub>
       )}

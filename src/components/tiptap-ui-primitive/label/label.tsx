@@ -34,7 +34,7 @@ export const Label = forwardRef<
     ref,
     className: cn(
       "tiptap-label",
-      "mt-3 mx-2 mb-1 text-xs font-semibold leading-normal capitalize text-neutral-800 dark:text-neutral-200",
+      "mt-3 mx-2 mb-1 text-xs font-normal leading-normal capitalize text-kg-ink-muted",
       props.className,
     ),
   })

@@ -47,6 +47,7 @@ function GroupNameForm({
   onDone: () => void
 }) {
   const inputId = useId()
+  const errorId = useId()
   const [error, setError] = useState<string | null>(null)
   const [isPending, startTransition] = useTransition()
 
@@ -54,6 +55,7 @@ function GroupNameForm({
     event.preventDefault()
     const name = String(new FormData(event.currentTarget).get("name") ?? "")
 
+    if (isPending) return
     startTransition(async () => {
       const result = await onSubmit(name)
       if (result.success) {
@@ -83,17 +85,21 @@ function GroupNameForm({
           autoFocus
           autoComplete="off"
           aria-invalid={error !== null}
-          disabled={isPending}
+          aria-describedby={error ? errorId : undefined}
         />
         {error && (
-          <p role="alert" className="text-sm text-destructive">
+          <p
+            id={errorId}
+            role="alert"
+            className="text-[13px] leading-5 text-destructive"
+          >
             {error}
           </p>
         )}
       </div>
       <DialogFooter>
-        <Button type="submit" disabled={isPending}>
-          {submitLabel}
+        <Button type="submit" aria-busy={isPending}>
+          {isPending ? `${submitLabel}…` : submitLabel}
         </Button>
       </DialogFooter>
     </form>

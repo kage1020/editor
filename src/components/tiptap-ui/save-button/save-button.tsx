@@ -50,9 +50,9 @@ export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
       (event: React.MouseEvent<HTMLButtonElement>) => {
         onClick?.(event)
         if (event.defaultPrevented) return
-        save()
+        if (!isSaving) save()
       },
-      [save, onClick],
+      [save, onClick, isSaving],
     )
 
     useHotkeys(
@@ -70,7 +70,7 @@ export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
     return (
       <Button
         type="button"
-        disabled={isSaving}
+        aria-busy={isSaving}
         variant="ghost"
         role="button"
         tabIndex={-1}
@@ -83,9 +83,7 @@ export const SaveButton = forwardRef<HTMLButtonElement, SaveButtonProps>(
       >
         {children ?? (
           <>
-            {showSuccess && !isSaving && (
-              <Check className="text-green-600 size-4" />
-            )}
+            {showSuccess && !isSaving && <Check className="size-4" />}
             <IconButton>{!showSuccess && !isSaving && <Save />}</IconButton>
             {isSaving && <Loader2 className="size-4 animate-spin" />}
             {text && <span className="tiptap-button-text">{text}</span>}

@@ -27,17 +27,15 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       suppressHydrationWarning
       className="break-words text-adjust-none text-optimize font-smoothing-antialiased"
     >
-      <body className="transition-all duration-300 ease-in-out">
+      <body>
         <ThemeProvider attribute="class" defaultTheme="light">
           <SidebarProvider defaultOpen={false}>
             <TooltipProvider>
               <Toaster />
               <Suspense
                 fallback={
-                  <div className="fixed top-4 left-4 z-[15] rounded-full bg-background">
-                    <div className="h-12 w-12 flex items-center justify-center bg-transparent rounded-full">
-                      <Loader2 className="size-6 animate-spin text-gray-500" />
-                    </div>
+                  <div className="fixed top-4 left-4 z-[15] flex size-12 items-center justify-center rounded-full bg-background">
+                    <Loader2 className="size-5 animate-spin text-muted-foreground" />
                   </div>
                 }
               >
@@ -49,8 +47,8 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
               <AuthButton />
               <ClientOnly
                 fallback={
-                  <div className="fixed top-20 left-4 z-[15] w-12 h-12 flex items-center justify-center rounded-full bg-background">
-                    <Loader2 className="size-6 animate-spin text-gray-500" />
+                  <div className="fixed top-4 md:top-20 left-16 md:left-4 z-[15] flex size-12 items-center justify-center rounded-full bg-background">
+                    <Loader2 className="size-5 animate-spin text-muted-foreground" />
                   </div>
                 }
               >

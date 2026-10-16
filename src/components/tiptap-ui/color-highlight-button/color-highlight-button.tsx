@@ -82,11 +82,7 @@ export const ColorHighlightButton = forwardRef<
         role="button"
         tabIndex={-1}
         className={cn(
-          highlighted &&
-            "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100",
-          highlighted &&
-            !disabled &&
-            "dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 [&_.tiptap-button-icon]:text-neutral-900 dark:[&_.tiptap-button-icon]:text-neutral-100 [&_.tiptap-button-icon-sub]:text-neutral-500 dark:[&_.tiptap-button-icon-sub]:text-neutral-500 [&_.tiptap-button-dropdown-arrows]:text-neutral-700 dark:[&_.tiptap-button-dropdown-arrows]:text-neutral-300 [&_.tiptap-button-dropdown-small]:text-neutral-700 dark:[&_.tiptap-button-dropdown-small]:text-neutral-300",
+          highlighted && "bg-kg-fill text-kg-ink",
           isActive && "after:brightness-80 dark:after:brightness-180",
           className,
         )}
@@ -102,7 +98,7 @@ export const ColorHighlightButton = forwardRef<
         {children ?? (
           <>
             <span
-              className="tiptap-button-highlight relative w-5 h-5 mx-[-0.175rem] rounded-xl transition-transform duration-200 ease-in-out after:content-[''] after:absolute after:w-full after:h-full after:left-0 after:top-0 after:rounded-[inherit] after:box-border after:border after:brightness-95 after:mix-blend-multiply dark:after:brightness-140 dark:after:mix-blend-lighten"
+              className="tiptap-button-highlight relative w-5 h-5 mx-[-0.175rem] rounded-full after:content-[''] after:absolute after:w-full after:h-full after:left-0 after:top-0 after:rounded-[inherit] after:box-border after:border after:brightness-95 after:mix-blend-multiply dark:after:brightness-140 dark:after:mix-blend-lighten"
               style={
                 {
                   backgroundColor: highlightColor,

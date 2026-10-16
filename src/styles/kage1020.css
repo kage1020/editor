@@ -1,0 +1,184 @@
+/* kage1020 — shadcn/ui・Tailwind v4 アダプタ。tokens.json から生成。手で編集しない。
+ * globals.css の先頭で @import し、アプリ側の :root / .dark の色・--radius・フォント定義を消す。
+ * このシステムの値は --kg-* に入り、shadcn の変数名はそれを指す。
+ * Tailwind では shadcn の名前（bg-background, text-muted-foreground …）と、kg- の名前（bg-kg-fill, text-kg-ink-muted, outline-kg-focus …）の両方が使える。 */
+
+:root,
+[data-theme="light"] {
+  --kg-bg: oklch(1 0 0);
+  --kg-bg-subtle: oklch(0.985 0 0);
+  --kg-fill: oklch(0.97 0 0);
+  --kg-line: oklch(0.922 0 0);
+  --kg-border: oklch(0.64 0 0);
+  --kg-ink: oklch(0.145 0 0);
+  --kg-ink-muted: oklch(0.52 0 0);
+  --kg-primary: oklch(0.205 0 0);
+  --kg-on-primary: oklch(0.985 0 0);
+  --kg-accent: #2d70b3;
+  --kg-danger: oklch(0.577 0.245 27.325);
+  --kg-danger-soft: #fef0f0;
+  --kg-danger-line: #f8b8bb;
+  --kg-mark: #ffeab2;
+  --kg-focus: var(--kg-accent);
+  --kg-link: var(--kg-ink);
+  --kg-series-1: #2d70b3;
+  --kg-series-2: #b86e00;
+  --kg-series-3: #00805c;
+  --kg-series-4: #a8467f;
+  --kg-z-content: 0;
+  --kg-z-hud: 10;
+  --kg-z-menu: 20;
+  --kg-z-pause: 30;
+  --kg-z-dialog: 40;
+}
+
+:root {
+  --kg-dur-1: 120ms;
+  --kg-dur-2: 200ms;
+  --kg-dur-3: 320ms;
+  --kg-dur-4: 600ms;
+  --kg-ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --kg-ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --kg-ease-move: cubic-bezier(0.65, 0, 0.35, 1);
+  --kg-stagger: 40ms;
+}
+
+/* 値が切り替わる要素ごとに引き直す */
+:root,
+.dark,
+[data-theme] {
+  --background: var(--kg-bg);
+  --foreground: var(--kg-ink);
+  --card: var(--kg-bg);
+  --card-foreground: var(--kg-ink);
+  --popover: var(--kg-bg);
+  --popover-foreground: var(--kg-ink);
+  --primary: var(--kg-primary);
+  --primary-foreground: var(--kg-on-primary);
+  --secondary: var(--kg-fill);
+  --secondary-foreground: var(--kg-ink);
+  --muted: var(--kg-fill);
+  --muted-foreground: var(--kg-ink-muted);
+  --accent: var(--kg-fill);
+  --accent-foreground: var(--kg-ink);
+  --destructive: var(--kg-danger);
+  --border: var(--kg-line);
+  --input: var(--kg-border);
+  --ring: var(--kg-focus);
+  --mark: var(--kg-mark);
+  --sidebar: var(--kg-bg-subtle);
+  --sidebar-foreground: var(--kg-ink);
+  --sidebar-primary: var(--kg-primary);
+  --sidebar-primary-foreground: var(--kg-on-primary);
+  --sidebar-accent: var(--kg-fill);
+  --sidebar-accent-foreground: var(--kg-ink);
+  --sidebar-border: var(--kg-line);
+  --sidebar-ring: var(--kg-focus);
+  --radius: 8px;
+}
+
+.dark,
+[data-theme="dark"] {
+  --kg-bg: oklch(0.145 0 0);
+  --kg-bg-subtle: oklch(0.205 0 0);
+  --kg-fill: oklch(0.269 0 0);
+  --kg-line: #ffffff1a;
+  --kg-border: oklch(0.52 0 0);
+  --kg-ink: oklch(0.985 0 0);
+  --kg-ink-muted: oklch(0.708 0 0);
+  --kg-primary: oklch(0.922 0 0);
+  --kg-on-primary: oklch(0.205 0 0);
+  --kg-accent: #6ea8e6;
+  --kg-danger: oklch(0.704 0.191 22.216);
+  --kg-danger-soft: #271515;
+  --kg-danger-line: #6c2e2f;
+  --kg-mark: #543f07;
+  --kg-focus: var(--kg-accent);
+  --kg-link: var(--kg-ink);
+  --kg-series-1: #6ea8e6;
+  --kg-series-2: #f0a04b;
+  --kg-series-3: #3cc39a;
+  --kg-series-4: #e08ac0;
+}
+
+@theme inline {
+  --font-sans: system-ui, -apple-system, "Segoe UI", "Hiragino Sans", "Hiragino Kaku Gothic ProN", "Yu Gothic UI", "Noto Sans JP", sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 8px;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-mark: var(--mark);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-kg-bg: var(--kg-bg);
+  --color-kg-bg-subtle: var(--kg-bg-subtle);
+  --color-kg-fill: var(--kg-fill);
+  --color-kg-line: var(--kg-line);
+  --color-kg-border: var(--kg-border);
+  --color-kg-ink: var(--kg-ink);
+  --color-kg-ink-muted: var(--kg-ink-muted);
+  --color-kg-primary: var(--kg-primary);
+  --color-kg-on-primary: var(--kg-on-primary);
+  --color-kg-accent: var(--kg-accent);
+  --color-kg-danger: var(--kg-danger);
+  --color-kg-danger-soft: var(--kg-danger-soft);
+  --color-kg-danger-line: var(--kg-danger-line);
+  --color-kg-mark: var(--kg-mark);
+  --color-kg-focus: var(--kg-focus);
+  --color-kg-link: var(--kg-link);
+  --color-kg-series-1: var(--kg-series-1);
+  --color-kg-series-2: var(--kg-series-2);
+  --color-kg-series-3: var(--kg-series-3);
+  --color-kg-series-4: var(--kg-series-4);
+  --spacing-control-height-sm: 32px;
+  --spacing-control-height: 36px;
+  --spacing-touch-target: 44px;
+  --spacing-control-height-lg: 48px;
+  --ease-out: var(--kg-ease-out);
+  --ease-in: var(--kg-ease-in);
+  --ease-in-out: var(--kg-ease-move);
+  --shadow-xs: none;
+  --shadow-sm: none;
+  --shadow: none;
+  --shadow-md: none;
+  --shadow-lg: none;
+}
+
+@layer base {
+  * { border-color: var(--border); }
+  body { background: var(--background); color: var(--foreground); font-family: var(--font-sans); -webkit-font-smoothing: antialiased; }
+  :focus-visible { outline: 2px solid var(--kg-focus); outline-offset: 2px; }
+  a { text-decoration-color: var(--kg-border); text-underline-offset: 3px; }
+  a:hover { text-decoration-color: currentColor; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after { animation-duration: 1ms !important; animation-iteration-count: 1 !important; transition-duration: 1ms !important; scroll-behavior: auto !important; }
+}
+@media (pointer: coarse) {
+  input, textarea, select { font-size: 16px; }
+}

@@ -28,7 +28,6 @@ interface SidebarDocumentItemProps {
   document: DocumentSummary
   isCurrent: boolean
   groups: GroupSummary[]
-  disabled: boolean
   onMove: (groupId: string | null) => void
   onMoveToNewGroup: () => void
   onDelete: () => void
@@ -40,7 +39,6 @@ export function SidebarDocumentItem({
   document,
   isCurrent,
   groups,
-  disabled,
   onMove,
   onMoveToNewGroup,
   onDelete,
@@ -68,21 +66,17 @@ export function SidebarDocumentItem({
                 <span className="text-ellipsis whitespace-nowrap overflow-hidden text-sm font-medium max-w-full">
                   {document.title || "Untitled"}
                 </span>
-                <span className="text-xs text-neutral-500">
+                <span className="text-xs text-muted-foreground">
                   {document.updatedAt.toLocaleDateString()}
                 </span>
               </div>
-              {isCurrent && (
-                <Badge variant="secondary" className="ml-2">
-                  Current
-                </Badge>
-              )}
+              {isCurrent && <Badge className="ml-2">Current</Badge>}
             </Link>
           </SidebarMenuButton>
         </ContextMenuTrigger>
         <ContextMenuContent>
           <ContextMenuSub>
-            <ContextMenuSubTrigger disabled={disabled}>
+            <ContextMenuSubTrigger>
               <FolderInput />
               Move to
             </ContextMenuSubTrigger>
@@ -110,11 +104,7 @@ export function SidebarDocumentItem({
             </ContextMenuSubContent>
           </ContextMenuSub>
           <ContextMenuSeparator />
-          <ContextMenuItem
-            variant="destructive"
-            disabled={disabled}
-            onSelect={onDelete}
-          >
+          <ContextMenuItem variant="destructive" onSelect={onDelete}>
             <Trash2 />
             Delete
           </ContextMenuItem>
