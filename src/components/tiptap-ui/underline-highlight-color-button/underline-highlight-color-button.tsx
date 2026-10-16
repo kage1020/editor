@@ -47,8 +47,7 @@ export const UnderlineHighlightColorButton = forwardRef<
       type="button"
       className={cn(
         "relative overflow-hidden",
-        highlighted &&
-          "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100",
+        highlighted && "bg-kg-fill text-kg-ink",
         className,
       )}
       variant={isActive ? "default" : "ghost"}

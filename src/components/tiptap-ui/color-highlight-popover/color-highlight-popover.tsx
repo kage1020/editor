@@ -132,8 +132,7 @@ function ColorHighlightPopoverContent({
           <ButtonGroup orientation="horizontal">
             <Button
               className={cn(
-                selectedIndex === colors.length &&
-                  "bg-neutral-200 dark:bg-neutral-700 text-neutral-900 dark:text-neutral-100 not-[:disabled]:bg-neutral-200",
+                selectedIndex === colors.length && "bg-kg-fill text-kg-ink",
               )}
               onClick={handleRemoveHighlight}
               aria-label="Remove highlight"

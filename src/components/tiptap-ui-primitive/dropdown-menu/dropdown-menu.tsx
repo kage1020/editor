@@ -44,9 +44,8 @@ export const DropdownMenuSubContent = forwardRef<
       ref={ref}
       className={cn(
         "tiptap-dropdown-menu",
-        "z-50 outline-none duration-150 ease-fast count repeat-1 max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
-        "data-[state=open]:animate-fadeInZoomIn data-[state=closed]:animate-fadeOutZoomOut",
-        "data-[side=top]:animate-slideFromBottom data-[side=top-start]:animate-slideFromBottom data-[side=top-end]:animate-slideFromBottom data-[side=right]:animate-slideFromLeft data-[side=right-start]:animate-slideFromLeft data-[side=right-end]:animate-slideFromLeft data-[side=bottom]:animate-slideFromTop data-[side=bottom-start]:animate-slideFromTop data-[side=bottom-end]:animate-slideFromTop data-[side=left]:animate-slideFromRight data-[side=left-start]:animate-slideFromRight data-[side=left-end]:animate-slideFromRight",
+        "z-50 outline-none duration-100 ease-fast count repeat-1 max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
+        "data-[state=open]:animate-fadeIn data-[state=closed]:animate-fadeOut",
         className,
       )}
       {...props}
@@ -67,18 +66,18 @@ DropdownMenuSubContent.displayName =
 const dropdownMenuContentVariants = cva("", {
   variants: {
     side: {
-      top: "animate-slideFromBottom",
-      "top-start": "animate-slideFromBottom",
-      "top-end": "animate-slideFromBottom",
-      right: "animate-slideFromLeft",
-      "right-start": "animate-slideFromLeft",
-      "right-end": "animate-slideFromLeft",
-      bottom: "animate-slideFromTop",
-      "bottom-start": "animate-slideFromTop",
-      "bottom-end": "animate-slideFromTop",
-      left: "animate-slideFromRight",
-      "left-start": "animate-slideFromRight",
-      "left-end": "animate-slideFromRight",
+      top: "",
+      "top-start": "",
+      "top-end": "",
+      right: "",
+      "right-start": "",
+      "right-end": "",
+      bottom: "",
+      "bottom-start": "",
+      "bottom-end": "",
+      left: "",
+      "left-start": "",
+      "left-end": "",
     },
   },
 })
@@ -96,9 +95,9 @@ export const DropdownMenuContent = forwardRef<
       onCloseAutoFocus={(e) => e.preventDefault()}
       className={cn(
         "tiptap-dropdown-menu",
-        "z-50 outline-none duration-150 repeat-1 ease-fast max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
-        "data-[state=open]:animate-fadeInZoomIn",
-        "data-[state=closed]:animate-fadeOutZoomOut",
+        "z-50 outline-none duration-100 repeat-1 ease-fast max-h-[var(--radix-dropdown-menu-content-available-height)] [&>*]:max-h-[var(--radix-dropdown-menu-content-available-height)]",
+        "data-[state=open]:animate-fadeIn",
+        "data-[state=closed]:animate-fadeOut",
         dropdownMenuContentVariants({ side }),
         className,
       )}

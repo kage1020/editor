@@ -16,14 +16,16 @@ export default function ErrorPage({ error, reset }: ErrorProps) {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-4 w-full">
-      <h1 className="text-4xl font-bold text-gray-900 dark:text-gray-100">
-        エラーが発生しました
+      <h1 className="text-xl leading-7 font-semibold text-foreground">
+        ページを表示できなかった
       </h1>
-      <p className="text-lg text-gray-600 dark:text-gray-400">
-        申し訳ございません。問題が発生しました。
+      <p className="text-sm text-muted-foreground">
+        再試行するか、ホームに戻ってほしい。
       </p>
       <div className="flex gap-2">
-        <Button onClick={reset}>再試行</Button>
+        <Button variant="default" onClick={reset}>
+          再試行
+        </Button>
         <Button variant="outline" asChild>
           <Link href="/">ホームに戻る</Link>
         </Button>

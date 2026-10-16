@@ -22,7 +22,6 @@ import {
   SidebarGroupContent,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
   SidebarMenuItem,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
@@ -69,7 +68,7 @@ export function DocumentSidebar({
     serverState,
     applySidebarChange<DocumentSummary>,
   )
-  const [isPending, startTransition] = useTransition()
+  const [, startTransition] = useTransition()
   const [collapsedGroupIds, setCollapsedGroupIds] = useState<
     ReadonlySet<string>
   >(() => new Set())
@@ -187,7 +186,6 @@ export function DocumentSidebar({
       document={document}
       isCurrent={document.id === currentDocumentId}
       groups={sections.groups}
-      disabled={isPending}
       onMove={(groupId) => handleMove(document.id, groupId)}
       onMoveToNewGroup={() =>
         openDialog({ mode: "create", documentIdToMove: document.id })
@@ -206,9 +204,11 @@ export function DocumentSidebar({
         <SidebarTrigger asChild>
           <Button
             size="icon"
-            className="h-12 w-12 flex bg-transparent text-black dark:text-neutral-200 rounded-full transition-all duration-300 ease-in-out border hover:bg-transparent border-transparent hover:border-neutral-400 hover:text-orange-500 dark:hover:bg-transparent dark:hover:text-orange-500"
+            variant="ghost"
+            aria-label="Open sidebar"
+            className="size-12 rounded-full [&_svg]:size-5"
           >
-            <ChevronsRight className="size-6" />
+            <ChevronsRight />
           </Button>
         </SidebarTrigger>
       </div>
@@ -217,9 +217,11 @@ export function DocumentSidebar({
           <SidebarTrigger asChild>
             <Button
               size="icon"
-              className="h-8 w-8 bg-transparent text-black dark:text-neutral-200 hover:bg-transparent transition-all duration-300 ease-in-out hover:text-orange-500 dark:hover:text-orange-500"
+              variant="ghost"
+              aria-label="Close sidebar"
+              className="size-8 rounded-full [&_svg]:size-5"
             >
-              <ChevronsRight className="size-6 rotate-180" />
+              <ChevronsRight className="rotate-180" />
             </Button>
           </SidebarTrigger>
         </SidebarHeader>
@@ -258,7 +260,6 @@ export function DocumentSidebar({
                     name={group.name}
                     documentCount={group.documents.length}
                     isOpen={!collapsedGroupIds.has(group.id)}
-                    disabled={isPending}
                     onToggle={() => toggleGroup(group.id)}
                     onRename={() => openDialog({ mode: "rename", group })}
                     onDelete={() => handleDeleteGroup(group.id)}
@@ -275,33 +276,31 @@ export function DocumentSidebar({
                 className={cn(
                   "mt-1 rounded-md transition-colors",
                   isOverUngrouped &&
-                    "bg-sidebar-accent ring-2 ring-orange-500/60",
+                    "bg-sidebar-accent outline-2 outline-kg-accent",
                 )}
               >
                 {sections.ungrouped.map(renderDocument)}
                 {isDraggingGroupedDocument &&
                   sections.ungrouped.length === 0 && (
-                    <li className="rounded-md border border-dashed px-2 py-3 text-center text-xs text-neutral-500">
+                    <li className="rounded-md border border-dashed border-kg-border px-2 py-3 text-center text-xs text-muted-foreground">
                       Drop here to remove from group
                     </li>
                   )}
                 {isEmpty && (
-                  <SidebarMenuItem>
-                    <SidebarMenuButton disabled>
-                      <span className="text-neutral-400">No documents</span>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
+                  <li className="px-2 py-2 text-sm text-muted-foreground">
+                    No documents
+                  </li>
                 )}
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
         <SidebarFooter>
-          <p className="text-neutral-500 text-sm text-center">
+          <p className="text-muted-foreground text-xs text-center">
             ©︎ 2025{" "}
             <a
               href="https://github.com/kage1020"
-              className="hover:underline"
+              className="font-mono underline"
               target="_blank"
               rel="noopener noreferrer"
             >

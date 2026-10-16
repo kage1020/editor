@@ -108,13 +108,10 @@ export function Title({ title, className, onChange }: TitleProps) {
           onChange={(e) => onChange(e.target.value)}
           onBlur={handleBlur}
           onKeyDown={handleInputKeyDown}
-          disabled={isPending}
+          aria-busy={isPending}
           className={cn(
-            "w-full text-3xl font-bold bg-transparent border-b-2 border-gray-300 dark:border-gray-600",
-            "focus:outline-none",
-            "transition-colors duration-200",
-            "text-gray-900 dark:text-gray-100",
-            isPending && "opacity-50 cursor-not-allowed",
+            "w-full bg-transparent border-b border-kg-border text-foreground",
+            "text-[26px] sm:text-[32px] leading-[1.3] font-bold tracking-[-0.01em]",
           )}
           placeholder="Enter title..."
         />
@@ -124,13 +121,11 @@ export function Title({ title, className, onChange }: TitleProps) {
           onKeyDown={handleKeyDown}
           tabIndex={0}
           aria-label="Click to edit title"
+          aria-busy={isPending}
           className={cn(
-            "text-3xl font-bold cursor-pointer",
-            "text-gray-900 dark:text-gray-100",
-            "transition-colors duration-200",
-            "border-b-2 border-transparent hover:border-gray-200 dark:hover:border-gray-700",
-            "focus:outline-none",
-            isPending && "opacity-50",
+            "cursor-text rounded-sm text-foreground",
+            "text-[26px] sm:text-[32px] leading-[1.3] font-bold tracking-[-0.01em]",
+            "border-b border-transparent hover:border-kg-line transition-colors duration-100",
           )}
         >
           {title}

@@ -20,7 +20,7 @@ export default async function DocumentPage({ params }: PageProps<"/[id]">) {
       fallback={
         <div className="max-w-[90vw] md:max-w-[70vw] mt-16 md:mt-0 mx-auto w-full py-4 flex items-center justify-center">
           <div className="flex flex-col items-center gap-4">
-            <Loader2 className="size-8 animate-spin text-gray-500" />
+            <Loader2 className="size-6 animate-spin text-muted-foreground" />
           </div>
         </div>
       }

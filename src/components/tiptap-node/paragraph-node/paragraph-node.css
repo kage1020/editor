@@ -46,7 +46,7 @@
 }
 
 .tiptap.ProseMirror .ProseMirror-selectednode:not(img):not(pre):not(.react-renderer) {
-  border-radius: 0.5rem;
+  border-radius: 6px;
   background-color: color-mix(in srgb, var(--primary) 20%, transparent);
 }
 
@@ -134,12 +134,14 @@
      LINKS
      ===================== */
 .tiptap.ProseMirror a {
-  color: var(--primary);
+  color: var(--kg-link);
   text-decoration: underline;
+  text-decoration-color: var(--kg-border);
+  text-underline-offset: 3px;
 }
 
-.dark .tiptap.ProseMirror a {
-  color: var(--primary);
+.tiptap.ProseMirror a:hover {
+  text-decoration-color: currentColor;
 }
 
 /* =====================
@@ -184,7 +186,7 @@
 
 /* Block thread styles with images */
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:has(img) {
-  outline: 0.125rem solid hsl(52, 100%, 50%);
+  outline: 0.125rem solid var(--kg-mark);
   border-radius: 0.25rem;
   overflow: hidden;
   width: fit-content;
@@ -192,7 +194,7 @@
 
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:has(img).tiptap-thread--selected {
   outline-width: 0.25rem;
-  outline-color: hsl(52, 100%, 50%);
+  outline-color: var(--kg-mark);
 }
 
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:has(img).tiptap-thread--hovered {
@@ -202,20 +204,20 @@
 /* Block thread styles without images */
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:not(:has(img)) {
   border-radius: 0.25rem;
-  border-bottom: 0.125rem dashed hsl(52, 100%, 50%);
+  border-bottom: 0.125rem dashed var(--kg-mark);
   padding-bottom: 0.5rem;
   outline: 0.25rem solid transparent;
 }
 
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:not(:has(img)).tiptap-thread--hovered,
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--unresolved.tiptap-thread--block:not(:has(img)).tiptap-thread--selected {
-  background-color: hsl(52, 100%, 50%);
-  outline-color: hsl(52, 100%, 50%);
+  background-color: var(--kg-mark);
+  outline-color: var(--kg-mark);
 }
 
 /* Resolved thread styles */
 .tiptap.ProseMirror .tiptap-thread.tiptap-thread--resolved.tiptap-thread--inline.tiptap-thread--selected {
-  background-color: hsl(52, 100%, 50%);
+  background-color: var(--kg-mark);
   border-color: transparent;
   opacity: 0.5;
 }
@@ -267,7 +269,7 @@
      ===================== */
 .prosemirror-dropcursor-block,
 .prosemirror-dropcursor-inline {
-  background: var(--primary) !important;
+  background: var(--kg-accent) !important;
   border-radius: 0.25rem;
   margin-left: -1px;
   margin-right: -1px;

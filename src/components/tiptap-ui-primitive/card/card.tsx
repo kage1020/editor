@@ -10,7 +10,7 @@ export const Card = forwardRef<HTMLDivElement, React.ComponentProps<"div">>(
         ref={ref}
         className={cn(
           "tiptap-card",
-          "rounded-xl shadow-xl shadow-neutral-800 dark:shadow-black bg-white dark:bg-zinc-950 border border-solid border-neutral-100 dark:border-neutral-900 flex flex-col outline-none items-center relative min-w-0 break-words bg-clip-border",
+          "rounded-lg bg-kg-bg text-kg-ink border border-solid border-kg-line flex flex-col outline-none items-center relative min-w-0 break-words bg-clip-border",
           className,
         )}
         {...props}
@@ -29,7 +29,7 @@ export const CardHeader = forwardRef<
       ref={ref}
       className={cn(
         "tiptap-card-header",
-        "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-neutral-100 dark:border-neutral-900",
+        "p-1.5 flex-none flex items-center justify-between w-full border-b border-solid border-kg-line",
         className,
       )}
       {...props}
@@ -88,7 +88,7 @@ export const CardGroupLabel = forwardRef<
       ref={ref}
       className={cn(
         "tiptap-card-group-label",
-        "pt-3 px-2 pb-1 leading-normal text-xs font-semibold capitalize text-neutral-800 dark:text-neutral-200",
+        "pt-3 px-2 pb-1 leading-normal text-xs font-normal capitalize text-kg-ink-muted",
         className,
       )}
       {...props}

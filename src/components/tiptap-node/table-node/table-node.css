@@ -8,7 +8,7 @@
 
     td,
     th {
-      border: 1px solid color-mix(in srgb, var(--foreground) 20%, transparent);
+      border: 1px solid var(--kg-line);
       box-sizing: border-box;
       min-width: 1em;
       padding: 6px 8px;
@@ -21,13 +21,14 @@
     }
 
     th {
-      background-color: color-mix(in srgb, var(--gray-1) 20%, transparent);
-      font-weight: bold;
+      background-color: var(--kg-bg-subtle);
+      font-weight: 600;
       text-align: left;
     }
 
     .selectedCell:after {
-      background: color-mix(in srgb, var(--gray-2) 20%, transparent);
+      /* A see-through fill, so the selected cells keep their text readable. */
+      background: color-mix(in srgb, var(--kg-ink) 6%, transparent);
       content: '';
       left: 0;
       right: 0;
@@ -39,7 +40,7 @@
     }
 
     .column-resize-handle {
-      background-color: color-mix(in srgb, var(--primary) 40%, transparent);
+      background-color: var(--kg-accent);
       bottom: -2px;
       pointer-events: none;
       position: absolute;

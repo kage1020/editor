@@ -44,18 +44,18 @@ export function AuthButton() {
   }, [])
 
   return (
-    <div className="fixed top-4 right-4 z-[15] bg-background rounded-full transition-all duration-300">
+    <div className="fixed top-4 right-4 z-[15] bg-background rounded-full">
       <motion.div
         ref={containerRef}
         className={cn(
-          "h-12 border transition-colors duration-300 overflow-hidden hover:border-neutral-400 group",
+          "h-12 border transition-colors duration-100 overflow-hidden hover:bg-accent group",
           open
-            ? "rounded-md border-neutral-400 px-3"
+            ? "rounded-lg border-border px-3 hover:bg-background"
             : "rounded-full border-transparent px-2 cursor-pointer",
         )}
         initial={{ width: 48 }}
         animate={{ width: open ? (session ? 280 : 128) : 48 }}
-        transition={{ type: "spring", stiffness: 130, damping: 10 }}
+        transition={{ duration: 0.12, ease: "easeOut" }}
       >
         <div className="flex items-center justify-between h-full">
           <div className="shrink-0 flex items-center justify-center space-x-4">
@@ -66,9 +66,9 @@ export function AuthButton() {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
                   exit={{ opacity: 0 }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: 0.12 }}
                 >
-                  <Loader2 className="size-6 animate-spin text-black dark:text-neutral-200" />
+                  <Loader2 className="size-5 animate-spin text-foreground" />
                 </motion.div>
               )}
               {!session && !isPending && !open && (
@@ -79,10 +79,10 @@ export function AuthButton() {
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
                       exit={{ opacity: 0 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.12 }}
                       onClick={() => setOpen(true)}
                     >
-                      <LogIn className="text-black dark:text-neutral-200 size-6 transition-colors duration-300 group-hover:text-green-600 dark:group-hover:text-green-600" />
+                      <LogIn className="text-foreground size-5" />
                     </motion.div>
                   </TooltipTrigger>
                   <TooltipContent>Login</TooltipContent>
@@ -95,7 +95,7 @@ export function AuthButton() {
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
-                    transition={{ duration: 0.3 }}
+                    transition={{ duration: 0.12 }}
                     onClick={() => setOpen(true)}
                   >
                     <Avatar>
@@ -104,16 +104,16 @@ export function AuthButton() {
                         alt={session.user.name}
                       />
                       <AvatarFallback>
-                        <User className="text-black dark:text-neutral-200 size-6 transition-colors duration-300 group-hover:text-green-600 dark:group-hover:text-green-600" />
+                        <User className="text-foreground size-5" />
                       </AvatarFallback>
                     </Avatar>
                   </motion.div>
                   {open && (
                     <motion.span
-                      className="max-w-32 text-ellipsis overflow-hidden whitespace-nowrap text-black dark:text-neutral-300"
+                      className="max-w-32 text-ellipsis overflow-hidden whitespace-nowrap text-foreground"
                       initial={{ opacity: 0 }}
                       animate={{ opacity: 1 }}
-                      transition={{ duration: 0.3 }}
+                      transition={{ duration: 0.12 }}
                     >
                       {session.user.name}
                     </motion.span>
@@ -125,10 +125,10 @@ export function AuthButton() {
           <AnimatePresence>
             {open && (
               <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -20 }}
-                transition={{ duration: 0.3, delay: 0.1 }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.12 }}
                 className="flex items-center"
               >
                 {!session && (
@@ -136,10 +136,10 @@ export function AuthButton() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <motion.button
-                          className="cursor-pointer"
+                          className="cursor-pointer rounded-md"
                           onClick={() => handleSignIn("google")}
                         >
-                          <FaGoogle className="size-6 text-black dark:text-neutral-300" />
+                          <FaGoogle className="size-5 text-foreground" />
                         </motion.button>
                       </TooltipTrigger>
                       <TooltipContent>Google</TooltipContent>
@@ -147,10 +147,10 @@ export function AuthButton() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <motion.button
-                          className="cursor-pointer"
+                          className="cursor-pointer rounded-md"
                           onClick={() => handleSignIn("github")}
                         >
-                          <FaGithub className="size-6 text-black dark:text-neutral-300" />
+                          <FaGithub className="size-5 text-foreground" />
                         </motion.button>
                       </TooltipTrigger>
                       <TooltipContent>GitHub</TooltipContent>
@@ -158,10 +158,10 @@ export function AuthButton() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <motion.button
-                          className="cursor-pointer"
+                          className="cursor-pointer rounded-md"
                           onClick={() => setOpen(false)}
                         >
-                          <X className="size-6 text-black dark:text-neutral-300 transition-colors duration-300" />
+                          <X className="size-5 text-foreground" />
                         </motion.button>
                       </TooltipTrigger>
                       <TooltipContent>Close</TooltipContent>
@@ -173,10 +173,10 @@ export function AuthButton() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <motion.button
-                          className="cursor-pointer"
+                          className="cursor-pointer rounded-md"
                           onClick={handleSignOut}
                         >
-                          <LogOut className="size-6 text-black dark:text-neutral-300 transition-colors duration-300 hover:text-red-600 dark:hover:text-red-600" />
+                          <LogOut className="size-5 text-foreground" />
                         </motion.button>
                       </TooltipTrigger>
                       <TooltipContent>Logout</TooltipContent>
@@ -184,10 +184,10 @@ export function AuthButton() {
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <motion.button
-                          className="cursor-pointer"
+                          className="cursor-pointer rounded-md"
                           onClick={() => setOpen(false)}
                         >
-                          <X className="size-6 text-black dark:text-neutral-300 transition-colors duration-300" />
+                          <X className="size-5 text-foreground" />
                         </motion.button>
                       </TooltipTrigger>
                       <TooltipContent>Close</TooltipContent>

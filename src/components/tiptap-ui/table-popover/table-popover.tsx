@@ -113,7 +113,7 @@ const TableGridSelector = ({
 
   return (
     <div className="table-grid-selector flex flex-col items-center gap-2 p-2">
-      <div className="table-grid flex flex-col border border-neutral-100 dark:border-neutral-900 overflow-hidden">
+      <div className="table-grid flex flex-col border border-kg-line overflow-hidden">
         {Array.from({ length: maxRows }, (_, rowIndex) => (
           <div key={rowIndex} className="table-grid-row flex">
             {Array.from({ length: maxCols }, (_, colIndex) => (
@@ -121,28 +121,28 @@ const TableGridSelector = ({
                 key={`${rowIndex}-${colIndex}`}
                 type="button"
                 className={cn(
-                  "table-grid-cell w-4 h-4 border border-neutral-200 dark:border-neutral-800 bg-white dark:bg-zinc-950 cursor-pointer transition-colors duration-150 ease-in-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-neutral-100 dark:hover:bg-neutral-900",
+                  "table-grid-cell w-4 h-4 border border-kg-line bg-kg-bg cursor-pointer transition-colors duration-100 ease-out -mt-px -ml-px first:ml-0 [.table-grid-row:first-child_&]:-mt-0 hover:bg-kg-fill",
                   hoveredCell &&
                     rowIndex <= hoveredCell.row &&
                     colIndex <= hoveredCell.col
-                    ? "bg-neutral-100 dark:bg-neutral-900"
+                    ? "bg-kg-fill"
                     : "",
                   hoveredCell &&
                     rowIndex === hoveredCell.row &&
                     colIndex <= hoveredCell.col &&
-                    "border-b-neutral-400 z-10",
+                    "border-b-kg-border z-10",
                   hoveredCell &&
                     colIndex === hoveredCell.col &&
                     rowIndex <= hoveredCell.row &&
-                    "border-r-neutral-400 z-10",
+                    "border-r-kg-border z-10",
                   hoveredCell &&
                     rowIndex === 0 &&
                     colIndex <= hoveredCell.col &&
-                    "border-t-neutral-400",
+                    "border-t-kg-border",
                   hoveredCell &&
                     colIndex === 0 &&
                     rowIndex <= hoveredCell.row &&
-                    "border-l-neutral-400",
+                    "border-l-kg-border",
                 )}
                 onMouseEnter={() => handleCellHover(rowIndex, colIndex)}
                 onClick={() => handleCellClick(rowIndex, colIndex)}
@@ -152,7 +152,7 @@ const TableGridSelector = ({
           </div>
         ))}
       </div>
-      <div className="table-grid-info text-xs text-neutral-800 dark:text-neutral-200 text-center min-h-4">
+      <div className="table-grid-info text-xs text-kg-ink-muted font-mono text-center min-h-4">
         {hoveredCell
           ? `${hoveredCell.row + 1} x ${hoveredCell.col + 1}`
           : "Select table size"}
