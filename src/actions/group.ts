@@ -1,6 +1,6 @@
 "use server"
 
-import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { env } from "cloudflare:workers"
 import { and, eq, exists } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
@@ -65,7 +65,6 @@ async function runGroupAction<TSchema extends z.ZodType>(
       return { success: false, error: "Unauthorized" }
     }
 
-    const { env } = await getCloudflareContext({ async: true })
     const result = await run(validationResult.data, {
       userId,
       db: drizzle(env.DB),

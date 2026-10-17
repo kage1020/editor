@@ -20,7 +20,7 @@ export const MAX_IMAGES_CLEANED_ON_DELETE = 100
 /** R2 accepts at most this many keys per delete call. */
 const DELETE_BATCH_SIZE = 1000
 
-type ImageEnv = Pick<CloudflareEnv, "DB" | "UPLOADS">
+type ImageEnv = Pick<Env, "DB" | "UPLOADS">
 
 async function deleteKeys(bucket: R2Bucket, keys: string[]) {
   for (let i = 0; i < keys.length; i += DELETE_BATCH_SIZE) {

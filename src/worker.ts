@@ -1,8 +1,8 @@
-import nextHandler from "open-next-worker"
+import handler from "vinext/server/fetch-handler"
 import { deleteOrphanImages } from "@/lib/image-cleanup"
 
 export default {
-  fetch: nextHandler.fetch,
+  fetch: handler.fetch,
   async scheduled(controller, env) {
     const deleted = await deleteOrphanImages(
       env,
@@ -10,4 +10,4 @@ export default {
     )
     console.log(`Deleted ${deleted.length} orphan images`)
   },
-} satisfies ExportedHandler<CloudflareEnv>
+} satisfies ExportedHandler<Env>

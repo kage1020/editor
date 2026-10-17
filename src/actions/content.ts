@@ -1,6 +1,6 @@
 "use server"
 
-import { getCloudflareContext } from "@opennextjs/cloudflare"
+import { env } from "cloudflare:workers"
 import { and, eq } from "drizzle-orm"
 import { drizzle } from "drizzle-orm/d1"
 import { revalidatePath } from "next/cache"
@@ -104,7 +104,6 @@ export async function saveContentAction(
     const session = await getSession()
     const userId = session?.user?.id || null
 
-    const { env } = await getCloudflareContext({ async: true })
     const db = drizzle(env.DB)
 
     let result: { id: string }[] | undefined
@@ -210,7 +209,6 @@ export async function updateTitleAction(
       }
     }
 
-    const { env } = await getCloudflareContext({ async: true })
     const db = drizzle(env.DB)
 
     const existing = await db
@@ -317,7 +315,6 @@ export async function deleteContentAction(
       }
     }
 
-    const { env } = await getCloudflareContext({ async: true })
     const db = drizzle(env.DB)
 
     const result = await db

@@ -49,8 +49,12 @@ const mocks = vi.hoisted(() => ({
   revalidatePath: vi.fn(),
 }))
 
-vi.mock("@opennextjs/cloudflare", () => ({
-  getCloudflareContext: async () => ({ env: { DB: mocks.db } }),
+vi.mock("cloudflare:workers", () => ({
+  env: {
+    get DB() {
+      return mocks.db
+    },
+  },
 }))
 vi.mock("@/auth/server", () => ({
   getSession: async () => mocks.session,
