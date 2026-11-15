@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 import type { DocumentSummary } from "@/db/queries"
+import { useCollapsedGroups } from "@/hooks/use-collapsed-groups"
 import {
   applySidebarChange,
   type GroupSummary,
@@ -69,9 +70,7 @@ export function DocumentSidebar({
     applySidebarChange<DocumentSummary>,
   )
   const [, startTransition] = useTransition()
-  const [collapsedGroupIds, setCollapsedGroupIds] = useState<
-    ReadonlySet<string>
-  >(() => new Set())
+  const { collapsedGroupIds, toggleGroup, forgetGroup } = useCollapsedGroups()
   // The last dialog stays in state while closing so its contents do not
   // change during the exit animation.
   const [dialog, setDialog] = useState<GroupDialog>({ mode: "create" })
@@ -130,6 +129,7 @@ export function DocumentSidebar({
   }
 
   const handleDeleteGroup = (groupId: string) => {
+    forgetGroup(groupId)
     mutate(
       { type: "delete-group", groupId },
       () => deleteGroupAction({ id: groupId }),
@@ -140,14 +140,6 @@ export function DocumentSidebar({
   const openDialog = (next: GroupDialog) => {
     setDialog(next)
     setIsDialogOpen(true)
-  }
-
-  const toggleGroup = (groupId: string) => {
-    setCollapsedGroupIds((current) => {
-      const next = new Set(current)
-      if (!next.delete(groupId)) next.add(groupId)
-      return next
-    })
   }
 
   const createGroup = async (name: string, documentIdToMove?: string) => {
