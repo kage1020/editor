@@ -1,7 +1,7 @@
 import { desc, eq } from "drizzle-orm"
 import { cache } from "react"
 import { getSession } from "@/auth/server"
-import { db } from "@/db"
+import { getDb } from "@/db"
 import { documentGroups, editorContents } from "@/db/schema"
 import type { GroupSummary } from "@/lib/document-groups"
 import "server-only"
@@ -39,6 +39,7 @@ export const listDocuments = cache(async (): Promise<DocumentSummary[]> => {
   const userId = await getCurrentUserId()
   if (!userId) return []
 
+  const db = await getDb()
   return db
     .select({
       id: editorContents.id,
@@ -55,6 +56,7 @@ export const listGroups = cache(async (): Promise<GroupSummary[]> => {
   const userId = await getCurrentUserId()
   if (!userId) return []
 
+  const db = await getDb()
   return db
     .select({ id: documentGroups.id, name: documentGroups.name })
     .from(documentGroups)
@@ -66,6 +68,7 @@ export const getDocument = cache(
     const userId = await getCurrentUserId()
     if (!userId) return null
 
+    const db = await getDb()
     const rows = await db
       .select({
         id: editorContents.id,
@@ -89,6 +92,7 @@ export const getLatestDocumentId = cache(async (): Promise<string | null> => {
   const userId = await getCurrentUserId()
   if (!userId) return null
 
+  const db = await getDb()
   const rows = await db
     .select({ id: editorContents.id })
     .from(editorContents)
